@@ -25,20 +25,16 @@
             align-items: center;
             justify-content: flex-start;
             gap: 5px;
-            /* Reduzierter Abstand für größere Viewports */
             width: 100%;
-            /* Standardbreite */
         }
 
         .form-label {
             flex: 0 0 30%;
-            /* Standardbreite des Labels */
             text-align: right;
         }
 
         .form-control {
             flex: 0 0 30%;
-            /* Standardbreite des Inputs */
         }
 
         .chart_container {
@@ -50,14 +46,11 @@
 
         .growth_summary {
             text-align: center;
-            /* Text zentrieren */
             margin-top: 20px;
-            /* Abstand oberhalb des Texts */
         }
 
         .growth_summary h6 {
             font-size: 14px;
-            /* Standardgröße */
         }
 
         @media (max-width: 786px) {
@@ -71,25 +64,18 @@
 
             .input_row {
                 flex-direction: column;
-                /* Vertikale Anordnung */
                 width: 80%;
-                /* Breite der Zeile auf 80% des Viewports setzen */
                 margin: 0 auto;
-                /* Zentrierung der Zeile */
                 gap: 2px;
-                /* Abstand zwischen Label und Input für kleinere Viewports */
             }
 
             .form-label {
                 width: 100%;
-                /* Label nimmt die gesamte Breite ein */
                 text-align: left;
-                /* Label wird linksbündig ausgerichtet */
             }
 
             .form-control {
                 width: 100%;
-                /* Input nimmt die gesamte Breite ein */
             }
 
             .form-label,
@@ -128,6 +114,11 @@
             <label for="standardabweichung" class="form-label">% StdDev p.a.: </label>
             <input type="number" class="form-control" id="standardabweichung" value="25" oninput="berechneVermoegen()">
         </div>
+
+        <div class="input_row mb-1">
+            <label for="relativerBezug" class="form-label">% Cashflow p.a.: </label>
+            <input type="number" class="form-control" id="relativerBezug" value="5" oninput="berechneVermoegen()">
+        </div>
     </div>
 
     <div class="chart_container">
@@ -143,177 +134,177 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <script>
+    function berechneVermoegen() {
+        const startkapital = parseFloat(document.getElementById('startkapital').value);
+        const renditeProJahr = parseFloat(document.getElementById('renditeProJahr').value) / 100;
+        const jahre = parseInt(document.getElementById('jahre').value);
+        const standardAbweichung = parseFloat(document.getElementById('standardabweichung').value) / 100;
+        const relativerBezug = parseFloat(document.getElementById('relativerBezug').value) / 100; // Relativer Bezug in %
 
-        function berechneVermoegen() {
-            const startkapital = parseFloat(document.getElementById('startkapital').value);
-            const renditeProJahr = parseFloat(document.getElementById('renditeProJahr').value) / 100;
-            const jahre = parseInt(document.getElementById('jahre').value);
-            const standardAbweichung = parseFloat(document.getElementById('standardabweichung').value) / 100;
+        const renditeProJahrWert = parseFloat(document.getElementById('renditeProJahr').value);
+        document.getElementById('titel').textContent = `Vermögenswachstum bei ${renditeProJahrWert}% Rendite p.a.`;
 
-            const renditeProJahrWert = parseFloat(document.getElementById('renditeProJahr').value);
-            document.getElementById('titel').textContent = `Vermögenswachstum bei ${renditeProJahrWert}% Rendite p.a.`;
+        const chartLabels = [];
+        const chartData = [];
+        const bezugData = []; // Array für die zweite Serie
 
-            const chartLabels = [];
-            const chartData = [];
-            let vermoegenErstesJahr = startkapital;
-            let vermoegenLetztesJahr = startkapital;
+        let vermoegenErstesJahr = startkapital;
+        let vermoegenLetztesJahr = startkapital;
 
-            let highWatermark = startkapital;
-            let maxDrawdown = 0;
+        let highWatermark = startkapital;
+        let maxDrawdown = 0;
 
-            function normaleZufallszahl(mean, stdDev) {
-                let u1 = Math.random();
-                let u2 = Math.random();
-                let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-                return mean + z * stdDev;
-            }
-
-            const aktuellesJahr = new Date().getFullYear() + 1;
-
-            for (let jahr = 0; jahr < jahre; jahr++) {
-                const abweichung = normaleZufallszahl(0, standardAbweichung);
-                const effektiveRendite = renditeProJahr + abweichung;
-                const betrag = vermoegenLetztesJahr * (1 + effektiveRendite);
-
-                if (jahr === 0) vermoegenErstesJahr = betrag;
-                vermoegenLetztesJahr = betrag;
-
-                if (betrag > highWatermark) {
-                    highWatermark = betrag;
-                } else {
-                    const drawdown = (highWatermark - betrag) / highWatermark * 100;
-                    maxDrawdown = Math.max(maxDrawdown, drawdown);
-                }
-
-                chartLabels.push(aktuellesJahr + jahr);
-                chartData.push(betrag);
-            }
-
-            // Wachstum in Prozent berechnen
-            const wachstum = ((vermoegenLetztesJahr - vermoegenErstesJahr) / vermoegenErstesJahr) * 100;
-
-            // Maximalen Drawdown anzeigen
-            document.getElementById('wachstumProzent').textContent =
-                `Das Vermögen wuchs um ${wachstum.toFixed(2)}% und hatte einen Max. Drawdown von ${maxDrawdown.toFixed(2)}%.`;
-
-            renderChart(chartLabels, chartData);
+        function normaleZufallszahl(mean, stdDev) {
+            let u1 = Math.random();
+            let u2 = Math.random();
+            let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            return mean + z * stdDev;
         }
 
-        let existingChart = null; // Variable für das Chart
+        const aktuellesJahr = new Date().getFullYear() + 1;
 
-        function renderChart(labels, data) {
-            const ctx = document.getElementById('vermoegenChart').getContext('2d');
+        for (let jahr = 0; jahr < jahre; jahr++) {
+            const abweichung = normaleZufallszahl(0, standardAbweichung);
+            const effektiveRendite = renditeProJahr + abweichung;
+            let betrag = vermoegenLetztesJahr * (1 + effektiveRendite);
 
-            // Existierendes Chart zerstören, bevor ein neues erstellt wird
-            if (existingChart) {
-                existingChart.destroy();
-            }
+            // Berechnung des relativen Bezugs
+            const bezug = betrag * relativerBezug;
 
-            // Dynamische Schriftgrößen basierend auf Viewport-Größe
-            const isSmallViewport = window.innerWidth < 768;
-            const fontSize = isSmallViewport ? 10 : 10; // Schriftgröße anpassen
+            // Abzug des Bezugs vom aktuellen Vermögen
+            betrag = Math.max(betrag - bezug, 0);
 
-            existingChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '',
-                        data: data,
-                        borderColor: 'green', // Linienfarbe auf Grün setzen
-                        backgroundColor: 'rgba(0, 255, 0, 0.2)', // Transparenter grüner Hintergrund
-                        tension: 0.1,
-                        fill: true, // Hintergrund aktivieren
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false, // Ermöglicht Anpassung der Höhe
-                    layout: {
-                        padding: {
-                            top: 20, // Abstand oben
-                            right: 20, // Abstand rechts
-                        },
-                    },
-                    plugins: {
-                        legend: {
-                            display: false, // Legende ausblenden
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (tooltipItem) {
-                                    const value = tooltipItem.raw || 0;
-                                    return `${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} USD`;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            display: function (ctx) {
-                                // Blende die Data Labels aus, wenn der Viewport kleiner als 768px ist
-                                return window.innerWidth >= 768;
-                            },
-                            color: 'black',
-                            anchor: 'end',
-                            align: 'top',
-                            font: {
-                                size: 10,
-                                family: 'Poppins', // Font auf Poppins setzen
-                            },
-                            formatter: function (value) {
-                                const kValue = (value / 1000).toFixed(1);
-                                return `${kValue}K`;
-                            },
-                        },
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Jahre', // X-Achsentitel ändern
-                                font: {
-                                    family: 'Poppins', // Font auf Poppins setzen
-                                    size: fontSize, // Dynamische Schriftgröße
-                                },
-                            },
-                            ticks: {
-                                font: {
-                                    family: 'Poppins', // Font für X-Achsenticks setzen
-                                    size: fontSize, // Dynamische Schriftgröße
-                                },
-                            },
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Vermögen in 1000 (USD)', // Y-Achsentitel bleibt
-                                font: {
-                                    family: 'Poppins', // Font auf Poppins setzen
-                                    size: fontSize, // Dynamische Schriftgröße
-                                },
-                            },
-                            beginAtZero: true,
-                            ticks: {
-                                font: {
-                                    family: 'Poppins', // Font für Y-Achsenticks setzen
-                                    size: fontSize, // Dynamische Schriftgröße
-                                },
-                            },
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels],
-            });
+            // Speichere den Bezug für die zweite Data Series
+            bezugData.push(bezug);
 
-            // Höhe des Canvas anpassen, wenn Viewport kleiner als 768px ist
-            const canvas = document.getElementById('vermoegenChart');
-            if (isSmallViewport) {
-                canvas.style.height = '300px'; // Größere Höhe für kleinere Viewports
+            if (jahr === 0) vermoegenErstesJahr = betrag;
+            vermoegenLetztesJahr = betrag;
+
+            if (betrag > highWatermark) {
+                highWatermark = betrag; // Neuer Höchststand
             } else {
-                canvas.style.height = '400px'; // Standardhöhe
+                const drawdown = (highWatermark - betrag) / highWatermark * 100;
+                maxDrawdown = Math.max(maxDrawdown, drawdown); // Maximalen Drawdown aktualisieren
             }
+
+            chartLabels.push(aktuellesJahr + jahr);
+            chartData.push(betrag);
         }
 
-        berechneVermoegen(); // Initiales Rendern
+        const wachstum = ((vermoegenLetztesJahr - vermoegenErstesJahr) / vermoegenErstesJahr) * 100;
+        document.getElementById('wachstumProzent').textContent =
+            `Das Vermögen wuchs um ${wachstum.toFixed(2)}% und hatte einen Max. Drawdown von ${maxDrawdown.toFixed(2)}%.`;
+
+        renderChart(chartLabels, chartData, bezugData);
+    }
+
+        let existingChart = null;
+
+    function renderChart(labels, data, bezugData) {
+        const ctx = document.getElementById('vermoegenChart').getContext('2d');
+
+        // Existierendes Chart zerstören, bevor ein neues erstellt wird
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        // Prüfen, ob der Viewport kleiner als 768px ist
+        const isSmallViewport = window.innerWidth < 768;
+
+        existingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Wachstum',
+                        data: data,
+                        borderColor: 'green',
+                        backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                        tension: 0.1,
+                        fill: false,
+                    },
+                    {
+                        label: 'Cashflow',
+                        data: bezugData,
+                        borderColor: 'red',
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        tension: 0.1,
+                        fill: false,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 20,
+                        right: 20,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            generateLabels: function (chart) {
+                                const defaultLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                return defaultLabels.map(label => ({
+                                    ...label,
+                                    boxWidth: 0,
+                                    lineWidth: 2,
+                                }));
+                            },
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const value = tooltipItem.raw || 0;
+                                return `${value.toLocaleString('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                })} USD`;
+                            },
+                        },
+                    },
+                    datalabels: {
+                        display: !isSmallViewport, // Blende Datalabels aus, wenn der Viewport < 768px ist
+                        color: 'black',
+                        anchor: 'end',
+                        align: 'top',
+                        font: {
+                            size: 10,
+                            family: 'Poppins',
+                        },
+                        formatter: function (value) {
+                            const kValue = Math.floor(value / 1000);
+                            return `${kValue}K`;
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Jahre',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Vermögen in 1000 (USD)',
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            },
+            plugins: [ChartDataLabels],
+        });
+    }
+
+
+        berechneVermoegen();
     </script>
 
 </body>
