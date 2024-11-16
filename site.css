@@ -1,0 +1,157 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.input-wrapper {
+  border: 2px solid #d3d3d3; /* Hellgrauer Rahmen */
+  border-radius: 8px; /* Abgerundete Ecken */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 3D Schatteneffekt */
+  padding: 10px; /* Innenabstand */
+  background-color: #fff; /* Weißer Hintergrund */
+  margin-bottom: 20px; /* Abstand unterhalb des Containers */
+}
+
+.input_container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 20px auto;
+  gap: 15px;
+}
+
+.input_row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  width: 100%;
+}
+
+.form-label {
+  flex: 0 0 30%;
+  text-align: right;
+  font-size: 13px;
+  /* Optional: Schriftgröße anpassen */
+  margin-bottom: 2px;
+}
+
+.form-control {
+  flex: 0 0 30%;
+  height: 30px;
+  /* Reduziert die Höhe der Input-Felder */
+  font-size: 12px;
+  /* Optional: Schriftgröße anpassen */
+  padding: 5px 10px;
+  /* Optional: Innenabstand anpassen */
+}
+
+.chart_container {
+  display: flex;
+  flex-direction: column;
+  /* Vertikale Anordnung */
+  align-items: center;
+  /* Zentriert die Charts horizontal */
+  justify-content: center;
+  /* Zentriert die Charts vertikal */
+  height: 90vh;
+  /* Bildschirmhöhe nutzen */
+  gap: 10px;
+  /* Abstand zwischen den Charts */
+}
+
+#vermoegenChartContainer,
+#bezugDataChartContainer {
+  width: 100%;
+  /* Breite der Charts */
+  height: 400px;
+  /* Höhe der Charts */
+  display: flex;
+  justify-content: center;
+  /* Zentriert den Canvas innerhalb des Containers */
+  align-items: center;
+}
+
+canvas {
+  width: 100%;
+  /* Passt die Breite des Canvas an den Container an */
+  height: 100%;
+  /* Passt die Höhe des Canvas an den Container an */
+}
+
+.growth_summary {
+  text-align: center;
+}
+
+.growth_summary h6 {
+  font-size: 14px;
+}
+
+@media (max-width: 986px) {
+  .input_container .row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #vermoegenChartContainer,
+  #bezugDataChartContainer {
+    width: 100%;
+    /* Charts untereinander bei kleineren Viewports */
+  }
+}
+
+@media (max-width: 786px) {
+  body {
+    font-size: 10px;
+  }
+
+  #titel {
+    font-size: 14px;
+  }
+
+  .input_row {
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+    gap: 2px;
+  }
+
+  .col-md-6 {
+    width: 100%;
+  }
+
+  .form-label {
+    width: 100%;
+    text-align: left;
+  }
+
+  .form-control {
+    width: 100%;
+  }
+
+  .form-label,
+  .form-control {
+    font-size: 10px;
+  }
+
+  .chart_container {
+    height: 40vh;
+    /* Gesamte Höhe des Viewports */
+    gap: 10px;
+    /* Abstand zwischen den Charts */
+  }
+
+  #vermoegenChartContainer,
+  #bezugDataChartContainer {
+    height: 70%;
+    /* Jeweils 45% der Bildschirmhöhe */
+  }
+
+  canvas {
+    height: 100%;
+    /* Canvas passt sich an die Höhe der Container an */
+  }
+
+  #wachstumProzent {
+    font-size: 10px;
+  }
+}
