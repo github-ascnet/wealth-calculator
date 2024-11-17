@@ -80,8 +80,8 @@ canvas {
   text-align: center;
 }
 
-.growth_summary h6 {
-  font-size: 14px;
+#wachstumProzent {
+    font-size: 12px;
 }
 
 @media (max-width: 786px) {
