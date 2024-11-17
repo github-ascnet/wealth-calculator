@@ -128,6 +128,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false, // Ermöglicht flexible Höhenanpassung
       plugins: {
         datalabels: {
           display: !isSmallViewport,
@@ -153,7 +154,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
         },
         y: {
           title: {
-            display: true,
+            display: !isSmallViewport,
             text: "Profit in 1000 (USD)",
           },
         },
@@ -191,6 +192,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false, // Ermöglicht flexible Höhenanpassung
       plugins: {
         datalabels: {
           display: !isSmallViewport, // Blendet Datalabels bei kleinen Viewports aus
@@ -216,7 +218,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
         },
         y: {
           title: {
-            display: true,
+            display: !isSmallViewport,
             text: "Cashflow/Dividends In 1000 (USD)",
           },
         },
