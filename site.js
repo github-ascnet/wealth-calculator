@@ -1,22 +1,40 @@
-function validateInput(inputElement) {
-  const min = parseFloat(inputElement.getAttribute("min")) || 0;
-  const max = parseFloat(inputElement.getAttribute("max"));
-  let value = parseFloat(inputElement.value);
+function validateInput(input) {
+  const value = parseFloat(input.value); // Konvertiert den Eingabewert in eine Zahl
+  const min = parseFloat(input.min); // Minimal erlaubter Wert
+  const max = parseFloat(input.max); // Maximal erlaubter Wert
+  const step = parseFloat(input.step); // Schrittweite (0.1)
 
-  // Wenn der Wert kleiner als der Mindestwert ist, setze ihn auf den Mindestwert
-  if (value < min) {
-    inputElement.value = min;
-  }
-
-  // Wenn der Maximalwert definiert ist und überschritten wird, setze den Wert auf den Maximalwert
-  if (max && value > max) {
-    inputElement.value = max;
-  }
-
-  // Verhindert ungültige Eingaben
+  // Prüfen, ob der Wert leer ist
   if (isNaN(value)) {
-    inputElement.value = "";
+    input.setCustomValidity("This field cannot be empty.");
+    input.reportValidity();
+    return;
   }
+
+  // Prüfen, ob der Wert kleiner als der minimale Wert ist
+  if (value < min) {
+    input.setCustomValidity(`The value must be at least ${min}.`);
+    input.reportValidity();
+    return;
+  }
+
+  // Prüfen, ob der Wert größer als der maximale Wert ist
+  if (value > max) {
+    input.setCustomValidity(`The value cannot exceed ${max}.`);
+    input.reportValidity();
+    return;
+  }
+
+  // Prüfen, ob der Wert mit der Schrittweite kompatibel ist
+  if (step && (value - min) % step !== 0) {
+    input.setCustomValidity(`The value must be a multiple of ${step}.`);
+    input.reportValidity();
+    return;
+  }
+
+  // Wenn alle Prüfungen bestanden sind, die Validierung zurücksetzen
+  input.setCustomValidity("");
+  input.reportValidity();
 }
 
 function sanitizeInput(inputElement) {
