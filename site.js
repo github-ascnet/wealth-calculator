@@ -137,9 +137,41 @@ function berechneVermoegen() {
     ((vermoegenLetztesJahr - vermoegenErstesJahr) / vermoegenErstesJahr) * 100;
   document.getElementById(
     "wachstumProzent"
-  ).textContent = `Assets grew by ${wachstum.toFixed(
-    2
-  )}% with max. drawdown of ${(maxDrawdown * 100).toFixed(2)}%.`;
+  ).textContent = `Total Growth: ${wachstum.toFixed(2)}% Max. Drawdown: ${(
+    maxDrawdown * 100
+  ).toFixed(2)}%`;
+
+  // Volatilität berechnen (Standardabweichung der jährlichen Renditen)
+  const renditen = [];
+  let vermoegenVorher = startkapital;
+  for (let i = 0; i < chartData.length; i++) {
+    const r = (chartData[i] - vermoegenVorher) / vermoegenVorher;
+    renditen.push(r);
+    vermoegenVorher = chartData[i];
+  }
+  const meanRendite = renditen.reduce((a, b) => a + b, 0) / renditen.length;
+  const volatilitaet =
+    Math.sqrt(
+      renditen.reduce((a, b) => a + Math.pow(b - meanRendite, 2), 0) /
+        renditen.length
+    ) * 100;
+
+  // Total Dividends/Cashflow
+  const totalDividends = dividendeData.reduce((a, b) => a + b, 0);
+  const totalCashflow = bezugData.reduce((a, b) => a + b, 0);
+
+  document.getElementById(
+    "volatilitaet"
+  ).textContent = `Volatility: ${volatilitaet.toFixed(2)}%`;
+
+  document.getElementById(
+    "totalDividendsCashflow"
+  ).textContent = `Total Dividends: $${totalDividends.toLocaleString(
+    undefined,
+    { maximumFractionDigits: 0 }
+  )}, Total Cashflow: $${totalCashflow.toLocaleString(undefined, {
+    maximumFractionDigits: 0,
+  })}`;
 
   renderCharts(chartLabels, chartData, bezugData, dividendeData);
 }
