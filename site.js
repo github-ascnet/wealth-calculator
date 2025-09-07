@@ -38,7 +38,13 @@ function validateInput(input) {
 }
 
 function sanitizeInput(inputElement) {
-  inputElement.value = inputElement.value.replace(/[^\d.]/g, ""); // Nur Zahlen und Punkt zulassen
+  if (id === "maxDrawdown") {
+    // Nur Zahlen + optionales Minus am Anfang erlauben
+    inputElement.value = inputElement.value.replace(/(?!^-)[^\d.]/g, "");
+  } else {
+    // Nur positive Zahlen (Ziffern und Dezimalpunkt)
+    inputElement.value = inputElement.value.replace(/[^\d.]/g, "");
+  }
 }
 
 function berechneVermoegen() {
