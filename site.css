@@ -1,6 +1,15 @@
+.form-control:focus {
+  background: #444;
+  color: #fff;
+}
+.form-control:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 2px rgba(255,193,7,0.2);
+  outline: none;
+}
 /* Allgemeine Stile */
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Space Mono", monospace;
 }
 
 /* Eingabebereich mit Rahmen, Schatten und runden Ecken */
@@ -11,6 +20,23 @@ body {
   padding: 10px; /* Innenabstand */
   background-color: #fff; /* Weißer Hintergrund */
   margin-bottom: 20px; /* Abstand unterhalb des Containers */
+}
+
+body {
+  font-family: 'Space Mono', monospace;
+  min-height: 100vh;
+  background: linear-gradient(90deg, #272525 0%, #454046 50%, #272525 100%);
+  color: #fff;
+}
+
+/* Eingabebereich mit Rahmen, Schatten und runden Ecken */
+.input-wrapper {
+  border: 2px solid #454046; /* Dunkler Rahmen */
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  background: rgba(39, 37, 37, 0.95);
+  margin-bottom: 20px;
 }
 
 /* Eingabecontainer */
@@ -39,16 +65,29 @@ body {
 
 .form-control {
   flex: 0 0 30%;
-  height: 30px; /* Reduziert die Höhe der Input-Felder */
-  font-size: 12px; /* Optional: Schriftgröße anpassen */
-  padding: 5px 10px; /* Optional: Innenabstand anpassen */
+  height: 30px;
+  font-size: 16px;
+  padding: 5px 10px;
+  background: #2d2d2d;
+  color: #fff;
 }
 
 /* Simulationsbutton */
 #simulateButton {
   display: block;
   margin: 10px auto;
-  width: 50%; /* Breiter Button */
+  width: 50%;
+  background: #ffc107;
+  color: #272525;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: background 0.2s, color 0.2s;
+}
+#simulateButton:hover {
+  background: #e0a800;
+  color: #fdfcfcff;
 }
 
 /* Chart Container */
@@ -91,6 +130,7 @@ canvas {
 
   #titel {
     font-size: 14px;
+    color: #ffc107 !important;
   }
 
   .input_container .row {

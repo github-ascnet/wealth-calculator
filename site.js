@@ -160,11 +160,12 @@ function renderCharts(labels, data, bezugData, dividendeData) {
       labels: labels,
       datasets: [
         {
-          label: "Profit",
+          label: "Profit in 1000 (USD)",
           data: data,
-          borderColor: "green",
-          backgroundColor: "rgba(0, 255, 0, 0.2)",
+          borderColor: "#ffc107",
+          backgroundColor: "rgba(255, 193, 7, 0.2)",
           tension: 0.1,
+          cubicInterpolationMode: "monotone",
           fill: false,
         },
       ],
@@ -175,16 +176,21 @@ function renderCharts(labels, data, bezugData, dividendeData) {
       plugins: {
         datalabels: {
           display: !isSmallViewport,
-          color: "black",
+          color: "#fff",
           anchor: "end",
           align: "top",
           font: {
             size: 10,
-            family: "Poppins",
+            family: "Space Mono",
           },
           formatter: function (value) {
             const kValue = Math.floor(value / 1000); // In Tausendern (K) anzeigen
-            return `${kValue}K`;
+            return `${kValue}`;
+          },
+        },
+        legend: {
+          labels: {
+            color: "#fff",
           },
         },
       },
@@ -193,12 +199,26 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           title: {
             display: false,
             text: "Years",
+            color: "#fff",
+          },
+          ticks: {
+            color: "#fff",
+          },
+          grid: {
+            display: false,
           },
         },
         y: {
           title: {
             display: !isSmallViewport,
-            text: "Profit in 1000 (USD)",
+            text: "Profit",
+            color: "#fff",
+          },
+          ticks: {
+            color: "#fff",
+          },
+          grid: {
+            color: "#ffffff54",
           },
         },
       },
@@ -214,20 +234,22 @@ function renderCharts(labels, data, bezugData, dividendeData) {
       labels: labels,
       datasets: [
         {
-          label: "Cashflow",
+          label: "Cashflow in 1000 (USD)",
           data: bezugData,
-          borderColor: "red",
-          backgroundColor: "rgba(255, 0, 0, 0.2)",
+          borderColor: "#32cd32",
+          backgroundColor: "rgba(50, 205, 50, 0.2)",
           tension: 0.1,
+          cubicInterpolationMode: "monotone",
           fill: false,
           yAxisID: "y",
         },
         {
-          label: "Dividends",
+          label: "Dividends in 1000 (USD)",
           data: dividendeData,
-          borderColor: "blue",
-          backgroundColor: "rgba(0, 0, 255, 0.2)",
+          borderColor: "#ffc107",
+          backgroundColor: "rgba(255, 193, 7, 0.2)",
           tension: 0.1,
+          cubicInterpolationMode: "monotone",
           fill: false,
           yAxisID: "y",
         },
@@ -239,16 +261,21 @@ function renderCharts(labels, data, bezugData, dividendeData) {
       plugins: {
         datalabels: {
           display: !isSmallViewport, // Blendet Datalabels bei kleinen Viewports aus
-          color: "black",
+          color: "#fff",
           anchor: "end",
           align: "top",
           font: {
             size: 10,
-            family: "Poppins",
+            family: "Space Mono",
           },
           formatter: function (value) {
             const kValue = Math.floor(value / 1000); // In Tausendern (K) anzeigen
-            return `${kValue}K`;
+            return `${kValue}`;
+          },
+        },
+        legend: {
+          labels: {
+            color: "#fff",
           },
         },
       },
@@ -257,12 +284,26 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           title: {
             display: false,
             text: "Years",
+            color: "#fff",
+          },
+          ticks: {
+            color: "#fff",
+          },
+          grid: {
+            display: false,
           },
         },
         y: {
           title: {
             display: !isSmallViewport,
-            text: "Cashflow/Dividends In 1000 (USD)",
+            text: "Cashflow/Dividends",
+            color: "#fff",
+          },
+          ticks: {
+            color: "#fff",
+          },
+          grid: {
+            color: "#ffffff54",
           },
         },
       },
