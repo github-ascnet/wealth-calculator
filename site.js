@@ -70,7 +70,7 @@ function berechneVermoegen() {
   );
   document.getElementById(
     "titel"
-  ).textContent = `Asset Growth at ${renditeProJahrWert}% Profit per Year`;
+  ).textContent = `Asset growth at ${renditeProJahrWert}% Profit per Year`;
 
   const chartLabels = [];
   const chartData = [];
@@ -137,9 +137,9 @@ function berechneVermoegen() {
     ((vermoegenLetztesJahr - vermoegenErstesJahr) / vermoegenErstesJahr) * 100;
   document.getElementById(
     "wachstumProzent"
-  ).textContent = `The assets grew by ${wachstum.toFixed(
+  ).textContent = `Assets grew by ${wachstum.toFixed(
     2
-  )}% and had a max. drawdown of ${(maxDrawdown * 100).toFixed(2)}%.`;
+  )}% with max. drawdown of ${(maxDrawdown * 100).toFixed(2)}%.`;
 
   renderCharts(chartLabels, chartData, bezugData, dividendeData);
 }
