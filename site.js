@@ -50,6 +50,10 @@ function berechneVermoegen() {
   const jahre = parseInt(document.getElementById("jahre").value);
   const standardAbweichung =
     parseFloat(document.getElementById("standardabweichung").value) / 100;
+  const allowedMaxDrawdownPercent = parseFloat(
+    document.getElementById("maxDrawdown").value
+  ); // z. B. -30
+  const allowedMaxDrawdownFraction = Math.abs(allowedMaxDrawdownPercent / 100);
   const relativerBezug =
     parseFloat(document.getElementById("relativerBezug").value) / 100;
   const dividendeProzent =
@@ -74,9 +78,9 @@ function berechneVermoegen() {
   let maxDrawdown = 0;
 
   function normaleZufallszahl(mean, stdDev) {
-    let u1 = Math.random();
-    let u2 = Math.random();
-    let z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    const u1 = Math.random();
+    const u2 = Math.random();
+    const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
     return mean + z * stdDev;
   }
 
@@ -85,22 +89,37 @@ function berechneVermoegen() {
   for (let jahr = 0; jahr < jahre; jahr++) {
     const abweichung = normaleZufallszahl(0, standardAbweichung);
     const effektiveRendite = renditeProJahr + abweichung;
-    let betrag = vermoegenLetztesJahr * (1 + effektiveRendite);
 
-    const bezug = betrag * relativerBezug;
-    const dividende = betrag * dividendeProzent;
+    // 1. Hypothetischer Betrag nach Rendite
+    let hypothetischerBetrag = vermoegenLetztesJahr * (1 + effektiveRendite);
 
-    betrag = Math.max(betrag - bezug, 0);
+    // 2. HighWatermark ggf. aktualisieren
+    if (hypothetischerBetrag > highWatermark) {
+      highWatermark = hypothetischerBetrag;
+    }
 
+    // 3. Aktueller Drawdown relativ zum HighWatermark
+    let currentDrawdown =
+      (highWatermark - hypothetischerBetrag) / highWatermark;
+
+    // 4. Drawdown begrenzen
+    if (currentDrawdown > allowedMaxDrawdownFraction) {
+      hypothetischerBetrag = highWatermark * (1 - allowedMaxDrawdownFraction);
+      currentDrawdown = allowedMaxDrawdownFraction;
+    }
+
+    // 5. MaxDrawdown aktualisieren
+    maxDrawdown = Math.max(maxDrawdown, currentDrawdown);
+
+    // 6. Cashflow und Dividende berechnen
+    const bezug = hypothetischerBetrag * relativerBezug;
+    const dividende = hypothetischerBetrag * dividendeProzent;
+
+    let betrag = Math.max(hypothetischerBetrag - bezug, 0);
+
+    // 7. Ergebnisse zwischenspeichern
     if (jahr === 0) vermoegenErstesJahr = betrag;
     vermoegenLetztesJahr = betrag;
-
-    if (betrag > highWatermark) {
-      highWatermark = betrag;
-    } else {
-      const drawdown = ((highWatermark - betrag) / highWatermark) * 100;
-      maxDrawdown = Math.max(maxDrawdown, drawdown);
-    }
 
     chartLabels.push(aktuellesJahr + jahr);
     chartData.push(betrag);
@@ -114,7 +133,7 @@ function berechneVermoegen() {
     "wachstumProzent"
   ).textContent = `The assets grew by ${wachstum.toFixed(
     2
-  )}% and had a max. drawdown of ${maxDrawdown.toFixed(2)}%.`;
+  )}% and had a max. drawdown of ${(maxDrawdown * 100).toFixed(2)}%.`;
 
   renderCharts(chartLabels, chartData, bezugData, dividendeData);
 }

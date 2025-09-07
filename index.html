@@ -37,27 +37,37 @@
 
                     <div class="col-md-6 mb-1">
                         <label for="startkapital" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="The capital invested at the beginning.">Starting Capital </label>
-                        <input type="number" class="form-control" id="startkapital" value="250000" min="10000" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                        <input type="number" class="form-control" id="startkapital" value="100000" min="10000" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    </div>
+
+                    <!-- <div class="col-md-6 mb-1">
+                        <label for="jaehrlicherInvest" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Additional yearly investment in USD you want to risk.">Yearly Additional Investment (USD)</label>
+                        <input type="number" class="form-control" id="jaehrlicherInvest" value="0" step="100" min="0" max="100000" oninput="validateInput(this)" onblur="sanitizeInput(this)" />
+                    </div> -->
+
+                    <div class="col-md-6 mb-1">
+                        <label for="jahre" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Number of years for the calculation.">Years to measure </label>
+                        <input type="number" class="form-control" id="jahre" value="10" min="1" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
                     <div class="col-md-6 mb-1">
                         <label for="renditeProJahr" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Percentage annual return.">% Profit by Year </label>
-                        <input type="number" class="form-control" id="renditeProJahr" value="15" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                        <input type="number" class="form-control" id="renditeProJahr" value="30" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label for="maxDrawdown" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Expected maximum decline from peak to trough in percent (e.g., -30 = minus 30%).">% Max. Drawdown </label>
+                        <input type="number" class="form-control" id="maxDrawdown" value="-25" min="-100" max="0" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label for="standardabweichung" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Average standard deviation of the return in Percentage.">% Standard deviation by Year </label>
+                        <input type="number" class="form-control" id="standardabweichung" value="25" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
                     <div class="col-md-6 mb-1">
                         <label for="dividendeProzent" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Percentage dividend based on assets.">% Dividends by Year </label>
                         <input type="number" class="form-control" id="dividendeProzent" value="1.2" min="0" max="10" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
-                    </div>
-
-                    <div class="col-md-6 mb-1">
-                        <label for="jahre" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Number of years for the calculation.">Years to measure </label>
-                        <input type="number" class="form-control" id="jahre" value="12" min="1" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
-                    </div>
-
-                    <div class="col-md-6 mb-1">
-                        <label for="standardabweichung" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Average standard deviation of the return in Percentage.">% Standard deviation by Year </label>
-                        <input type="number" class="form-control" id="standardabweichung" value="18" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
                     <div class="col-md-6 mb-1">
