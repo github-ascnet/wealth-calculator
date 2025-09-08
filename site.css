@@ -2,16 +2,14 @@
   position: relative;
 }
 .chart-kpi-box {
-  position: absolute;
-  top: 2rem;
-  left: 5.5rem;
   background: rgba(39,37,37,0.95);
   color: #fff;
   font-size: 10px;
   padding: 10px 8px;
   border-radius: 8px;
-  z-index: 10;
   border: 2px solid #ffc107;
+  margin: 0.1rem auto 1rem auto;
+  width: fit-content;
 }
 .form-control:focus {
   background: #444;

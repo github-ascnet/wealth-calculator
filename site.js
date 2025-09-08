@@ -38,6 +38,7 @@ function validateInput(input) {
 }
 
 function sanitizeInput(inputElement) {
+  const id = inputElement.id;
   if (id === "maxDrawdown") {
     // Nur Zahlen + optionales Minus am Anfang erlauben
     inputElement.value = inputElement.value.replace(/(?!^-)[^\d.]/g, "");
