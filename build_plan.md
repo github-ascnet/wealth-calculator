@@ -34,13 +34,13 @@
 | BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Umgesetzt, im Browser geprüft (Chrome headless), Commit d13e5a6 (Branch `redesign`) | BP-015 |
 | BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Umgesetzt, im Browser geprüft (Chrome headless), Commit 7925677 (Branch `redesign`) | BP-016 |
 | BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Umgesetzt, im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
-| BP-019 | Redesign: Ergebnis-Tint | Geplant | BP-017 |
+| BP-019 | Redesign: Ergebnis-Tint | Umgesetzt, im Browser geprüft (Chrome headless), Commit 2c2792d (Branch `redesign`); Sichtprüfung durch den Auftraggeber offen | BP-017 |
 | BP-020 | Redesign: Gestaffelter Eintritt | Geplant | BP-017 |
 | BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Geplant | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-019. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-019`).
+**Nächstes vorgesehenes Paket:** BP-020. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-020`).
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -406,7 +406,18 @@
 
 ### BP-019 Ergebnis-Tint
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit 2c2792d auf Branch `redesign`. Die Sichtprüfung des Auftraggebers (Stärke, `G0`, Sättigung im Default) steht aus.
+- **Umsetzung:** `index.html`: zwei Ebenen `.ag-tint-gain` und `.ag-tint-loss` (aria-hidden) vor dem Titel; `motion.css`: Ebenen nur ab 701 px und unter `html.ag-motion` (`position: fixed`, `z-index: -1`, `pointer-events: none`), Deckkraft aus `--ag-tint-gain` bzw. `--ag-tint-loss`, `transition: opacity 2400ms`; Gewinn: Teal oben (0.38) und Grün unten (0.32), Verlust: Rosé oben (0.5) und unten (0.42), Radialverläufe wie im Vorbild; `motion.js`: `AG_MOTION.setResult(wachstumProzent)` mit `TINT_G0 = 150`, Neutralzone 1 %, erste Färbung nach dem Loader; `site.js`: Aufruf nach der Berechnung von Total Growth.
+- **Prüfergebnis (Chrome headless, 1280 px; Deckkraft aus berechnetem Stil nach der Übergangszeit):**
+  - Total Growth 0 %: beide Ebenen 0. **Erfüllt.** 0.5 % (Neutralzone): beide 0. **Erfüllt.**
+  - +100 %: Gewinn-Ebene 0.487, Verlust-Ebene 0. **Erfüllt** (Soll ca. 0.49).
+  - −18 %: Verlust-Ebene 0.113, Gewinn 0. **Erfüllt.** Default-Szenario (hier +299 % mit Zufall): Gewinn 0.864.
+  - Übergang: Mitte des Übergangs bei 1.2 s Deckkraft 0.391 (zwischen 0 und 0.487); `transition-property: opacity`, 2.4 s; es wird nur `opacity` animiert. **Erfüllt.**
+  - Unter 701 px (640) und bei Reduced-Motion: Ebenen `display: none`, bei Reduced-Motion werden keine Variablen gesetzt. **Erfüllt.**
+  - Ungültige Eingabe (Total Growth `NaN`): beide Ebenen 0, Konsole fehlerfrei. **Erfüllt.**
+  - Kontrast an echten Pixeln (Screenshot mit transparentem Text bei voller Stärke 1, 98. Perzentil der Hintergrundhelligkeit je Textfläche, Sterne ausgenommen): Titel (grosse Schrift) Gewinn 4.55 : 1, Verlust 5.2 : 1 (ohne Tint 7.1); Labels 16.8 : 1 (Text), 7.5 : 1 (gedämpft); Fusszeile gedämpft Gewinn 5.8 : 1, Verlust 6.0 : 1 (ohne Tint 8.0). Alle mindestens 4.5 : 1. **Erfüllt.** Der Titelschein aus D-031 ist dabei im Maximum eingerechnet.
+- **Entscheid zu `G0` und Sättigung (Vorschlag, wartet auf den Auftraggeber):** Startwerte unverändert `G0 = 150 %`, Neutralzone 1 %. Bei den Default-Werten (+830 %) liegt der Tint praktisch bei 1 (gesättigt). Die Alphawerte der Ebenen wurden nach einer ersten Sichtkontrolle erhöht (0.26/0.2 → 0.38/0.32 Gewinn, 0.5/0.42 Verlust), weil die Färbung sonst neben den Aurora-Bändern kaum auffiel; weiter ist wegen des Kontrasts des Titels nicht ratsam. Der Verlust-Tint ist schwächer erreichbar, da der maximale Drawdown den Verlust begrenzt (Default −18 % → Stärke 0.11).
+- **Nicht prüfbar:** Andere Browser (OP-12); die Wirkung auf echten Bildschirmen (Helligkeit, Farbtreue).
 - **Grundlage:** D-023; [project_plan.md](project_plan.md), Kapitel 13.7
 - **Ziel:** Der Hintergrund färbt sich weich nach Total Growth.
 - **Scope:** Zwei Tint-Ebenen in `index.html`, Regeln in `motion.css`, `AG_MOTION.setResult(growthPercent)` in `motion.js`, Aufruf aus `site.js` nach der Berechnung. Regeln nach 13.7 (Neutralzone, Intensität, nur Deckkraft, 2400 ms).

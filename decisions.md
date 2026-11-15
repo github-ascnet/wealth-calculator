@@ -172,7 +172,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-023 Ergebnis-Tint des Hintergrunds
 
-- **Status:** Bestätigt (Auftrag 2026-11-15; Detailregeln am 2026-11-15 gewählt: „Total Growth, stufenlos“); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15; Detailregeln am 2026-11-15 gewählt: „Total Growth, stufenlos“); wirksam seit BP-019 (2026-11-15), Startwerte der Parameter in der Sichtprüfung nachjustierbar
 - **Entscheidung:** Der Hintergrund färbt sich weich nach dem Ergebnis der aktuellen Simulation, angelehnt an den Regime-Tint des Vorbilds (dessen D-027). Rein visuell, keine Anlageaussage.
 - **Regeln:**
   - Grundlage ist die Kennzahl „Total Growth“ (D-014), stufenlos.
