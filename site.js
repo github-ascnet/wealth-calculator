@@ -158,6 +158,10 @@ function berechneVermoegen() {
   zeigeKennzahl("wachstumProzent", wachstum, function (w) {
     return `Total Growth: ${w.toFixed(2)}%`;
   });
+  // Hintergrund-Tint nach Total Growth (BP-019, nur mit motion.js)
+  if (window.AG_MOTION && window.AG_MOTION.setResult) {
+    window.AG_MOTION.setResult(wachstum);
+  }
   zeigeKennzahl("maxDrawdownAnzeige", maxDrawdown * 100, function (w) {
     return `Max. Drawdown: ${w.toFixed(2)}%`;
   });

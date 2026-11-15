@@ -9,12 +9,17 @@
  * Schnittstelle:
  *   AG_MOTION.enabled        false bei prefers-reduced-motion
  *   AG_MOTION.whenReady(fn)  ruft fn nach dem Ausblenden des Loaders auf (sofort, wenn schon bereit oder ohne Motion)
+ *   AG_MOTION.setResult(wachstumProzent)
+ *                            färbt den Hintergrund nach Total Growth (D-023, BP-019): Gewinn teal, Verlust rosé,
+ *                            Stärke 1 - exp(-|G| / 150 %), unter 1 % keine Färbung
  *   AG_MOTION.countUp(element, ziel, formatiere)
  *                            zeigt formatiere(wert) im Element und lässt wert vom zuletzt angezeigten Wert
  *                            (beim ersten Mal 0) auf ziel laufen; am Ende steht exakt formatiere(ziel) (BP-018, D-026)
  */
 (function () {
   const TITEL_STAFFEL_MS = 45; // Versatz je Buchstabe beim Einlauf des Titels
+  const TINT_G0 = 150; // Total Growth in Prozent, bei dem die Stärke etwa 63 % erreicht (13.7)
+  const TINT_NEUTRAL = 1; // unter diesem Betrag in Prozent keine Färbung
   const LOADER_DAUER_MS = 1000; // sichtbare Dauer des Loaders ab Navigationsbeginn
   const ZAEHL_DAUER_MS = 1200; // Dauer des Hochzählens
   const LOADER_ABGANG_MS = 220; // Ausblenden (siehe motion.css), danach wird der Loader entfernt
@@ -92,6 +97,25 @@
 
   if (aktiv) zerlegeTitel();
 
+  // ---- Ergebnis-Tint (D-023): Deckkraft der Gewinn- bzw. Verlust-Ebene über CSS-Variablen ----
+
+  let tintMarke = 0;
+
+  function setResult(wachstumProzent) {
+    if (!aktiv) return;
+    const betrag = Math.abs(wachstumProzent);
+    const staerke = isFinite(betrag) && betrag >= TINT_NEUTRAL ? 1 - Math.exp(-betrag / TINT_G0) : 0;
+    const gewinn = wachstumProzent > 0 ? staerke : 0;
+    const verlust = wachstumProzent < 0 ? staerke : 0;
+    const marke = ++tintMarke;
+    // Die erste Färbung folgt nach dem Loader, damit sie sichtbar einblendet
+    whenReady(function () {
+      if (marke !== tintMarke) return;
+      wurzel.style.setProperty("--ag-tint-gain", gewinn.toFixed(3));
+      wurzel.style.setProperty("--ag-tint-loss", verlust.toFixed(3));
+    });
+  }
+
   // ---- Hochzählen der Kennzahlen (D-026) ----
 
   const zaehlzustand = new WeakMap(); // Element -> { angezeigt, raf, marke }
@@ -143,5 +167,5 @@
     whenReady(beginne);
   }
 
-  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady, countUp: countUp };
+  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady, countUp: countUp, setResult: setResult };
 })();

@@ -284,6 +284,41 @@ html.ag-motion:not(.ag-motion-ready) .ag-chart-box svg * {
   animation-play-state: paused;
 }
 
+/* ---- Ergebnis-Tint des Hintergrunds (D-023, BP-019) ----
+ * Zwei feste Ebenen (Gewinn, Verlust) hinter dem Inhalt. Nur die Deckkraft ändert sich: motion.js setzt
+ * --ag-tint-gain bzw. --ag-tint-loss (0 bis 1), der Übergang dauert 2400 ms. Kein Farbübergang über @property,
+ * kein mix-blend-mode. Nur ab 701 px und nur mit Motion; sonst sind die Ebenen ausgeblendet.
+ */
+
+.ag-tint {
+  display: none;
+}
+
+@media (min-width: 701px) {
+  html.ag-motion .ag-tint {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2400ms ease;
+    will-change: opacity;
+  }
+
+  html.ag-motion .ag-tint-gain {
+    opacity: var(--ag-tint-gain, 0);
+    background: radial-gradient(ellipse 75% 55% at 50% -8%, rgba(45, 226, 196, 0.38), transparent 72%),
+      radial-gradient(ellipse 70% 50% at 50% 108%, rgba(110, 231, 168, 0.32), transparent 72%);
+  }
+
+  html.ag-motion .ag-tint-loss {
+    opacity: var(--ag-tint-loss, 0);
+    background: radial-gradient(ellipse 75% 55% at 50% -8%, rgba(255, 111, 163, 0.5), transparent 72%),
+      radial-gradient(ellipse 70% 50% at 50% 108%, rgba(255, 111, 163, 0.42), transparent 72%);
+  }
+}
+
 /* ---- Titel: gestaffelter Buchstaben-Einlauf und weiches Leuchten dahinter ----
  * motion.js zerlegt den Titel in .ag-title-char (nur mit Motion). Die Animationen starten nach dem Loader.
  * Dauer-Effekt: nur opacity und transform, ab 701 px.
