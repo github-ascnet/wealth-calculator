@@ -213,7 +213,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           align: "top",
           font: {
             size: 10,
-            family: "Space Mono",
+            family: "Consolas, SFMono-Regular, Menlo, monospace",
           },
           formatter: function (value) {
             const kValue = Math.floor(value / 1000); // In Tausendern (K) anzeigen
@@ -301,7 +301,7 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           align: "top",
           font: {
             size: 10,
-            family: "Space Mono",
+            family: "Consolas, SFMono-Regular, Menlo, monospace",
           },
           formatter: function (value) {
             const kValue = Math.floor(value / 1000); // In Tausendern (K) anzeigen
@@ -389,11 +389,71 @@ document
   .getElementById("simulateButton")
   .addEventListener("click", startSimulation);
 
-document.addEventListener("DOMContentLoaded", function () {
-  const tooltipTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  );
-  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-    new bootstrap.Tooltip(tooltipTriggerEl);
+// Tooltips der Eingabefelder: "!"-Symbol mit Text aus data-tooltip (Hover, Fokus, Tippen)
+function initTooltips() {
+  const triggers = document.querySelectorAll("[data-tooltip]");
+  if (triggers.length === 0) return;
+
+  const tip = document.createElement("div");
+  tip.className = "ag-tooltip";
+  tip.id = "agTooltip";
+  tip.setAttribute("role", "tooltip");
+  document.body.appendChild(tip);
+
+  let activeTrigger = null;
+
+  function hide() {
+    if (!activeTrigger) return;
+    activeTrigger.removeAttribute("aria-describedby");
+    activeTrigger = null;
+    tip.classList.remove("is-visible");
+  }
+
+  function show(trigger) {
+    hide();
+    activeTrigger = trigger;
+    tip.textContent = trigger.getAttribute("data-tooltip");
+    trigger.setAttribute("aria-describedby", tip.id);
+    tip.classList.add("is-visible");
+
+    // Unterhalb des Symbols, innerhalb des sichtbaren Bereichs; sonst oberhalb
+    const margin = 8;
+    const rect = trigger.getBoundingClientRect();
+    const tipWidth = tip.offsetWidth;
+    const tipHeight = tip.offsetHeight;
+    let left = rect.left + rect.width / 2 - tipWidth / 2;
+    left = Math.max(margin, Math.min(left, window.innerWidth - tipWidth - margin));
+    let top = rect.bottom + margin;
+    if (top + tipHeight > window.innerHeight - margin) {
+      top = rect.top - tipHeight - margin;
+    }
+    tip.style.left = `${left}px`;
+    tip.style.top = `${Math.max(margin, top)}px`;
+  }
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener("mouseenter", function () {
+      show(trigger);
+    });
+    trigger.addEventListener("mouseleave", hide);
+    trigger.addEventListener("focus", function () {
+      show(trigger);
+    });
+    trigger.addEventListener("blur", hide);
+    trigger.addEventListener("click", function () {
+      show(trigger);
+    });
   });
-});
+
+  // Tippen oder Klicken ausserhalb, Escape, Scrollen und Grössenänderung schliessen den Tooltip
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest("[data-tooltip]")) hide();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") hide();
+  });
+  window.addEventListener("scroll", hide, { passive: true });
+  window.addEventListener("resize", hide);
+}
+
+document.addEventListener("DOMContentLoaded", initTooltips);

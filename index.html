@@ -19,93 +19,114 @@
     <meta name="twitter:description" content="Calculate and visualize asset growth, dividends, and cashflow projections for financial planning.">
     <meta name="twitter:image" content="https://wealthcalc.ascnet.ch/og-image.png">
     <title>Asset Growth Calculator - Visualize Your Financial Future</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
 </head>
 
-<body class="container mt-3">
+<body class="ag-page">
 
     <header>
-        <h1 class="text-center" id="titel">Asset Growth Calculator</h1>
+        <h1 class="ag-title" id="titel">Asset Growth Calculator</h1>
     </header>
 
     <main>
-        <section class="input_wrapper">
-            <div class="input_container">
-                <div class="row">
+        <section class="ag-inputs">
+            <div class="ag-inputs-inner">
+                <div class="ag-form-grid">
 
-                    <div class="col-md-6 mb-1">
-                        <label for="startkapital" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="The capital invested at the beginning.">Starting Capital </label>
-                        <input type="number" class="form-control" id="startkapital" value="100000" min="10000" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="startkapital" class="ag-label">Starting Capital</label>
+                            <button type="button" class="ag-info" aria-label="Info: Starting Capital" data-tooltip="The capital invested at the beginning.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="startkapital" value="100000" min="10000" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <!-- <div class="col-md-6 mb-1">
-                        <label for="jaehrlicherInvest" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Additional yearly investment in USD you want to risk.">Yearly Additional Investment (USD)</label>
-                        <input type="number" class="form-control" id="jaehrlicherInvest" value="0" step="100" min="0" max="100000" oninput="validateInput(this)" onblur="sanitizeInput(this)" />
+                    <!-- <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="jaehrlicherInvest" class="ag-label">Yearly Additional Investment (USD)</label>
+                            <button type="button" class="ag-info" aria-label="Info: Yearly Additional Investment" data-tooltip="Additional yearly investment in USD you want to risk.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="jaehrlicherInvest" value="0" step="100" min="0" max="100000" oninput="validateInput(this)" onblur="sanitizeInput(this)" />
                     </div> -->
 
-                    <div class="col-md-6 mb-1">
-                        <label for="jahre" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Number of years for the calculation.">Years to measure </label>
-                        <input type="number" class="form-control" id="jahre" value="10" min="1" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="jahre" class="ag-label">Years to measure</label>
+                            <button type="button" class="ag-info" aria-label="Info: Years to measure" data-tooltip="Number of years for the calculation.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="jahre" value="10" min="1" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                        <label for="renditeProJahr" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Percentage annual return.">% Profit by Year </label>
-                        <input type="number" class="form-control" id="renditeProJahr" value="25" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="renditeProJahr" class="ag-label">% Profit by Year</label>
+                            <button type="button" class="ag-info" aria-label="Info: % Profit by Year" data-tooltip="Percentage annual return.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="renditeProJahr" value="25" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                        <label for="maxDrawdown" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Expected maximum decline from peak to trough in percent (e.g., -30 = minus 30%).">% Max. Drawdown </label>
-                        <input type="number" class="form-control" id="maxDrawdown" value="-18" min="-100" max="0" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="maxDrawdown" class="ag-label">% Max. Drawdown</label>
+                            <button type="button" class="ag-info" aria-label="Info: % Max. Drawdown" data-tooltip="Expected maximum decline from peak to trough in percent (e.g., -30 = minus 30%).">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="maxDrawdown" value="-18" min="-100" max="0" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                        <label for="standardabweichung" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Average standard deviation of the return in Percentage.">% Standard deviation by Year </label>
-                        <input type="number" class="form-control" id="standardabweichung" value="22" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="standardabweichung" class="ag-label">% Standard deviation by Year</label>
+                            <button type="button" class="ag-info" aria-label="Info: % Standard deviation by Year" data-tooltip="Average standard deviation of the return in Percentage.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="standardabweichung" value="22" min="0" max="500" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                        <label for="dividendeProzent" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Percentage dividend based on assets.">% Dividends by Year </label>
-                        <input type="number" class="form-control" id="dividendeProzent" value="1.0" min="0" max="10" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="dividendeProzent" class="ag-label">% Dividends by Year</label>
+                            <button type="button" class="ag-info" aria-label="Info: % Dividends by Year" data-tooltip="Percentage dividend based on assets.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="dividendeProzent" value="1.0" min="0" max="10" step="0.1" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="col-md-6 mb-1">
-                        <label for="relativerBezug" class="form-label" data-bs-toggle="tooltip" data-bs-placement="right" title="Percentage annual payout deducted from assets.">% Cashflow p.a. </label>
-                        <input type="number" class="form-control" id="relativerBezug" value="0" min="0" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
+                    <div class="ag-field">
+                        <div class="ag-label-row">
+                            <label for="relativerBezug" class="ag-label">% Cashflow p.a.</label>
+                            <button type="button" class="ag-info" aria-label="Info: % Cashflow p.a." data-tooltip="Percentage annual payout deducted from assets.">!</button>
+                        </div>
+                        <input type="number" class="ag-input" id="relativerBezug" value="0" min="0" max="50" oninput="validateInput(this); berechneVermoegen()" onfocusout="sanitizeInput(this)">
                     </div>
 
                 </div>
-                <div class="text-center">
-                    <button id="simulateButton" class="btn btn-secondary btn-sm w-50">
+                <div>
+                    <button id="simulateButton" class="ag-button">
                         Start Simulation
                     </button>
                 </div>
             </div>
         </section>
 
-        <section class="chart_wrapper">
-            <div class="chart_container">
-                <div id="vermoegenChartContainer">
+        <section class="ag-charts">
+            <div class="ag-charts-inner">
+                <div id="vermoegenChartContainer" class="ag-chart-box">
                     <canvas id="vermoegenChart" width="800" height="400"></canvas>
                 </div>
-                <div class="chart-kpi-box">
+                <div class="ag-kpi">
                     <div><span id="wachstumProzent"></span></div>
                     <div><span id="volatilitaet"></span></div>
                     <div><span id="totalDividendsCashflow"></span></div>
                 </div>
-                <div id="bezugDataChartContainer">
+                <div id="bezugDataChartContainer" class="ag-chart-box">
                     <canvas id="bezugDataChart" width="800" height="400"></canvas>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="text-center mt-4 text-sm">
+    <footer class="ag-footer">
         <p>&copy; 2024 ASCNET Solutions GmbH. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="site.js"></script>
