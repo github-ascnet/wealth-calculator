@@ -24,15 +24,23 @@
 | BP-006 | Max.-Drawdown-Begrenzung | Umgesetzt | BP-004 |
 | BP-007 | Dark Theme und KPI-Box | Umgesetzt | BP-006 |
 | BP-008 | Korrektur Step-Validierung (IB-01) | Umgesetzt (nicht im Browser validiert, Commit a00a371) | BP-004 |
-| BP-009 | Korrektur CSS-Struktur der Media Query (IB-02) | Zurückgestellt (geht im Redesign auf) | BP-007 |
+| BP-009 | Korrektur CSS-Struktur der Media Query (IB-02) | Aufgegangen in BP-014 (2026-11-15) | BP-007 |
 | BP-010 | Korrektur HTML-Kopfstruktur (IB-03) | Umgesetzt (nicht im Browser validiert, Commit 957773c) | BP-005 |
 | BP-011 | „Total Growth“ ab Startkapital (D-014) | Umgesetzt (nicht im Browser validiert, Commit 06a4c26) | BP-007 |
 | BP-012 | Diagramm-Achsen in Tausend USD (D-015) | Umgesetzt (nicht im Browser validiert, Commit 3903393) | BP-007 |
-| BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-023) | Geplant; Start erst nach BP-008, -010, -011, -012; im PLAN ist OP-21 zu klären | BP-008, BP-010, BP-011, BP-012 |
+| BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-029) | Plan erstellt (2026-11-15), Abnahme durch Auftraggeber ausstehend | BP-008, BP-010, BP-011, BP-012 |
+| BP-014 | Redesign: Fundament ohne Bootstrap, Layout und „!“-Tooltips | Umgesetzt, im Browser geprüft (Chrome headless), Commit 3cd08f7 (Branch `redesign`) | BP-013 (Abnahme) |
+| BP-015 | Redesign: Aurora-Farbwelt der Seite | Geplant | BP-014 |
+| BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Geplant | BP-015 |
+| BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Geplant | BP-016 |
+| BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Geplant | BP-017 |
+| BP-019 | Redesign: Ergebnis-Tint | Geplant | BP-017 |
+| BP-020 | Redesign: Gestaffelter Eintritt | Geplant | BP-017 |
+| BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Geplant | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-013 (Redesign, Modus PLAN). Alle Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt; ihre Browser-Validierung steht aus; Commits siehe Status je Paket. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `PLAN BP-013`).
+**Nächstes vorgesehenes Paket:** BP-015. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-015`).
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -116,7 +124,7 @@
 
 ### BP-009 Korrektur CSS-Struktur der Media Query
 
-- **Status:** Zurückgestellt (2026-11-15). Das Layout wird mit dem Redesign (D-016, BP-013) neu festgelegt; voraussichtlich geht BP-009 darin auf. Ursprünglich blockiert durch OP-06.
+- **Status:** Aufgegangen in BP-014 (2026-11-15): `site.css` wurde neu geschrieben, die defekte Media-Query-Struktur existiert nicht mehr. Ursprünglich blockiert durch OP-06 (erledigt).
 - **Grundlage:** IB-02 in [project_plan.md](project_plan.md)
 - **Ziel:** Die mobilen Regeln am Dateiende von `site.css` gelten nur innerhalb von `@media (max-width: 786px)`; die Datei ist syntaktisch korrekt.
 - **Scope:** Kommentar- und Klammerstruktur der Media Query; Entfernen der doppelt verschachtelten Regel für die KPI-Spans.
@@ -196,13 +204,189 @@
 
 ### BP-013 Redesign Motion Graphics – Konzept und Paketierung
 
-- **Status:** Geplant; Start erst nach BP-008, BP-010, BP-011, BP-012 (OP-18) und auf Abruf des Auftraggebers
-- **Grundlage:** D-016 bis D-023; [project_plan.md](project_plan.md), Kapitel 13
+- **Status:** Plan erstellt (2026-11-15, Modus PLAN); Abnahme durch den Auftraggeber ausstehend. Die Pakete BP-014 bis BP-021 sind angelegt. Offen: OP-25 (Annahme im Plan) und OP-27 (Branch).
+- **Grundlage:** D-016 bis D-029; [project_plan.md](project_plan.md), Kapitel 13
 - **Ziel:** Ein abgestimmtes Gestaltungskonzept auf Basis der Referenz Wealth-Lab-Strategy-Orchestrator und die Zerlegung in umsetzbare Arbeitspakete (ab BP-014).
 - **Scope:** Nur Planung (Modus PLAN): OP-21 (Detailregeln Ergebnis-Tint) klären, Aurora-Farbzuordnung festlegen, Umgang mit der Einzeichnung bei jedem Tastendruck prüfen (D-021), Arbeitspakete mit Akzeptanzkriterien anlegen. Vorgesehene Paketthemen (Entwurf, keine Zusage): SVG-Diagramme ohne Chart.js (D-017), Layout und Formulare ohne Bootstrap (D-019), Aurora-Theme (D-018), Motion-Effekte inkl. Einzeichnung bei jeder Neuberechnung (D-020, D-021), „!“-Tooltips (D-022), Ergebnis-Tint (D-023), Ladeanzeige, Reduced-Motion und Touch-Flächen.
 - **Nicht im Scope:** Produktivcode, Änderungen an Berechnung, Eingabefeldern oder KPI-Definitionen.
 - **Voraussetzungen:** Abruf durch den Auftraggeber; Abschluss von BP-008, BP-010, BP-011, BP-012.
 - **Akzeptanzkriterien:**
-  - OP-21 entschieden und in `project_plan.md` nachgeführt.
-  - Konkrete Aurora-Palette mit Zuordnung zu den Datenreihen festgelegt und als Decision erfasst.
-  - Arbeitspakete BP-014 ff. mit Scope, Nicht-Scope und Akzeptanzkriterien im Build-Plan.
+  - OP-21 entschieden und in `project_plan.md` nachgeführt. **Erfüllt** (D-023, Kapitel 13.7).
+  - Konkrete Aurora-Palette mit Zuordnung zu den Datenreihen festgelegt und als Decision erfasst. **Erfüllt als Vorschlag** (D-029, Kapitel 13.8); verbindlich mit Abnahme.
+  - Arbeitspakete BP-014 ff. mit Scope, Nicht-Scope und Akzeptanzkriterien im Build-Plan. **Erfüllt** (BP-014 bis BP-021).
+  - Weitere Ergebnisse der Planung: D-025 bis D-028, Kapitel 13.6 bis 13.9 (Architektur, Risiken), OP-25 und OP-27 als offene Punkte.
+
+---
+
+## Redesign-Pakete (aus BP-013, 2026-11-15)
+
+**Gemeinsame Regeln für BP-014 bis BP-021:**
+
+- Grundlage: D-016 bis D-029; Plan in [project_plan.md](project_plan.md), Kapitel 13.6 bis 13.9.
+- Berechnung, Formeln, Default-Werte, `min`/`max`/`step`, IDs der Eingabefelder und Textformate der KPI-Box bleiben unverändert (13.4); jedes Paket prüft das per Vergleich mit dem Stand vor dem Redesign.
+- Nur der Scope des Pakets; Chart.js und Datalabels bleiben bis BP-016 bestehen.
+- Nach jedem Paket ist die Seite vollständig bedienbar. Der Zwischenstand mit gemischtem Design ist erwartet und deshalb nicht für `main` gedacht (OP-27).
+- Validierung im Browser: Desktop (≥ 1200 px) und Smartphone-Breite (390 px), Konsole ohne Fehler, Reduced-Motion ab BP-017.
+
+### BP-014 Fundament ohne Bootstrap, Layout und „!“-Tooltips
+
+- **Status:** Umgesetzt (2026-11-15), Commit 3cd08f7 auf Branch `redesign` (OP-27); Plan von BP-013 mit dem Abruf von BP-014 als abgenommen betrachtet.
+- **Umsetzung:** `index.html` (Bootstrap-CSS/-JS, Google-Fonts-Links und alle Bootstrap-Klassen entfernt; neue `ag-`-Klassen; „!“-Button je Eingabefeld mit `data-tooltip`; auch der auskommentierte Block für `jaehrlicherInvest` auf das neue Markup umgestellt), `site.css` (neu geschrieben, Farben als Variablen `--ag-*` im Bestand), `site.js` (eigene Tooltip-Logik `initTooltips` statt `bootstrap.Tooltip`, Schrift der Data Labels auf Systemschrift).
+- **Prüfergebnis (statisch und Chrome headless über DevTools-Protokoll, Desktop 1280 px und Smartphone 390 px mit Touch-Emulation):**
+  - Kein Request an Bootstrap oder Google Fonts; es bleiben `cdn.jsdelivr.net` mit Chart.js und Datalabels (bis BP-016). **Erfüllt.**
+  - IDs (16), sieben Eingabefelder mit Attributen und Handlern sind identisch zum Stand vor dem Paket (Skriptvergleich mit `HEAD`); Tooltip-Texte der sieben Felder identisch. **Erfüllt.**
+  - Zwei Spalten bei 1280 px, eine Spalte bei 390 px; keine horizontale Scrollleiste (Seitenbreite 390 px). Die Grenze 768 px ist im CSS gesetzt, aber nicht exakt auf 767/768 px gemessen. **Erfüllt.**
+  - Reihenfolge Vermögens-Diagramm, KPI-Box, Cashflow-Diagramm (Positionsvergleich). **Erfüllt.**
+  - „!“-Symbol: Tooltip bei Hover, bei Fokus und bei Tippen sichtbar, Escape und Verlassen schliessen ihn; Tippfläche 44 × 44 px (`::after`) und Button-Höhe 44 px bei `pointer: coarse`. **Erfüllt.** Nicht geprüft: echte Touch-Geräte, Safari/iOS.
+  - Schrift: Text Segoe-UI-Stack, Eingaben und KPI-Box Consolas-/Monospace-Stack (berechnete Werte). **Erfüllt.**
+  - Konsole ohne Fehler bei Desktop und Smartphone. **Erfüllt.**
+  - Berechnung unverändert: Eingabe Rendite 10 %, Standardabweichung 0, 2 Jahre, Drawdown −100 ergibt Total Growth 21.00 % (wie BP-011); 1.2 wird akzeptiert, 1.25 abgelehnt (wie BP-008); Simulations-Button wechselt zwischen „Start“ und „Stop“. **Erfüllt.**
+- **Sichtbare Abweichungen zum bisherigen Aussehen (erwartet, Layout war neu festzulegen):** Labels linksbündig statt rechtsbündig; „!“-Symbole neben den Labels statt Tooltip am Label; Diagramme bis 900 px breit (vorher durch den CSS-Fehler IB-02 ca. 800 px) bei einer Höhe von 50 % der Fensterhöhe (260 bis 480 px). Farben unverändert.
+- **Beobachtung:** Eine Ganzseiten-Aufnahme (Browser-Grösse wird dafür geändert) zeigt die Chart.js-Linien mitten in deren Einlauf-Animation. Der normale Ausschnitt zeigt die Diagramme vollständig. Das ist ein Messeffekt, kein Fehler.
+- **Nicht prüfbar:** Andere Browser als Chrome (OP-12), echte Touch-Geräte.
+
+**Planung (Vorgabe aus BP-013):**
+- **Grundlage:** D-019, D-022; löst IB-02, IB-04a bis IB-04d und BP-009 auf
+- **Ziel:** Die Seite läuft ohne Bootstrap und ohne Google Fonts, mit eigenem Layout und eigenen Tooltips.
+- **Scope:**
+  - `index.html`: Bootstrap-CSS/-JS und Google-Fonts-Links entfernen, Bootstrap-Klassen und `data-bs-*` durch eigene Klassen (`ag-`) ersetzen, „!“-Symbol je Eingabefeld.
+  - `site.css`: neu geschrieben (Basis, Raster, Formularfelder, Button, KPI-Box, Chart-Container, Tooltip, Responsive ab 768 px, Fokus, Touch-Flächen 44 × 44 px, Systemschriften). Farben unverändert (Bestandsfarben bis BP-015).
+  - `site.js`: Bootstrap-Tooltip-Initialisierung ersetzen; Schriftfamilie „Space Mono“ in der Chart.js-Konfiguration durch die Systemschrift ersetzen.
+- **Nicht im Scope:** Aurora-Farben, SVG-Diagramme, Animationen, Berechnung, Tipp-Verzögerung.
+- **Voraussetzungen:** Abnahme BP-013; Entscheid OP-27.
+- **Betroffene Dateien:** `index.html`, `site.css`, `site.js`
+- **Akzeptanzkriterien:**
+  - Kein Request an Bootstrap oder Google Fonts; kein `bootstrap`-Aufruf im Code.
+  - Alle sieben Eingabefelder, Button und Anzeigeelemente mit unveränderten IDs, Defaults, Grenzen und Inline-Handlern.
+  - Zwei Spalten ab 768 px, eine Spalte darunter; bei 390 px keine horizontale Scrollleiste.
+  - Reihenfolge unverändert: Eingabebereich, Vermögens-Diagramm, KPI-Box, Cashflow-Diagramm.
+  - „!“-Symbol zeigt den Tooltip bei Hover, Tastaturfokus und Tippen; Texte identisch zu Kapitel 6; Tippfläche mindestens 44 × 44 px auf Touch-Geräten.
+  - Schrift ist eine Systemschrift (Text: Segoe-UI-Stack, Zahlen: Consolas-/Monospace-Stack).
+  - Konsole ohne Fehler; Berechnung unverändert.
+
+### BP-015 Aurora-Farbwelt der Seite
+
+- **Status:** Geplant
+- **Grundlage:** D-018, D-029; [project_plan.md](project_plan.md), Kapitel 13.8
+- **Ziel:** Die Seite erscheint im Aurora-Design (ohne Diagramme).
+- **Scope:** `site.css`: Variablen `--ag-*` nach 13.8, Hintergrund mit statischem Sternenfeld und Aurora-Bändern, Glaskarten, Fokus, Button, KPI-Box, Tooltip, Titel. Amber vollständig entfernen.
+- **Nicht im Scope:** Diagramm-Farben (Chart.js bleibt bis BP-016 im Bestand, Übergangszustand), Animationen.
+- **Voraussetzungen:** BP-014
+- **Betroffene Dateien:** `site.css`
+- **Akzeptanzkriterien:**
+  - Kein Amber-Wert (`#ffc107`, `rgba(255,193,7,…)`) mehr in `site.css`.
+  - Palette entspricht 13.8.
+  - Kontrast von Text, Labels, Tooltip und Button gegen ihren Hintergrund rechnerisch mindestens 4.5 : 1, Ergebnis im Paket dokumentiert.
+  - Fokus bleibt deutlich sichtbar.
+  - Keine Animation und keine Dauer-Animation.
+
+### BP-016 SVG-Diagramme ohne Chart.js
+
+- **Status:** Geplant
+- **Grundlage:** D-017, D-015, D-028, D-029; [project_plan.md](project_plan.md), Kapitel 8.1, 13.6
+- **Ziel:** Beide Diagramme werden als Inline-SVG gezeichnet; Chart.js und Datalabels-Plugin entfallen.
+- **Scope:**
+  - Neu `charts.js`: `renderCharts(labels, data, bezugData, dividendeData)` zeichnet beide Diagramme in `<svg id="vermoegenChart">` und `<svg id="bezugDataChart">` (Tag-Wechsel von `canvas`).
+  - Inhalt: Achsen (Y in Tausend USD nach D-015, X Jahre), Gitter, drei Linien, Data Labels `floor(Wert / 1000)` (ab 768 px), statische Legende (Texte unverändert, OP-25), Achsentitel „Profit“ und „Cashflow/Dividends“ (ab 768 px), Tooltip bei Hover und Touch (Jahr und Werte mit Einheit), Glow ohne SVG-Filter, Sternenfeld mit festem Seed, dezente Fläche unter der Vermögenslinie (Gestaltung nach Vorbild), Koordinatenräume Desktop und schmal, Neuzeichnen bei Grössenänderung.
+  - `index.html`: Canvas durch SVG ersetzen, Scripts von Chart.js und Datalabels entfernen, `charts.js` einbinden. `site.js`: Chart.js-Code entfernen.
+- **Nicht im Scope:** Animationen (BP-018), Tint, Berechnung, Zoom und Pan (gab es nicht).
+- **Voraussetzungen:** BP-015
+- **Betroffene Dateien:** `charts.js` (neu), `index.html`, `site.css`, `site.js`
+- **Akzeptanzkriterien:**
+  - Kein Request mehr an `cdn.jsdelivr.net` oder `fonts.googleapis.com`.
+  - Gleiche Datenreihen, Beschriftungen und Einheiten wie bisher; Y-Achse in Tausend, Data Labels wie bisher.
+  - Linienfarben nach 13.8 (Vermögen Cyan, Cashflow Teal, Dividenden Violett); Kontrast von Linien und Achsen mindestens 3 : 1, von Text mindestens 4.5 : 1, dokumentiert.
+  - Tooltip zeigt Jahr und Werte; funktioniert mit Maus und Touch.
+  - `NaN`-Eingaben: kein Fehler in der Konsole, leeres Diagramm (wie bisher, kein neues Fehlerverhalten).
+  - Bei 390 px sind Achsen- und Labeltexte effektiv mindestens 10 px gross; Grössenänderung zeichnet neu.
+  - SVG mit `role="img"` und `aria-label`.
+  - Keine Animation.
+
+### BP-017 Motion-Grundlage, Intro-Loader, Hintergrund-Drift
+
+- **Status:** Geplant
+- **Grundlage:** D-020, D-027; Muster des Vorbilds (dessen D-026, D-027, D-030, D-032, D-043)
+- **Ziel:** Gemeinsame Motion-Infrastruktur, kurzer Intro-Loader und driftender Hintergrund.
+- **Scope:**
+  - Neu `motion.css`, `motion.js`: Klasse `ag-motion` an `<html>` (nicht bei `prefers-reduced-motion: reduce`), Signal „bereit“ (`AG_MOTION.whenReady`), Loader-Steuerung.
+  - Loader: Mini-Chart mit Titel, ca. 1 s, nur `transform`/`opacity`; Ausblenden zusätzlich über eine reine CSS-Animation als Sicherheitsnetz; ohne JavaScript und bei Reduced-Motion nicht sichtbar.
+  - Hintergrund-Drift der unscharfen Aurora-Bänder (`body::before/::after`) über `transform`, nur ab 701 px.
+  - Reduced-Motion-Regeln für alle Animationen.
+- **Nicht im Scope:** Einzeichnung der Diagramme, Hochzählen, Tint, Staffelung.
+- **Voraussetzungen:** BP-016
+- **Betroffene Dateien:** `motion.css` (neu), `motion.js` (neu), `index.html`, `site.css`
+- **Akzeptanzkriterien:**
+  - Loader sichtbar zwischen 0.9 und 1.3 s, danach Inhalt vollständig sichtbar.
+  - Bei Reduced-Motion und ohne JavaScript kein Loader und keine Verdeckung des Inhalts.
+  - Drift nur ab 701 px und nur über `transform`; bei Reduced-Motion keine Bewegung.
+  - Alle Dauer-Animationen nutzen ausschliesslich `transform` oder `opacity`.
+  - Seite funktioniert unverändert, wenn `motion.js` fehlt (statischer Endzustand).
+
+### BP-018 Einzeichnung, Hochzählen, Tipp-Pause
+
+- **Status:** Geplant
+- **Grundlage:** D-021, D-025, D-026
+- **Ziel:** Diagramme zeichnen sich bei jeder Neuberechnung ein, Kennzahlen zählen hoch, Eingaben lösen nach einer Tipp-Pause aus.
+- **Scope:**
+  - `charts.js`/`motion.css`: Linien über `pathLength="1"` und `stroke-dashoffset` einzeichnen (ca. 1400 ms, Easing des Vorbilds), Fläche und Data Labels blenden danach ein; jeder Render bricht eine laufende Einzeichnung ab.
+  - `motion.js`: Hochzählen der fünf Kennzahlen, erstes Laden von 0, danach vom vorherigen zum neuen Wert; Endtext exakt der formatierte Text.
+  - `site.js` und `index.html`: `oninput` ruft die verzögerte Variante auf (250 ms Tipp-Pause); `validateInput` weiter sofort; Button und Simulation rechnen sofort; Start der Simulation verwirft eine wartende Berechnung.
+- **Nicht im Scope:** Tint, Staffelung, Loader, Berechnung.
+- **Voraussetzungen:** BP-017
+- **Betroffene Dateien:** `charts.js`, `motion.js`, `motion.css`, `site.js`, `index.html`
+- **Akzeptanzkriterien:**
+  - Einzeichnung bei Eingabe nach Pause, Button und jeder Simulationswiederholung.
+  - Tippen von „25“ löst genau eine Berechnung nach 250 ms Pause aus; ein schneller zweiter Render hinterlässt keine überlagerte Einzeichnung.
+  - Reduced-Motion: Ergebnis sofort, kein Hochzählen, keine Einzeichnung.
+  - Die Texte der KPI-Box sind nach dem Hochzählen zeichengleich zum Format ohne Motion.
+  - Flüssigkeit der Einzeichnung bei 4-facher CPU-Drosselung im Browser gemessen und dokumentiert; bei Rucklern Umstellung gemäss Risiko 3.
+
+### BP-019 Ergebnis-Tint
+
+- **Status:** Geplant
+- **Grundlage:** D-023; [project_plan.md](project_plan.md), Kapitel 13.7
+- **Ziel:** Der Hintergrund färbt sich weich nach Total Growth.
+- **Scope:** Zwei Tint-Ebenen in `index.html`, Regeln in `motion.css`, `AG_MOTION.setResult(growthPercent)` in `motion.js`, Aufruf aus `site.js` nach der Berechnung. Regeln nach 13.7 (Neutralzone, Intensität, nur Deckkraft, 2400 ms).
+- **Nicht im Scope:** Berechnung der Kennzahl, andere Kennzahlen, Farbübergang über `@property`.
+- **Voraussetzungen:** BP-017
+- **Betroffene Dateien:** `index.html`, `motion.css`, `motion.js`, `site.js`
+- **Akzeptanzkriterien:**
+  - Rendite 0, Standardabweichung 0, Cashflow 0 (Total Growth 0 %): keine Färbung.
+  - Total Growth +100 %: Intensität ca. 0.49, Gewinn-Ebene sichtbar, Verlust-Ebene unsichtbar.
+  - Negatives Ergebnis: Verlust-Ebene (Rosé) sichtbar.
+  - Übergang weich (2400 ms), nur `opacity` animiert.
+  - Unter 701 px und bei Reduced-Motion keine Färbung.
+  - Sichtprüfung durch den Auftraggeber; Entscheid zu `G0` und zur Sättigung im Default (13.7) dokumentiert.
+
+### BP-020 Gestaffelter Eintritt
+
+- **Status:** Geplant
+- **Grundlage:** D-020; Muster des Vorbilds (dessen D-028)
+- **Ziel:** Eingabefelder, Diagramm-Karten und KPI-Box steigen gestaffelt auf.
+- **Scope:** `motion.js`: `revealOnScroll` mit `IntersectionObserver` (60 ms Versatz); `motion.css`: Keyframes mit `opacity` und `transform`; Start nach dem Loader.
+- **Nicht im Scope:** Wiederholtes Aufsteigen bei Neuberechnung, Layout-Änderungen.
+- **Voraussetzungen:** BP-017
+- **Betroffene Dateien:** `motion.js`, `motion.css`, `index.html`
+- **Akzeptanzkriterien:**
+  - Elemente oberhalb des Falzes steigen nach dem Loader gestaffelt auf, darunter beim Scrollen.
+  - Nur `opacity` und `transform`; keine Verschiebung des Layouts.
+  - Neuberechnung löst kein erneutes Aufsteigen aus.
+  - Ohne `IntersectionObserver` und bei Reduced-Motion sind alle Elemente sofort sichtbar.
+
+### BP-021 Abschluss, Validierung, Aufräumen
+
+- **Status:** Geplant
+- **Grundlage:** D-016 bis D-029
+- **Ziel:** Das Redesign ist gegen die Spezifikation geprüft, aufgeräumt und dokumentiert.
+- **Scope (Modus VALIDATE, danach Dokumentation):**
+  - Prüfung aller Akzeptanzkriterien BP-014 bis BP-020 und der Entscheidungen D-016 bis D-029.
+  - Aufräumen: ungenutzte Variablen, CSS und Chart.js-Reste entfernen.
+  - SDD: D-004, D-005, D-010 als ersetzt und wirksam kennzeichnen; Befunde IB-02, IB-04 schliessen; `agents.md` (Dateitabelle, Technik) aktualisieren; D-028 und D-029 bei Abnahme auf „Bestätigt“ setzen.
+  - Zusammenführen nach `main` nach Entscheid zu OP-27 (Push nur auf ausdrücklichen Auftrag).
+- **Nicht im Scope:** Neue Funktionen.
+- **Voraussetzungen:** BP-018, BP-019, BP-020
+- **Akzeptanzkriterien:**
+  - Alle Kriterien der Pakete BP-014 bis BP-020 sind erfüllt, teilweise erfüllt oder nicht prüfbar ausgewiesen.
+  - Kein externer Request (kein CDN, keine Webfonts).
+  - Berechnungsergebnisse und KPI-Formate gleichen dem Stand vor dem Redesign (Vergleich des Berechnungscodes in `site.js`).
+  - Reduced-Motion und 390 px Breite geprüft; mindestens ein zweiter Browser neben Chrome geprüft oder als nicht prüfbar vermerkt (OP-12).

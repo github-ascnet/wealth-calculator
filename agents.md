@@ -13,7 +13,7 @@ Projektspezifische Arbeitsregeln für den Asset Growth Calculator. Fachliche und
 
 - Nur HTML, CSS und Vanilla JavaScript (D-001, D-003).
 - Keine Frameworks, kein Build-Prozess, kein Paketmanager, keine neuen Bibliotheken oder CDN-Abhängigkeiten ohne neue Entscheidung in `decisions.md`.
-- Bis zur Umsetzung des Redesigns gelten die vorhandenen CDN-Einbindungen in `index.html` (Bootstrap D-004, Chart.js D-005). Diese sind durch D-017 und D-019 ersetzt: Mit dem Redesign entfallen Bootstrap, Chart.js, Datalabels-Plugin und Google Fonts. In den Korrekturpaketen BP-008 bis BP-012 werden sie weder erweitert noch entfernt.
+- Bootstrap und Google Fonts sind seit BP-014 entfernt (D-019). Chart.js und das Datalabels-Plugin (D-005) bleiben über CDN bis BP-016 bestehen und entfallen dann (D-017). Keine neuen CDN-Einbindungen.
 - Redesign-Pakete (ab BP-014): Diagramme als Inline-SVG (D-017), Aurora-Theme ohne Schalter (D-018), Systemschriften (D-019), Effekte nach D-020 mit den Grundregeln des Vorbilds.
 - Keine Server-Logik, keine Persistenz, keine externen Aufrufe ausser den bestehenden CDN- und Font-Einbindungen.
 
@@ -26,7 +26,7 @@ Projektspezifische Arbeitsregeln für den Asset Growth Calculator. Fachliche und
 | `site.js` | Logik | Bestehende Funktionen beibehalten; keine Aufteilung in Module ohne Auftrag |
 | `og-image.png` | OG-Vorschaubild | Nicht verändern ohne Auftrag |
 
-Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
+Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Geplant (Redesign, D-028, mit Abnahme von BP-013 verbindlich): `charts.js` (BP-016), `motion.css` und `motion.js` (BP-017). Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
 
 ### Referenzprojekt für das Redesign
 
@@ -70,6 +70,7 @@ Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Andere Dateie
 
 ## 8. Git
 
-- Branch `main`, Remote `origin` (GitHub `github-ascnet/wealth-calculator`).
+- Branch `main` (Produktion), Remote `origin` (GitHub `github-ascnet/wealth-calculator`). Das Redesign (BP-014 bis BP-021) wird auf dem Branch `redesign` entwickelt; `main` wird erst nach BP-021 und nur auf ausdrücklichen Auftrag aktualisiert (OP-27, D-024). Ein Push von `redesign` erzeugt bei Cloudflare Pages möglicherweise ein Preview-Deployment (ungeprüft).
 - Commit-Messages auf Englisch, kurz, im Stil des Bestands („Added …“, „Changed …“, „Fixed …“, „Moved …“); optional mit BP-ID.
 - Commit und Push nur auf ausdrücklichen Auftrag.
+- **Ein Push auf `main` löst über Cloudflare Pages ein Produktiv-Deployment aus** (D-024). Vor dem Push prüfen, dass nur beabsichtigte Dateien enthalten sind; was im Repository liegt, kann öffentlich ausgeliefert werden (OP-22). Kein Force-Push.
