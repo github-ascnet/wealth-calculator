@@ -462,3 +462,10 @@
 - **Kennzahlen-Umbau:** `index.html`: Spans `wachstumProzent` (nur Total Growth), neu `maxDrawdownAnzeige`, `volatilitaet`, `totalDividendsCashflow` (jetzt Behälter, `display: contents`) mit neuen Spans `totalDividendsAnzeige` und `totalCashflowAnzeige`; `site.js`: fünf `textContent`-Zuweisungen statt drei (Berechnung unverändert); `site.css`: `.ag-kpi-item`, ab 1024 px Trennstrich links. Auswirkung auf BP-018 (Hochzählen): fünf Elemente mit je einem Zahlenwert; die Texte entsprechen dem neuen Format.
 - **Prüfergebnis (Chrome headless):** 1280 px: Kennzahlen einzeilig mit fünf getrennten Werten, 951 × 46 px; Diagramme je 613 × 395 px, nebeneinander auf gleicher Höhe, Kennzahlen-Box 849 px breit und einzeilig (46 px hoch) über den Diagrammen, Eingabebereich in voller Breite; 1024 px: Diagramme je 493 × 321 px, Box einzeilig; 1023 px und 390 px: eine Spalte wie bisher (Box dazwischen); keine horizontale Scrollleiste, Diagramme zeichnen sich bei Grössenänderung (1280 → 1000 → 1280 px) korrekt neu, Konsole ohne Fehler.
 - **Nicht geprüft:** Breiten über 1280 px, andere Browser (OP-12).
+
+## Beauftragte Änderung ausserhalb der Pakete: Titel „Growth-Calculator“ (D-031)
+
+- **Status:** Umgesetzt (2026-11-15), Branch `redesign`, sichtbare Wirkung.
+- **Umsetzung:** `index.html` (Titeltext), `site.js` (Titel-Zuweisung entfernt), `motion.js` (`zerlegeTitel`), `motion.css` (Buchstaben-Einlauf `ag-title-char-in`, Schein `ag-title-glow`).
+- **Prüfergebnis (Chrome headless):** 1280 px: 17 Buchstaben-Spans mit `aria-hidden`, `aria-label` am Titel, Einlauf nach dem Loader (Delay je Buchstabe 45 ms), Schein läuft (7 s); Titel bleibt nach einer Berechnung unverändert. 640 px: Einlauf, aber kein Schein. Reduced-Motion: keine Buchstaben-Spans, keine Animation. Konsole fehlerfrei.
+- **Nicht geprüft:** Andere Browser (OP-12); Screenreader-Ausgabe.

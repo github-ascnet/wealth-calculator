@@ -17,6 +17,7 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
+| 2026-11-15 | CHANGE | Auftrag: Titel fest „Growth-Calculator“ mit Motion-Effekt (D-031), dynamischer Titel entfällt. |
 | 2026-11-15 | IMPLEMENT | BP-018 umgesetzt: Einzeichnung der Linien bei jeder Neuberechnung (D-021), Hochzählen der Kennzahlen (D-026), 250 ms Tipp-Pause (D-025). |
 | 2026-11-15 | CHANGE | Auftrag: Diagramme auf Desktop nebeneinander, Kennzahlen-Box breiter (D-030); Umsetzung in `site.css` und `charts.js` (Schwelle schmales Diagramm 420 px). |
 | 2026-11-15 | IMPLEMENT | BP-017 umgesetzt: `motion.css`, `motion.js`, Intro-Loader (D-027) und Hintergrund-Drift ab 701 px (D-020). |
@@ -159,7 +160,7 @@ Fachliche Eigenschaften, die sich daraus ergeben (Ist):
 | Total Dividends | Summe aller Jahresdividenden | `$` + `toLocaleString` (Browser-Locale, 0 Nachkommastellen) |
 | Total Cashflow | Summe aller Jahres-Cashflows | wie oben |
 
-Zusätzlich wird der Seitentitel (`#titel`) ersetzt durch: `Asset growth at {renditeProJahr}% Profit per Year`.
+Zusätzlich wurde der Seitentitel (`#titel`) ersetzt durch: `Asset growth at {renditeProJahr}% Profit per Year`. **Entfallen (2026-11-15, D-031):** Der Titel lautet fest „Growth-Calculator“.
 
 **Soll-Änderung (2026-11-15, D-014):** „Total Growth“ wird ab dem **Startkapital** gemessen: `(V_letztes − startkapital) / startkapital · 100`. Umsetzung in BP-011. Da `startkapital` mindestens 10000 beträgt, entfällt damit auch die Division durch null aus IB-04f.
 

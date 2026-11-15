@@ -14,6 +14,7 @@
  *                            (beim ersten Mal 0) auf ziel laufen; am Ende steht exakt formatiere(ziel) (BP-018, D-026)
  */
 (function () {
+  const TITEL_STAFFEL_MS = 45; // Versatz je Buchstabe beim Einlauf des Titels
   const LOADER_DAUER_MS = 1000; // sichtbare Dauer des Loaders ab Navigationsbeginn
   const ZAEHL_DAUER_MS = 1200; // Dauer des Hochzählens
   const LOADER_ABGANG_MS = 220; // Ausblenden (siehe motion.css), danach wird der Loader entfernt
@@ -69,6 +70,27 @@
     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
     markiereBereit();
   }
+
+  // ---- Titel: Buchstaben laufen gestaffelt ein (Animation in motion.css, wartet auf ag-motion-ready) ----
+
+  function zerlegeTitel() {
+    const titel = document.getElementById("titel");
+    if (!titel || titel.querySelector(".ag-title-char")) return;
+    const text = titel.textContent;
+    titel.setAttribute("aria-label", text);
+    titel.textContent = "";
+    Array.from(text).forEach(function (zeichen, i) {
+      const span = document.createElement("span");
+      span.className = "ag-title-char";
+      span.setAttribute("aria-hidden", "true");
+      span.style.setProperty("--i", String(i));
+      span.style.setProperty("--staffel", TITEL_STAFFEL_MS + "ms");
+      span.textContent = zeichen;
+      titel.appendChild(span);
+    });
+  }
+
+  if (aktiv) zerlegeTitel();
 
   // ---- Hochzählen der Kennzahlen (D-026) ----
 

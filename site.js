@@ -94,13 +94,6 @@ function berechneVermoegen() {
   const dividendeProzent =
     parseFloat(document.getElementById("dividendeProzent").value) / 100;
 
-  const renditeProJahrWert = parseFloat(
-    document.getElementById("renditeProJahr").value
-  );
-  document.getElementById(
-    "titel"
-  ).textContent = `Asset growth at ${renditeProJahrWert}% Profit per Year`;
-
   const chartLabels = [];
   const chartData = [];
   const bezugData = [];

@@ -284,6 +284,62 @@ html.ag-motion:not(.ag-motion-ready) .ag-chart-box svg * {
   animation-play-state: paused;
 }
 
+/* ---- Titel: gestaffelter Buchstaben-Einlauf und weiches Leuchten dahinter ----
+ * motion.js zerlegt den Titel in .ag-title-char (nur mit Motion). Die Animationen starten nach dem Loader.
+ * Dauer-Effekt: nur opacity und transform, ab 701 px.
+ */
+
+@keyframes ag-title-char-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ag-title-glow {
+  from {
+    opacity: 0.45;
+    transform: translateX(-7%) scaleX(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(7%) scaleX(1.08);
+  }
+}
+
+html.ag-motion .ag-title {
+  position: relative;
+  isolation: isolate;
+}
+
+html.ag-motion .ag-title-char {
+  display: inline-block;
+  animation: ag-title-char-in 700ms var(--ag-motion-ease) backwards;
+  animation-delay: calc(150ms + var(--i, 0) * var(--staffel, 45ms));
+}
+
+html.ag-motion:not(.ag-motion-ready) .ag-title-char,
+html.ag-motion:not(.ag-motion-ready) .ag-title::before {
+  animation-play-state: paused;
+}
+
+@media (min-width: 701px) {
+  html.ag-motion .ag-title::before {
+    content: "";
+    position: absolute;
+    inset: -40% 18%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(45, 226, 196, 0.3), rgba(88, 196, 255, 0.12) 50%, transparent 72%);
+    will-change: transform, opacity;
+    animation: ag-title-glow 7s ease-in-out 1500ms infinite alternate backwards;
+  }
+}
+
 /* ---- Reduzierte Bewegung: alles aus, der Endzustand gilt sofort ---- */
 
 @media (prefers-reduced-motion: reduce) {

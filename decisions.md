@@ -224,3 +224,10 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 - **Ersetzt:** D-011 für Breiten ab 1024 px; ergänzt das Layout aus [project_plan.md](project_plan.md), Kapitel 13.6 (OP-06).
 - **Annahme:** Die Position der Box über den Diagrammen (statt darunter) ist eine Annahme des Umsetzers; eine Umstellung ist eine Zeile CSS (`grid-row` der Box).
 - **Folge:** Die Diagramme sind in dieser Anordnung bei 1024 bis 1280 px Fensterbreite etwa 493 bis 613 px breit und 321 bis 395 px hoch. `charts.js` verwendet das hohe Seitenverhältnis nun erst unter 420 px (vorher 480 px).
+
+## D-031 Seitentitel „Growth-Calculator“ mit Motion-Effekt
+
+- **Status:** Bestätigt (Auftrag 2026-11-15: „Der Titel ist nicht gut, ändere ihn auf Growth-Calculator und verpasse ihm einen Motion Effect“)
+- **Entscheidung:** Der Titel (`#titel`, `<h1>`) lautet fest „Growth-Calculator“. Der dynamische Titel „Asset growth at {Rendite}% Profit per Year“ entfällt; `site.js` schreibt den Titel nicht mehr. Der `<title>`-Tag und die Metadaten bleiben unverändert (Inhalt der Metadaten: OP-07).
+- **Motion-Effekt (nur mit Motion):** `motion.js` zerlegt den Titel in Buchstaben (`aria-label` am `<h1>`, Buchstaben `aria-hidden`). Nach dem Loader laufen sie gestaffelt ein (45 ms je Buchstabe, 700 ms, `opacity` und `transform`). Dahinter leuchtet ein weicher Teal/Cyan-Schein, der sich langsam seitlich bewegt (7 s, `opacity` und `transform`, nur ab 701 px). Bei Reduced-Motion und ohne `motion.js` steht der Titel statisch.
+- **Ersetzt:** den dynamischen Seitentitel aus [project_plan.md](project_plan.md), Kapitel 7.1.
