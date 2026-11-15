@@ -9,9 +9,13 @@
  * Schnittstelle:
  *   AG_MOTION.enabled        false bei prefers-reduced-motion
  *   AG_MOTION.whenReady(fn)  ruft fn nach dem Ausblenden des Loaders auf (sofort, wenn schon bereit oder ohne Motion)
+ *   AG_MOTION.countUp(element, ziel, formatiere)
+ *                            zeigt formatiere(wert) im Element und lässt wert vom zuletzt angezeigten Wert
+ *                            (beim ersten Mal 0) auf ziel laufen; am Ende steht exakt formatiere(ziel) (BP-018, D-026)
  */
 (function () {
   const LOADER_DAUER_MS = 1000; // sichtbare Dauer des Loaders ab Navigationsbeginn
+  const ZAEHL_DAUER_MS = 1200; // Dauer des Hochzählens
   const LOADER_ABGANG_MS = 220; // Ausblenden (siehe motion.css), danach wird der Loader entfernt
 
   const wurzel = document.documentElement;
@@ -66,5 +70,56 @@
     markiereBereit();
   }
 
-  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady };
+  // ---- Hochzählen der Kennzahlen (D-026) ----
+
+  const zaehlzustand = new WeakMap(); // Element -> { angezeigt, raf, marke }
+
+  function countUp(element, ziel, formatiere) {
+    let zustand = zaehlzustand.get(element);
+    if (!zustand) {
+      zustand = { angezeigt: 0, raf: null, marke: 0 };
+      zaehlzustand.set(element, zustand);
+    }
+    // Eine laufende oder wartende Zählung wird abgebrochen, die neue startet beim zuletzt angezeigten Wert
+    zustand.marke += 1;
+    if (zustand.raf !== null) {
+      window.cancelAnimationFrame(zustand.raf);
+      zustand.raf = null;
+    }
+
+    if (!aktiv || !isFinite(ziel)) {
+      element.textContent = formatiere(ziel);
+      zustand.angezeigt = isFinite(ziel) ? ziel : 0;
+      return;
+    }
+
+    const start = zustand.angezeigt;
+    const marke = zustand.marke;
+    // Bis die Zählung läuft (z. B. hinter dem Loader) steht der Startwert da, nie der Endwert
+    element.textContent = formatiere(start);
+
+    function beginne() {
+      if (marke !== zustand.marke) return; // inzwischen durch eine neuere Zählung ersetzt
+      const t0 = window.performance.now();
+      function schritt(jetzt) {
+        const anteil = Math.min(1, (jetzt - t0) / ZAEHL_DAUER_MS);
+        if (anteil >= 1) {
+          element.textContent = formatiere(ziel);
+          zustand.angezeigt = ziel;
+          zustand.raf = null;
+          return;
+        }
+        const weich = 1 - Math.pow(1 - anteil, 3);
+        const wert = start + (ziel - start) * weich;
+        element.textContent = formatiere(wert);
+        zustand.angezeigt = wert;
+        zustand.raf = window.requestAnimationFrame(schritt);
+      }
+      zustand.raf = window.requestAnimationFrame(schritt);
+    }
+
+    whenReady(beginne);
+  }
+
+  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady, countUp: countUp };
 })();

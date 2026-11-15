@@ -151,8 +151,10 @@
 
   // ---- Zeichnen ----
 
-  function zeichne(inst, config) {
+  // animiere: Linien zeichnen sich ein (nur bei neuen Daten, nicht beim Neuzeichnen nach Grössenänderung)
+  function zeichne(inst, config, animiere) {
     const svg = inst.svg;
+    svg.classList.toggle("ag-static", !animiere);
     inst.config = config;
     const kleinesFenster = window.innerWidth < KLEINES_FENSTER;
     const breite = Math.max(Math.round(svg.getBoundingClientRect().width), 200) || 600;
@@ -327,8 +329,9 @@
           }, g);
         }
         // Glow ohne SVG-Filter: breitere, transparente Linie unter der eigentlichen Linie
-        el("path", { class: "ag-chart-line-glow", d: pfad }, g);
-        el("path", { class: "ag-chart-line", d: pfad }, g);
+        // pathLength 1: die Einzeichnung (motion.css) arbeitet unabhängig von der Pfadlänge mit stroke-dashoffset
+        el("path", { class: "ag-chart-line-glow", d: pfad, pathLength: 1 }, g);
+        el("path", { class: "ag-chart-line", d: pfad, pathLength: 1 }, g);
       });
 
       if (anzahl <= 40) {
@@ -499,7 +502,7 @@
       if (!inst.config || !inst.geo) return;
       const breite = Math.max(Math.round(inst.svg.getBoundingClientRect().width), 200);
       if (breite !== inst.geo.breite || (window.innerWidth < KLEINES_FENSTER) !== inst.geo.kleinesFenster) {
-        zeichne(inst, inst.config);
+        zeichne(inst, inst.config, false);
       }
     });
   }
@@ -528,7 +531,7 @@
       serien: [
         { name: "Profit in 1000 (USD)", kurzname: "Profit", klasse: "ag-serie-vermoegen", werte: data, flaeche: true },
       ],
-    });
+    }, true);
     zeichne(inst2, {
       titel: "Cashflow/Dividends",
       labels: labels,
@@ -536,7 +539,7 @@
         { name: "Cashflow in 1000 (USD)", kurzname: "Cashflow", klasse: "ag-serie-cashflow", werte: bezugData, flaeche: false },
         { name: "Dividends in 1000 (USD)", kurzname: "Dividends", klasse: "ag-serie-dividende", werte: dividendeData, flaeche: false },
       ],
-    });
+    }, true);
     if (typeof ResizeObserver !== "undefined" && !rendere.beobachter) {
       rendere.beobachter = new ResizeObserver(planeNeuzeichnen);
       rendere.beobachter.observe(inst1.box);

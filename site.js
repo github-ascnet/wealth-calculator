@@ -49,6 +49,33 @@ function sanitizeInput(inputElement) {
   }
 }
 
+// Kennzahl anzeigen: mit motion.js zählt der Wert hoch, sonst steht der formatierte Text sofort da (D-026)
+function zeigeKennzahl(id, wert, formatiere) {
+  const element = document.getElementById(id);
+  if (window.AG_MOTION && window.AG_MOTION.countUp) {
+    window.AG_MOTION.countUp(element, wert, formatiere);
+  } else {
+    element.textContent = formatiere(wert);
+  }
+}
+
+// Tipp-Pause: Eingaben lösen die Berechnung erst nach 250 ms ohne weitere Eingabe aus (D-025)
+const TIPP_PAUSE_MS = 250;
+let tippTimer = null;
+
+function berechneVermoegenVerzoegert() {
+  clearTimeout(tippTimer);
+  tippTimer = setTimeout(function () {
+    tippTimer = null;
+    berechneVermoegen();
+  }, TIPP_PAUSE_MS);
+}
+
+function verwerfeWartendeBerechnung() {
+  clearTimeout(tippTimer);
+  tippTimer = null;
+}
+
 function berechneVermoegen() {
   const startkapital = parseFloat(
     document.getElementById("startkapital").value
@@ -135,12 +162,12 @@ function berechneVermoegen() {
 
   const wachstum =
     ((vermoegenLetztesJahr - startkapital) / startkapital) * 100;
-  document.getElementById(
-    "wachstumProzent"
-  ).textContent = `Total Growth: ${wachstum.toFixed(2)}%`;
-  document.getElementById(
-    "maxDrawdownAnzeige"
-  ).textContent = `Max. Drawdown: ${(maxDrawdown * 100).toFixed(2)}%`;
+  zeigeKennzahl("wachstumProzent", wachstum, function (w) {
+    return `Total Growth: ${w.toFixed(2)}%`;
+  });
+  zeigeKennzahl("maxDrawdownAnzeige", maxDrawdown * 100, function (w) {
+    return `Max. Drawdown: ${w.toFixed(2)}%`;
+  });
 
   // Volatilität berechnen (Standardabweichung der jährlichen Renditen)
   const renditen = [];
@@ -161,21 +188,20 @@ function berechneVermoegen() {
   const totalDividends = dividendeData.reduce((a, b) => a + b, 0);
   const totalCashflow = bezugData.reduce((a, b) => a + b, 0);
 
-  document.getElementById(
-    "volatilitaet"
-  ).textContent = `Volatility: ${volatilitaet.toFixed(2)}%`;
+  zeigeKennzahl("volatilitaet", volatilitaet, function (w) {
+    return `Volatility: ${w.toFixed(2)}%`;
+  });
 
-  document.getElementById(
-    "totalDividendsAnzeige"
-  ).textContent = `Total Dividends: $${totalDividends.toLocaleString(
-    undefined,
-    { maximumFractionDigits: 0 }
-  )}`;
-  document.getElementById(
-    "totalCashflowAnzeige"
-  ).textContent = `Total Cashflow: $${totalCashflow.toLocaleString(undefined, {
-    maximumFractionDigits: 0,
-  })}`;
+  zeigeKennzahl("totalDividendsAnzeige", totalDividends, function (w) {
+    return `Total Dividends: $${w.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    })}`;
+  });
+  zeigeKennzahl("totalCashflowAnzeige", totalCashflow, function (w) {
+    return `Total Cashflow: $${w.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    })}`;
+  });
 
   renderCharts(chartLabels, chartData, bezugData, dividendeData);
 }
@@ -195,6 +221,7 @@ function startSimulation() {
     return;
   }
 
+  verwerfeWartendeBerechnung();
   isSimulating = true;
   simulationCount = 0;
   document.getElementById("simulateButton").textContent = "Stop Simulation";
