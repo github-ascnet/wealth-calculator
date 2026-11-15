@@ -15,18 +15,21 @@ Projektspezifische Arbeitsregeln für den Asset Growth Calculator. Fachliche und
 - Keine Frameworks, kein Build-Prozess, kein Paketmanager, keine neuen Bibliotheken oder CDN-Abhängigkeiten ohne neue Entscheidung in `decisions.md`.
 - Bootstrap und Google Fonts sind seit BP-014 entfernt (D-019). Chart.js und das Datalabels-Plugin (D-005) sind seit BP-016 entfernt (D-017); die Diagramme zeichnet `charts.js` als Inline-SVG. Das Projekt hat keine externen Einbindungen mehr; keine neuen CDN-Einbindungen.
 - Redesign-Pakete (ab BP-014): Diagramme als Inline-SVG (D-017), Aurora-Theme ohne Schalter (D-018), Systemschriften (D-019), Effekte nach D-020 mit den Grundregeln des Vorbilds.
-- Keine Server-Logik, keine Persistenz, keine externen Aufrufe ausser den bestehenden CDN- und Font-Einbindungen.
+- Keine Server-Logik, keine Persistenz, keine externen Aufrufe (seit BP-016 lädt die Seite nur eigene Dateien, geprüft in BP-021).
 
 ## 3. Dateistruktur
 
 | Datei | Zuständigkeit | Regel |
 |---|---|---|
-| `index.html` | Markup, Eingabefelder, Canvas, Metadaten | Element-IDs sind Schnittstelle zu `site.js` und `site.css` und werden nicht umbenannt |
-| `site.css` | Styles | Änderungen auf den betroffenen Bereich begrenzen |
-| `site.js` | Logik | Bestehende Funktionen beibehalten; keine Aufteilung in Module ohne Auftrag |
+| `index.html` | Markup, Eingabefelder, SVG-Container der Diagramme, Loader, Tint-Ebenen, Metadaten | Element-IDs sind Schnittstelle zu `site.js`, `charts.js`, `motion.js` und den Stylesheets und werden nicht umbenannt |
+| `site.css` | Basis, Layout, Aurora-Farben, Diagramm- und Kennzahlenstile | Änderungen auf den betroffenen Bereich begrenzen |
+| `motion.css` | Motion: Loader, Drift, Einzeichnung, Titel, Tint, gestaffelter Eintritt, Reduced-Motion | Nur `transform` und `opacity` in Dauer-Animationen; alle Effekte nur unter `html.ag-motion` |
+| `site.js` | Berechnung, Validierung, Simulation, Tipp-Pause, Tooltips der Eingabefelder | Bestehende Funktionen beibehalten; keine Aufteilung in Module ohne Auftrag |
+| `charts.js` | SVG-Diagramme (`renderCharts`, `AG_CHARTS`) | Name und Signatur von `renderCharts` bleiben; Farben und Schriftfamilien stehen in `site.css` |
+| `motion.js` | Motion-Steuerung (`AG_MOTION`): Loader, Hochzählen, Tint, Titel, gestaffelter Eintritt | `site.js` und die Seite funktionieren auch ohne diese Datei |
 | `og-image.png` | OG-Vorschaubild | Nicht verändern ohne Auftrag |
 
-Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Seit BP-016 vorhanden: `charts.js` (Diagramme, D-028); seit BP-017: `motion.css` und `motion.js` (Motion-Grundlage, Loader, Drift). Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
+Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Die im Redesign vorgesehenen Dateien `charts.js`, `motion.css` und `motion.js` sind angelegt (D-028). Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
 
 ### Referenzprojekt für das Redesign
 
@@ -40,7 +43,7 @@ Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Seit BP-016 v
 - Code-Kommentare auf Deutsch.
 - Sichtbare UI-Texte, Tooltips, Validierungsmeldungen und Metadaten auf Englisch (D-012).
 - JavaScript: `const`/`let`, Doppelte Anführungszeichen, Semikolons, 2 Leerzeichen Einrückung.
-- CSS: 2 Leerzeichen Einrückung; Farben gemäss D-010.
+- CSS: 2 Leerzeichen Einrückung; Farben als Variablen `--ag-*` gemäss D-018 und D-029 (D-010 ist ersetzt).
 - Prozentwerte werden im UI als Prozentzahl eingegeben und in `berechneVermoegen` durch 100 geteilt.
 
 ## 5. Änderungsregeln

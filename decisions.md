@@ -37,12 +37,12 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-004 Bootstrap 5.1.3 über CDN
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-019**, wirksam seit BP-014 (2026-11-15)
+- **Status:** Ist-abgeleitet; **ersetzt durch D-019**, abgelöst seit BP-014 (2026-11-15); in BP-021 bestätigt (kein Bootstrap im Projekt)
 - **Entscheidung:** Bootstrap 5.1.3 (CSS und JS-Bundle) wird über `cdn.jsdelivr.net` eingebunden und für Grid-Layout, Formular-Basisstile und Tooltips verwendet.
 
 ## D-005 Chart.js mit chartjs-plugin-datalabels über CDN
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-017**, abgelöst seit BP-016 (2026-11-15)
+- **Status:** Ist-abgeleitet; **ersetzt durch D-017**, abgelöst seit BP-016 (2026-11-15); in BP-021 bestätigt (kein Chart.js und keine Datalabels im Projekt)
 - **Entscheidung:** Diagramme werden mit Chart.js (Typ `line`) und dem Plugin `chartjs-plugin-datalabels` gerendert, beide über `cdn.jsdelivr.net`. Instanzen werden bei jeder Berechnung zerstört und neu erstellt.
 - **Hinweis:** Versionen sind nicht gepinnt (OP-08).
 
@@ -73,7 +73,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-010 Dark Theme mit Amber-Akzent
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, für die Seite wirksam seit BP-015 (2026-11-15); die Diagrammfarben seit BP-016 (Chart.js entfernt)
+- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, abgelöst seit BP-015 (Seite) und BP-016 (Diagrammfarben), 2026-11-15; in BP-021 bestätigt (kein Amber mehr im Projekt)
 - **Entscheidung:** Dunkler Verlaufshintergrund (`#272525`/`#454046`), weisse Schrift, Akzentfarbe `#ffc107`, Cashflow-Linie `#32cd32`, Schrift **Space Mono**.
 - **Beleg:** Commit `7c4e5ac` (2025-09-07) „Changed Theme to dark and adjusted Charts accordingly“.
 
@@ -123,7 +123,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-016 Redesign auf aktuellen Motion-Graphics-Standard
 
-- **Status:** Bestätigt als Zielrichtung (Auftrag 2026-11-15); Ausgestaltung offen, Umsetzung zurückgestellt
+- **Status:** Bestätigt als Zielrichtung (Auftrag 2026-11-15); ausgestaltet durch D-017 bis D-031 und umgesetzt mit BP-014 bis BP-020 (Abschluss BP-021, 2026-11-15)
 - **Entscheidung:** Design und Layout werden auf einen aktuellen Motion-Graphics-Standard gebracht. Referenz ist das Projekt Wealth-Lab-Strategy-Orchestrator (`C:\Data\Projekte\Wealth Lab\Wealth-Lab-Strategy-Orchestrator`).
 - **Rahmen:** Berechnung, Eingabefelder und KPI-Definitionen bleiben unverändert; kein Build-Prozess, kein Framework (D-001, D-003).
 - **Konkretisiert** durch D-017 bis D-023 (2026-11-15).

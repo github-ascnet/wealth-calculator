@@ -17,6 +17,7 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
+| 2026-11-15 | VALIDATE | BP-021: Redesign gegen die Spezifikation geprüft (Chrome und Edge), aufgeräumt, SDD abgeschlossen. Befund: favicon.ico fehlt (404). Übernahme nach `main` wartet auf Auftrag. |
 | 2026-11-15 | IMPLEMENT | BP-020 umgesetzt: gestaffelter Eintritt von Eingabefeldern, Button, Kennzahlen-Box und Diagramm-Karten beim Sichtbarwerden (D-020). |
 | 2026-11-15 | IMPLEMENT | BP-019 umgesetzt: Ergebnis-Tint des Hintergrunds nach Total Growth (D-023); Sichtprüfung durch den Auftraggeber offen. |
 | 2026-11-15 | CHANGE | Auftrag: Titel fest „Growth-Calculator“ mit Motion-Effekt (D-031), dynamischer Titel entfällt. |
@@ -52,9 +53,9 @@ Quelle: `meta description` in [index.html](index.html) – *„Interactive asset
 |---|---|
 | Eingabe | 7 numerische Eingabefelder mit Tooltip, Live-Validierung und Bereinigung beim Verlassen |
 | Berechnung | Jahresweise Monte-Carlo-artige Einzelsimulation (ein Pfad pro Berechnung) |
-| Ausgabe | Dynamischer Seitentitel, KPI-Box, 2 Liniendiagramme |
+| Ausgabe | Titel „Growth-Calculator“ (seit D-031 fest), KPI-Box, 2 Liniendiagramme |
 | Simulation | Automatische Wiederholung der Berechnung (Intervall 5 s, max. 50 Wiederholungen) |
-| Darstellung | Dark Theme, responsive Layout (Bootstrap-Grid plus eigene Media Query) |
+| Darstellung | Aurora-Theme (nicht umschaltbar), responsives Layout in eigenem CSS (seit BP-014; Bootstrap entfernt), Motion-Effekte (BP-017 bis BP-020) |
 | SEO | Meta-Description, Keywords, Robots, Open Graph, Twitter Card, OG-Bild |
 
 ## 4. Im Ist-Zustand nicht vorhanden
@@ -77,23 +78,26 @@ Statische Single-Page-Webanwendung ohne Server-Logik. Die gesamte Berechnung lä
 
 ```
 Browser
- ├─ index.html   Struktur, Eingabefelder, Canvas-Elemente, SEO-Metadaten
- ├─ site.css     Theme, Layout, Responsive-Regeln
- ├─ site.js      Validierung, Berechnung, KPI-Ausgabe, Chart-Rendering, Simulation
- └─ CDN
-     ├─ Bootstrap 5.1.3 (CSS + JS-Bundle, für Grid und Tooltips)
-     ├─ Chart.js (unversioniert, jeweils neueste Version)
-     ├─ chartjs-plugin-datalabels (unversioniert)
-     └─ Google Fonts: Space Mono (verwendet), Jura (geladen, nicht verwendet)
+ ├─ index.html   Struktur, Eingabefelder, SVG-Container, Loader, Tint-Ebenen, SEO-Metadaten
+ ├─ site.css     Basis, Layout, Aurora-Farben, Diagramm- und Kennzahlenstile, Responsive-Regeln
+ ├─ motion.css   Loader, Drift, Einzeichnung, Titel, Tint, gestaffelter Eintritt, Reduced-Motion
+ ├─ charts.js    SVG-Diagramme (renderCharts, AG_CHARTS)
+ ├─ motion.js    Motion-Steuerung (AG_MOTION): Loader, Hochzählen, Tint, Titel, Eintritt
+ └─ site.js      Validierung, Berechnung, KPI-Ausgabe, Simulation, Tipp-Pause, Tooltips
 ```
+
+**Stand seit BP-021 (2026-11-15):** Keine externen Abhängigkeiten mehr (kein CDN, keine Webfonts); das Schaubild gibt den Zustand nach dem Redesign wieder (vorher: Bootstrap 5.1.3, Chart.js, Datalabels-Plugin, Google Fonts).
 
 ### 5.2 Dateien
 
 | Datei | Funktion |
 |---|---|
-| [index.html](index.html) | Markup, Eingabefelder mit Inline-Handlern (`oninput`, `onfocusout`), Chart-Canvas, KPI-Box, SEO-Metadaten |
-| [site.css](site.css) | Dark Theme, Formular- und Chart-Layout, Media Query `max-width: 786px` |
-| [site.js](site.js) | Funktionen `validateInput`, `sanitizeInput`, `berechneVermoegen`, `renderCharts`, `startSimulation`; Tooltip-Initialisierung |
+| [index.html](index.html) | Markup, Eingabefelder mit Inline-Handlern (`oninput`, `onfocusout`), SVG-Container der Diagramme, KPI-Box (fünf Einzelwerte), Loader, Tint-Ebenen, SEO-Metadaten |
+| [site.css](site.css) | Basis, Aurora-Theme, Formular-, Diagramm- und Kennzahlen-Layout (Desktop ab 1024 px, schmal unter 768 px) |
+| [motion.css](motion.css) | Loader, Hintergrund-Drift, Einzeichnung, Titel, Ergebnis-Tint, gestaffelter Eintritt, Reduced-Motion |
+| [charts.js](charts.js) | SVG-Diagramme: Achsen, Linien, Data Labels, Legende, Tooltip, Neuzeichnen bei Grössenänderung |
+| [motion.js](motion.js) | `AG_MOTION`: Motion-Klasse, Loader, Hochzählen, Tint, Titel-Zerlegung, gestaffelter Eintritt |
+| [site.js](site.js) | Funktionen `validateInput`, `sanitizeInput`, `berechneVermoegen`, `berechneVermoegenVerzoegert`, `startSimulation`; Tooltip-Initialisierung der Eingabefelder |
 | [og-image.png](og-image.png) | Vorschaubild für Open Graph / Twitter Card |
 
 Weitere Dateien im Repository sind für das Projekt nicht relevant (siehe OP-01).
@@ -198,12 +202,16 @@ Zusätzlich wurde der Seitentitel (`#titel`) ersetzt durch: `Asset growth at {re
 
 ### 8.2 Theme
 
+**Stand seit BP-015 (2026-11-15):** Der Bestand unten ist durch das Aurora-Theme ersetzt (D-018, D-029, Kapitel 13.8): Nachtblau mit Sternenfeld und Aurora-Bändern, Systemschriften (D-019), kein Amber. Die Aufzählung beschreibt den Zustand vor dem Redesign.
+
 - Hintergrund: horizontaler Verlauf `#272525 → #454046 → #272525`, Schrift weiss, Font **Space Mono**.
 - Akzentfarbe `#ffc107` (Button, Fokusrahmen, KPI-Box-Rahmen, Vermögenslinie).
 - Eingabefelder `#2d2d2d`, im Fokus `#444`.
 - KPI-Box: halbtransparent dunkel, Rahmen amber, Schrift 10 px, zentriert zwischen den beiden Charts.
 
 ### 8.3 Responsive
+
+**Stand seit BP-014 und D-030:** Eigenes CSS ohne Bootstrap; eine Spalte unter 768 px, zwei Spalten ab 768 px, ab 1024 px drei Eingabefelder je Zeile und die Diagramme nebeneinander. Die Aufzählung beschreibt den Zustand vor dem Redesign.
 
 - Bootstrap-Grid: zwei Eingabefelder pro Zeile ab `md`, darunter eine Spalte.
 - Eigene Media Query `max-width: 786px` für Titel, Labels, Eingaben und Chart-Container.
@@ -253,6 +261,8 @@ Die folgenden Befunde wurden bei der INIT-Analyse festgestellt. Das jeweilige �
 
 ### IB-04 Weitere Beobachtungen ohne direkte Funktionsstörung
 
+**Stand BP-021 (2026-11-15):** IB-02 und IB-04a bis IB-04f sind behoben (siehe je Zeile). Offen bleibt IB-04g (OP-09).
+
 | ID | Beobachtung | Datei |
 |---|---|---|
 | IB-04a | CSS-Selektor `.input-wrapper` (Bindestrich) passt nicht zur HTML-Klasse `input_wrapper` (Unterstrich); der vorgesehene Rahmen/Schatten wird nicht angewendet **Behoben mit BP-014 (2026-11-15).** | `site.css`, `index.html` |
@@ -280,7 +290,7 @@ Diese Punkte sind nicht als Build-Pakete eingeplant, sondern als offene Punkte e
 | OP-09 | Eingabefehler | Offen | Soll die Berechnung bei ungültigen Eingaben unterbleiben (IB-04g)? |
 | OP-10 | Kleinere CSS-Befunde | **Erledigt mit BP-014** (2026-11-15) | IB-04a bis IB-04d erledigen sich mit dem Neuaufbau von CSS und Markup. |
 | OP-11 | Hosting/Deployment | **Erledigt** (2026-11-15) | Cloudflare Pages mit GitHub-Anbindung (D-024). Der Auftraggeber hat die Konfiguration geprüft: „Alles ok“. Einzelwerte (Production-Branch, Build-Einstellungen) wurden nicht mitgeteilt und sind nicht dokumentiert. |
-| OP-12 | Qualitätsanforderungen | Offen | Browser-Support, Accessibility und Testvorgehen sind nicht festgelegt. |
+| OP-12 | Qualitätsanforderungen | Offen | Browser-Support, Accessibility und Testvorgehen sind nicht festgelegt. Geprüft wurde bisher in Chrome und Edge (beide Chromium, derselbe Motor); Firefox und Safari standen nicht zur Verfügung. |
 | OP-13 | Redesign: Chart-Technik | **Entschieden** (2026-11-15) | Wie das Vorbild: handgeschriebenes Inline-SVG, keine Chart-Bibliothek → D-017 |
 | OP-14 | Redesign: Farbwelt | **Entschieden** (2026-11-15) | Aurora, nicht umschaltbar (kein classic-Theme) → D-018 |
 | OP-15 | Redesign: Bootstrap und Schrift | **Entschieden** (2026-11-15) | Beides entfällt, wie im Vorbild: kein Bootstrap, keine externe Schrift → D-019 |
@@ -295,7 +305,7 @@ Diese Punkte sind nicht als Build-Pakete eingeplant, sondern als offene Punkte e
 | OP-24 | Hochzählen der Kennzahlen | **Entschieden** (2026-11-15) | Beim ersten Laden von 0, danach vom vorherigen zum neuen Wert → D-026 |
 | OP-25 | Legende der Diagramme | Offen (Annahme umgesetzt mit BP-016) | Chart.js erlaubte per Klick auf einen Legendeneintrag das Ausblenden einer Datenreihe. Umgesetzt ist die Annahme: statische Legende wie im Vorbild, die Klick-Funktion entfällt. Bei Widerspruch ist `charts.js` anzupassen. |
 | OP-26 | Loader beim Seitenaufruf | **Entschieden** (2026-11-15) | Kurzer Intro-Loader (ca. 1 s, animierter Mini-Chart), bei reduzierter Bewegung ohne → D-027 |
-| OP-27 | Entwicklungsbranch für das Redesign | **Entschieden** (2026-11-15) | Das Redesign wird auf dem Branch `redesign` entwickelt und nach BP-021 nach `main` zusammengeführt (Push nur auf ausdrücklichen Auftrag). |
+| OP-27 | Entwicklungsbranch für das Redesign | **Entschieden** (2026-11-15) | Das Redesign wird auf dem Branch `redesign` entwickelt und nach BP-021 nach `main` zusammengeführt (Push nur auf ausdrücklichen Auftrag). BP-021 ist abgeschlossen; die Zusammenführung wartet auf den Auftrag. |
 
 ## 13. Zielbild Redesign (Motion Graphics)
 

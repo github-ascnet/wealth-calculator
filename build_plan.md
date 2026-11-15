@@ -23,24 +23,24 @@
 | BP-005 | SEO- und Social-Media-Metadaten | Umgesetzt | BP-004 |
 | BP-006 | Max.-Drawdown-Begrenzung | Umgesetzt | BP-004 |
 | BP-007 | Dark Theme und KPI-Box | Umgesetzt | BP-006 |
-| BP-008 | Korrektur Step-Validierung (IB-01) | Umgesetzt (nicht im Browser validiert, Commit a00a371) | BP-004 |
+| BP-008 | Korrektur Step-Validierung (IB-01) | Validiert (BP-021, Chrome und Edge; Umgesetzt Commit a00a371) | BP-004 |
 | BP-009 | Korrektur CSS-Struktur der Media Query (IB-02) | Aufgegangen in BP-014 (2026-11-15) | BP-007 |
-| BP-010 | Korrektur HTML-Kopfstruktur (IB-03) | Umgesetzt (nicht im Browser validiert, Commit 957773c) | BP-005 |
-| BP-011 | „Total Growth“ ab Startkapital (D-014) | Umgesetzt (nicht im Browser validiert, Commit 06a4c26) | BP-007 |
-| BP-012 | Diagramm-Achsen in Tausend USD (D-015) | Umgesetzt (nicht im Browser validiert, Commit 3903393) | BP-007 |
-| BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-029) | Plan erstellt (2026-11-15), Abnahme durch Auftraggeber ausstehend | BP-008, BP-010, BP-011, BP-012 |
-| BP-014 | Redesign: Fundament ohne Bootstrap, Layout und „!“-Tooltips | Umgesetzt, im Browser geprüft (Chrome headless), Commit 3cd08f7 (Branch `redesign`) | BP-013 (Abnahme) |
-| BP-015 | Redesign: Aurora-Farbwelt der Seite | Umgesetzt, im Browser geprüft (Chrome headless), Commit 6839a86 (Branch `redesign`) | BP-014 |
-| BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Umgesetzt, im Browser geprüft (Chrome headless), Commit d13e5a6 (Branch `redesign`) | BP-015 |
-| BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Umgesetzt, im Browser geprüft (Chrome headless), Commit 7925677 (Branch `redesign`) | BP-016 |
-| BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Umgesetzt, im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
-| BP-019 | Redesign: Ergebnis-Tint | Umgesetzt, im Browser geprüft (Chrome headless), Commit 2c2792d (Branch `redesign`); Sichtprüfung durch den Auftraggeber offen | BP-017 |
-| BP-020 | Redesign: Gestaffelter Eintritt | Umgesetzt, im Browser geprüft (Chrome headless), Commit 9ba8aee (Branch `redesign`) | BP-017 |
-| BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Geplant | BP-018, BP-019, BP-020 |
+| BP-010 | Korrektur HTML-Kopfstruktur (IB-03) | Validiert (BP-021, Chrome und Edge; Umgesetzt Commit 957773c) | BP-005 |
+| BP-011 | „Total Growth“ ab Startkapital (D-014) | Validiert (BP-021, Chrome und Edge; Umgesetzt Commit 06a4c26) | BP-007 |
+| BP-012 | Diagramm-Achsen in Tausend USD (D-015) | Validiert (BP-021, Chrome und Edge; Umgesetzt Commit 3903393) | BP-007 |
+| BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-029) | Plan erstellt und abgenommen (2026-11-15, Abruf von BP-014 durch den Auftraggeber) | BP-008, BP-010, BP-011, BP-012 |
+| BP-014 | Redesign: Fundament ohne Bootstrap, Layout und „!“-Tooltips | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 3cd08f7 (Branch `redesign`) | BP-013 (Abnahme) |
+| BP-015 | Redesign: Aurora-Farbwelt der Seite | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 6839a86 (Branch `redesign`) | BP-014 |
+| BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit d13e5a6 (Branch `redesign`) | BP-015 |
+| BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 7925677 (Branch `redesign`) | BP-016 |
+| BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
+| BP-019 | Redesign: Ergebnis-Tint | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 2c2792d (Branch `redesign`); Sichtprüfung durch den Auftraggeber offen | BP-017 |
+| BP-020 | Redesign: Gestaffelter Eintritt | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 9ba8aee (Branch `redesign`) | BP-017 |
+| BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Umgesetzt (Validierung und Aufräumen; Zusammenführung nach `main` wartet auf Auftrag), Commit 270c09a (Branch `redesign`) | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-021. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-021`).
+**Nächstes vorgesehenes Paket:** keines. Alle Pakete des Redesigns (BP-014 bis BP-021) sind umgesetzt. Offen: Zusammenführung von `redesign` nach `main` (OP-27, D-024; Push nur auf ausdrücklichen Auftrag, löst ein Produktiv-Deployment aus), Sichtprüfung des Tints (BP-019), Entscheid zu OP-25, OP-07, OP-09 und OP-12.
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -458,7 +458,24 @@
 
 ### BP-021 Abschluss, Validierung, Aufräumen
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15, Commit 270c09a auf Branch `redesign`) für Validierung, Aufräumen und SDD-Abschluss. Die Zusammenführung nach `main` ist **nicht** erfolgt und wartet auf den ausdrücklichen Auftrag (OP-27).
+- **Aufräumen:** Ungenutzte CSS-Variablen `--ag-bg-1`, `--ag-green`, `--ag-rose` (Palette steht in 13.8) und der nicht verwendete Zugriff `AG_CHARTS.letzteDaten` entfernt. Suche nach Resten von Chart.js, Bootstrap, Canvas und Google Fonts in `index.html`, `site.js`, `site.css`, `charts.js`, `motion.js`, `motion.css`: keine. Suche nach nicht verwendeten Klassen, IDs und Keyframes im CSS: keine. Der auskommentierte Block `jaehrlicherInvest` in `index.html` ist unverändert (Auftrag 2026-11-15: zurückstellen).
+- **SDD-Abschluss:** D-004, D-005, D-010 als ersetzt und bestätigt gekennzeichnet; D-016 auf „umgesetzt“; D-028 und D-029 waren seit dem Abruf von BP-014 bestätigt; `agents.md` (Dateitabelle, Technik, Farben), `project_plan.md` (Kapitel 3, 5, 8, OP-12, OP-27, Befunde IB-02 und IB-04) nachgeführt; IB-02 und IB-04a bis IB-04f sind geschlossen, IB-04g bleibt offen (OP-09).
+- **Prüfergebnis (VALIDATE):**
+  - Berechnung und Kennzahlen: Vergleich von `berechneVermoegen` in `main:site.js` (Stand vor dem Redesign) mit dem aktuellen `site.js` in Node mit festem Zufallsgenerator, 6 Szenarien (Default, Cashflow, enger Drawdown und hohe Streuung, Verlust, 50 Jahre, 1 Jahr): Datenreihen (Jahre, Vermögen, Cashflow, Dividenden) identisch, alle Kennzahlentexte identisch (Growth und Drawdown, Volatilität, Dividenden und Cashflow; die fünf Einzelwerte ergeben zusammengesetzt den früheren Text). **Erfüllt.**
+  - Kein externer Request: Seite über einen lokalen HTTP-Server in Chrome und Edge geladen; Requests nur an den eigenen Server (`index.html`, `site.css`, `motion.css`, `charts.js`, `motion.js`, `site.js`, dazu `favicon.ico`), kein CDN, keine Webfonts; `typeof Chart` und `typeof bootstrap` sind `undefined`. **Erfüllt.**
+  - 1280 px (Desktop), 390 px (Smartphone, Touch) und Reduced-Motion in Chrome 157 und Edge 157: keine horizontale Scrollleiste; Titel „Growth-Calculator“; fünf Kennzahlen im erwarteten Format; 1 Linie im Vermögens- und 2 Linien im Cashflow-Diagramm; 7 Eingabefelder mit 7 „!“-Symbolen; Loader entfernt; unter 701 px und bei Reduced-Motion keine Tint-Ebene und 0 Animationen. **Erfüllt.**
+  - Funktionen in beiden Browsern: Tooltip der Eingabefelder (Hover), Diagramm-Tooltip (Hover: „2032 / Profit: $…“), Tipp-Pause (zwei Eingaben im Abstand von 80 ms: 0 Berechnungen sofort, 1 nach 400 ms), Validierung („The value must be a multiple of 0.1.“ bei 1.25), Start/Stop-Button, Verlust-Tint (Stärke 0.44 bei Verlust von etwa −87 %). **Erfüllt.**
+  - Regression der Paket-Tests BP-016 bis BP-020 und der Layout-Prüfung im Endstand (Chrome): alle Kriterien weiterhin erfüllt, Konsole in allen Läufen fehlerfrei.
+  - Konsole: In Chrome und Edge erscheint bei der Seitenanzeige über HTTP ein Fehler „404 /favicon.ico“ (nur im Desktop-Lauf, weil nur dort eine Anfrage erfolgt). **Befund, bestehend seit vor dem Redesign** (`index.html` enthält keine Favicon-Angabe und das Repository kein Favicon). Nicht Teil dieses Pakets; Entscheid des Auftraggebers: Favicon hinzufügen oder so lassen.
+  - Kriterien je Paket: BP-014 bis BP-020 jeweils in den Paketabschnitten mit „Erfüllt“ ausgewiesen; teilweise oder nicht prüfbar sind dort vermerkt (echte Touch-Geräte, Screenreader, Frame-Zeiten auf echter Hardware, andere Browser-Engines).
+- **Nicht prüfbar / offen:**
+  - Firefox und Safari (andere Browser-Engines) standen nicht zur Verfügung; Edge nutzt denselben Chromium-Motor wie Chrome. Ein unabhängiger Engine-Test fehlt (OP-12).
+  - Echte Touch-Geräte, Screenreader-Ausgabe, Wirkung auf echten Bildschirmen.
+  - Sichtprüfung des Ergebnis-Tints durch den Auftraggeber (BP-019, `G0` und Sättigung).
+  - OP-25 (statische Legende statt Klick zum Ausblenden), OP-07 (Metadaten-Platzhalter, Footer „© 2024“), OP-09 (Eingabefehler) bleiben offen.
+  - Das Repository enthält weiterhin die Datei „Chat GPT convert to NextJS App.txt“ (OP-01); sie wird über Cloudflare Pages ausgeliefert, sofern sie im Production-Branch liegt (OP-22: vom Auftraggeber als unkritisch beurteilt).
+- **Ursprünglicher Plan:**
 - **Grundlage:** D-016 bis D-029
 - **Ziel:** Das Redesign ist gegen die Spezifikation geprüft, aufgeräumt und dokumentiert.
 - **Scope (Modus VALIDATE, danach Dokumentation):**
