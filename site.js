@@ -26,7 +26,8 @@ function validateInput(input) {
   }
 
   // Prüfen, ob der Wert mit der Schrittweite kompatibel ist
-  if (step && (value - min) % step !== 0) {
+  // Gleitkommasicher: Abstand zum nächsten ganzzahligen Vielfachen der Schrittweite
+  if (step && Math.abs((value - min) / step - Math.round((value - min) / step)) > 1e-9) {
     input.setCustomValidity(`The value must be a multiple of ${step}.`);
     input.reportValidity();
     return;
