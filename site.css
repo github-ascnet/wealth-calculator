@@ -56,7 +56,7 @@ html {
 
 /* Nachtblau mit statischem Sternenfeld (Punktmuster unterschiedlicher Kachelgrösse) */
 body {
-  max-width: 1140px;
+  max-width: 1400px;
   min-height: 100vh;
   margin: 0 auto;
   padding: 1rem 12px 0;
@@ -427,6 +427,10 @@ body::after {
 }
 
 .ag-kpi {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 0;
   width: fit-content;
   max-width: 100%;
   margin: 0.1rem auto 1rem;
@@ -436,6 +440,82 @@ body::after {
   color: var(--ag-text);
   border-color: var(--ag-border-strong);
   border-radius: 12px;
+}
+
+/* Einzelwerte der Kennzahlen; die Gruppe für Dividenden und Cashflow ist nur ein Behälter */
+.ag-kpi-item {
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.ag-kpi-group {
+  display: contents;
+}
+
+/* ---- Desktop ab 1024 px: Diagramme nebeneinander, breitere Kennzahlen-Box darüber (D-030) ---- */
+
+@media (min-width: 1024px) {
+  .ag-charts-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 15px;
+  }
+
+  /* Eingabebereich in der Breite der Diagramme, Felder darin breiter */
+  .ag-inputs {
+    max-width: none;
+  }
+
+  .ag-inputs-inner {
+    width: 90%;
+    max-width: 1100px;
+    margin-bottom: 6px;
+  }
+
+  /* drei Eingabefelder je Zeile */
+  .ag-form-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Kennzahlen in einer Zeile (bei Platzmangel umbrechen die einzelnen Gruppen, nie die Texte) */
+  .ag-kpi {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-content: center;
+    gap: 2px 0;
+    justify-self: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0;
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  /* klar getrennte Werte auf einer Linie: Trennstrich zwischen den Einzelwerten */
+  .ag-kpi-item {
+    padding: 0 20px;
+    border-left: 1px solid var(--ag-border-strong);
+  }
+
+  .ag-kpi > .ag-kpi-item:first-child {
+    border-left: none;
+  }
+
+  .ag-chart-box {
+    grid-row: 2;
+    max-width: none;
+  }
+
+  #vermoegenChartContainer {
+    grid-column: 1;
+  }
+
+  #bezugDataChartContainer {
+    grid-column: 2;
+  }
 }
 
 /* ---- Fusszeile ---- */

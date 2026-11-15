@@ -137,9 +137,10 @@ function berechneVermoegen() {
     ((vermoegenLetztesJahr - startkapital) / startkapital) * 100;
   document.getElementById(
     "wachstumProzent"
-  ).textContent = `Total Growth: ${wachstum.toFixed(2)}% Max. Drawdown: ${(
-    maxDrawdown * 100
-  ).toFixed(2)}%`;
+  ).textContent = `Total Growth: ${wachstum.toFixed(2)}%`;
+  document.getElementById(
+    "maxDrawdownAnzeige"
+  ).textContent = `Max. Drawdown: ${(maxDrawdown * 100).toFixed(2)}%`;
 
   // Volatilität berechnen (Standardabweichung der jährlichen Renditen)
   const renditen = [];
@@ -165,11 +166,14 @@ function berechneVermoegen() {
   ).textContent = `Volatility: ${volatilitaet.toFixed(2)}%`;
 
   document.getElementById(
-    "totalDividendsCashflow"
+    "totalDividendsAnzeige"
   ).textContent = `Total Dividends: $${totalDividends.toLocaleString(
     undefined,
     { maximumFractionDigits: 0 }
-  )}, Total Cashflow: $${totalCashflow.toLocaleString(undefined, {
+  )}`;
+  document.getElementById(
+    "totalCashflowAnzeige"
+  ).textContent = `Total Cashflow: $${totalCashflow.toLocaleString(undefined, {
     maximumFractionDigits: 0,
   })}`;
 

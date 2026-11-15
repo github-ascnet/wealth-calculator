@@ -146,9 +146,13 @@
                     <svg id="vermoegenChart" role="img" aria-label="Profit chart"></svg>
                 </div>
                 <div class="ag-kpi">
-                    <div><span id="wachstumProzent"></span></div>
-                    <div><span id="volatilitaet"></span></div>
-                    <div><span id="totalDividendsCashflow"></span></div>
+                    <span id="wachstumProzent" class="ag-kpi-item"></span>
+                    <span id="maxDrawdownAnzeige" class="ag-kpi-item"></span>
+                    <span id="volatilitaet" class="ag-kpi-item"></span>
+                    <span id="totalDividendsCashflow" class="ag-kpi-group">
+                        <span id="totalDividendsAnzeige" class="ag-kpi-item"></span>
+                        <span id="totalCashflowAnzeige" class="ag-kpi-item"></span>
+                    </span>
                 </div>
                 <div id="bezugDataChartContainer" class="ag-chart-box">
                     <svg id="bezugDataChart" role="img" aria-label="Cashflow and dividends chart"></svg>

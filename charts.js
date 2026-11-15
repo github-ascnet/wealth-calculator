@@ -3,10 +3,10 @@
  *
  * Zeichnet "vermoegenChart" und "bezugDataChart" (beides <svg>) aus den Ergebnissen von berechneVermoegen().
  * Farben, Schriftfamilien und Linienstärken stehen in site.css (Klassen ag-chart-*, ag-serie-*);
- * hier liegen nur Geometrie und Schriftgrössen. Keine Animation (folgt mit BP-018).
+ * hier liegen nur Geometrie und Schriftgrössen. Die Einzeichnung der Linien steht in motion.css (BP-018).
  *
  * Koordinatenraum: Pixelraum des Containers (viewBox = gemessene Breite x Höhe, Massstab 1:1),
- * damit die Schrift bei jeder Breite ihre Nenngrösse behält. Unter 480 px Containerbreite gilt
+ * damit die Schrift bei jeder Breite ihre Nenngrösse behält. Unter 420 px Containerbreite gilt
  * ein höherer Raum (Seitenverhältnis), ab 768 px Fensterbreite erscheinen Data Labels und Achsentitel.
  */
 
@@ -19,7 +19,7 @@
   const SCHRIFT_LEGENDE = 12;
   const SCHRIFT_TITEL = 12;
 
-  const SCHMALE_BREITE = 480; // Containerbreite, unter der das hohe Seitenverhältnis gilt
+  const SCHMALE_BREITE = 420; // Containerbreite, unter der das hohe Seitenverhältnis gilt
   const KLEINES_FENSTER = 768; // unter dieser Fensterbreite entfallen Data Labels und Achsentitel
   const PUNKT_RAND = 18; // Abstand der ersten und letzten Datenpunkte zum Rand der Zeichenfläche
 
@@ -157,7 +157,10 @@
     const kleinesFenster = window.innerWidth < KLEINES_FENSTER;
     const breite = Math.max(Math.round(svg.getBoundingClientRect().width), 200) || 600;
     const schmal = breite < SCHMALE_BREITE;
-    const hoehe = schmal ? Math.round(breite * 0.85) : Math.max(260, Math.round(breite * 0.4));
+    // Nebeneinander angeordnete Diagramme (ab 1024 px, D-030) sind höher als einzeln stehende
+    const nebeneinander = window.matchMedia("(min-width: 1024px)").matches;
+    const verhaeltnis = nebeneinander ? 0.62 : 0.4;
+    const hoehe = schmal ? Math.round(breite * 0.85) : Math.max(280, Math.round(breite * verhaeltnis));
 
     while (svg.firstChild) svg.removeChild(svg.firstChild);
     svg.setAttribute("viewBox", "0 0 " + breite + " " + hoehe);
