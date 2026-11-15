@@ -284,6 +284,38 @@ html.ag-motion:not(.ag-motion-ready) .ag-chart-box svg * {
   animation-play-state: paused;
 }
 
+/* ---- Gestaffelter Eintritt beim Sichtbarwerden (D-020, BP-020) ----
+ * motion.js markiert Elemente mit data-reveal als .ag-reveal und setzt .ag-revealed, sobald sie zu 15 % sichtbar sind.
+ * Nur opacity und transform, keine Verschiebung des Layouts. Der Start wartet auf den Loader (ag-motion-ready).
+ * Ohne Sichtbarwerden bleibt die Animation pausiert, das Element steht auf dem Startzustand (unsichtbar).
+ */
+
+@keyframes ag-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html.ag-motion .ag-reveal {
+  animation: ag-rise-in 600ms var(--ag-motion-ease) backwards;
+  animation-delay: var(--ag-reveal-delay, 0ms);
+  animation-play-state: paused;
+}
+
+html.ag-motion.ag-motion-ready .ag-reveal.ag-revealed {
+  animation-play-state: running;
+}
+
+/* Inhalte eines noch nicht sichtbaren Elements (Linien der Diagramme) warten, bis es sichtbar wird */
+html.ag-motion .ag-reveal:not(.ag-revealed) svg * {
+  animation-play-state: paused;
+}
+
 /* ---- Ergebnis-Tint des Hintergrunds (D-023, BP-019) ----
  * Zwei feste Ebenen (Gewinn, Verlust) hinter dem Inhalt. Nur die Deckkraft ändert sich: motion.js setzt
  * --ag-tint-gain bzw. --ag-tint-loss (0 bis 1), der Übergang dauert 2400 ms. Kein Farbübergang über @property,

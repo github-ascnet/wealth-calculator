@@ -9,6 +9,8 @@
  * Schnittstelle:
  *   AG_MOTION.enabled        false bei prefers-reduced-motion
  *   AG_MOTION.whenReady(fn)  ruft fn nach dem Ausblenden des Loaders auf (sofort, wenn schon bereit oder ohne Motion)
+ *   AG_MOTION.revealOnScroll(elemente)
+ *                            Elemente steigen gestaffelt auf, sobald sie sichtbar werden (BP-020); nur einmal je Element
  *   AG_MOTION.setResult(wachstumProzent)
  *                            färbt den Hintergrund nach Total Growth (D-023, BP-019): Gewinn teal, Verlust rosé,
  *                            Stärke 1 - exp(-|G| / 150 %), unter 1 % keine Färbung
@@ -18,6 +20,7 @@
  */
 (function () {
   const TITEL_STAFFEL_MS = 45; // Versatz je Buchstabe beim Einlauf des Titels
+  const REVEAL_STAFFEL_MS = 60; // Versatz zwischen gleichzeitig sichtbar werdenden Elementen
   const TINT_G0 = 150; // Total Growth in Prozent, bei dem die Stärke etwa 63 % erreicht (13.7)
   const TINT_NEUTRAL = 1; // unter diesem Betrag in Prozent keine Färbung
   const LOADER_DAUER_MS = 1000; // sichtbare Dauer des Loaders ab Navigationsbeginn
@@ -116,6 +119,46 @@
     });
   }
 
+  // ---- Gestaffelter Eintritt beim Sichtbarwerden (D-020, BP-020) ----
+  // Animation in motion.css (ag-rise-in); sie wartet auf ag-motion-ready und auf ag-revealed.
+
+  function revealOnScroll(elemente) {
+    if (!aktiv) return;
+    const liste = Array.from(elemente || []);
+    // Ohne IntersectionObserver bleiben alle Elemente unverändert sichtbar
+    if (liste.length === 0 || typeof window.IntersectionObserver !== "function") return;
+
+    liste.forEach(function (element) {
+      element.classList.add("ag-reveal");
+    });
+
+    const beobachter = new window.IntersectionObserver(
+      function (eintraege) {
+        // Gleichzeitig sichtbar werdende Elemente in Lesereihenfolge (oben vor unten, links vor rechts) staffeln
+        const sichtbar = eintraege
+          .filter(function (eintrag) {
+            return eintrag.isIntersecting;
+          })
+          .sort(function (a, b) {
+            const ra = a.boundingClientRect;
+            const rb = b.boundingClientRect;
+            return Math.round(ra.top / 20) - Math.round(rb.top / 20) || ra.left - rb.left;
+          });
+        sichtbar.forEach(function (eintrag, index) {
+          eintrag.target.style.setProperty("--ag-reveal-delay", index * REVEAL_STAFFEL_MS + "ms");
+          eintrag.target.classList.add("ag-revealed");
+          beobachter.unobserve(eintrag.target); // nur einmal: eine Neuberechnung löst nichts mehr aus
+        });
+      },
+      { threshold: 0.15 }
+    );
+    liste.forEach(function (element) {
+      beobachter.observe(element);
+    });
+  }
+
+  revealOnScroll(document.querySelectorAll("[data-reveal]"));
+
   // ---- Hochzählen der Kennzahlen (D-026) ----
 
   const zaehlzustand = new WeakMap(); // Element -> { angezeigt, raf, marke }
@@ -167,5 +210,5 @@
     whenReady(beginne);
   }
 
-  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady, countUp: countUp, setResult: setResult };
+  window.AG_MOTION = { enabled: aktiv, whenReady: whenReady, countUp: countUp, setResult: setResult, revealOnScroll: revealOnScroll };
 })();

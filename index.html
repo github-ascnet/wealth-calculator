@@ -70,7 +70,7 @@
             <div class="ag-inputs-inner">
                 <div class="ag-form-grid">
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="startkapital" class="ag-label">Starting Capital</label>
                             <button type="button" class="ag-info" aria-label="Info: Starting Capital" data-tooltip="The capital invested at the beginning.">!</button>
@@ -78,7 +78,7 @@
                         <input type="number" class="ag-input" id="startkapital" value="100000" min="10000" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <!-- <div class="ag-field">
+                    <!-- <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="jaehrlicherInvest" class="ag-label">Yearly Additional Investment (USD)</label>
                             <button type="button" class="ag-info" aria-label="Info: Yearly Additional Investment" data-tooltip="Additional yearly investment in USD you want to risk.">!</button>
@@ -86,7 +86,7 @@
                         <input type="number" class="ag-input" id="jaehrlicherInvest" value="0" step="100" min="0" max="100000" oninput="validateInput(this)" onblur="sanitizeInput(this)" />
                     </div> -->
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="jahre" class="ag-label">Years to measure</label>
                             <button type="button" class="ag-info" aria-label="Info: Years to measure" data-tooltip="Number of years for the calculation.">!</button>
@@ -94,7 +94,7 @@
                         <input type="number" class="ag-input" id="jahre" value="10" min="1" max="50" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="renditeProJahr" class="ag-label">% Profit by Year</label>
                             <button type="button" class="ag-info" aria-label="Info: % Profit by Year" data-tooltip="Percentage annual return.">!</button>
@@ -102,7 +102,7 @@
                         <input type="number" class="ag-input" id="renditeProJahr" value="25" min="0" max="500" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="maxDrawdown" class="ag-label">% Max. Drawdown</label>
                             <button type="button" class="ag-info" aria-label="Info: % Max. Drawdown" data-tooltip="Expected maximum decline from peak to trough in percent (e.g., -30 = minus 30%).">!</button>
@@ -110,7 +110,7 @@
                         <input type="number" class="ag-input" id="maxDrawdown" value="-18" min="-100" max="0" step="0.1" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="standardabweichung" class="ag-label">% Standard deviation by Year</label>
                             <button type="button" class="ag-info" aria-label="Info: % Standard deviation by Year" data-tooltip="Average standard deviation of the return in Percentage.">!</button>
@@ -118,7 +118,7 @@
                         <input type="number" class="ag-input" id="standardabweichung" value="22" min="0" max="500" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="dividendeProzent" class="ag-label">% Dividends by Year</label>
                             <button type="button" class="ag-info" aria-label="Info: % Dividends by Year" data-tooltip="Percentage dividend based on assets.">!</button>
@@ -126,7 +126,7 @@
                         <input type="number" class="ag-input" id="dividendeProzent" value="1.0" min="0" max="10" step="0.1" oninput="validateInput(this); berechneVermoegenVerzoegert()" onfocusout="sanitizeInput(this)">
                     </div>
 
-                    <div class="ag-field">
+                    <div class="ag-field" data-reveal>
                         <div class="ag-label-row">
                             <label for="relativerBezug" class="ag-label">% Cashflow p.a.</label>
                             <button type="button" class="ag-info" aria-label="Info: % Cashflow p.a." data-tooltip="Percentage annual payout deducted from assets.">!</button>
@@ -136,7 +136,7 @@
 
                 </div>
                 <div>
-                    <button id="simulateButton" class="ag-button">
+                    <button id="simulateButton" class="ag-button" data-reveal>
                         Start Simulation
                     </button>
                 </div>
@@ -145,10 +145,10 @@
 
         <section class="ag-charts">
             <div class="ag-charts-inner">
-                <div id="vermoegenChartContainer" class="ag-chart-box">
+                <div id="vermoegenChartContainer" class="ag-chart-box" data-reveal>
                     <svg id="vermoegenChart" role="img" aria-label="Profit chart"></svg>
                 </div>
-                <div class="ag-kpi">
+                <div class="ag-kpi" data-reveal>
                     <span id="wachstumProzent" class="ag-kpi-item"></span>
                     <span id="maxDrawdownAnzeige" class="ag-kpi-item"></span>
                     <span id="volatilitaet" class="ag-kpi-item"></span>
@@ -157,7 +157,7 @@
                         <span id="totalCashflowAnzeige" class="ag-kpi-item"></span>
                     </span>
                 </div>
-                <div id="bezugDataChartContainer" class="ag-chart-box">
+                <div id="bezugDataChartContainer" class="ag-chart-box" data-reveal>
                     <svg id="bezugDataChart" role="img" aria-label="Cashflow and dividends chart"></svg>
                 </div>
             </div>
