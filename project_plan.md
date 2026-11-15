@@ -17,6 +17,7 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
+| 2026-11-15 | IMPLEMENT | BP-020 umgesetzt: gestaffelter Eintritt von Eingabefeldern, Button, Kennzahlen-Box und Diagramm-Karten beim Sichtbarwerden (D-020). |
 | 2026-11-15 | IMPLEMENT | BP-019 umgesetzt: Ergebnis-Tint des Hintergrunds nach Total Growth (D-023); Sichtprüfung durch den Auftraggeber offen. |
 | 2026-11-15 | CHANGE | Auftrag: Titel fest „Growth-Calculator“ mit Motion-Effekt (D-031), dynamischer Titel entfällt. |
 | 2026-11-15 | IMPLEMENT | BP-018 umgesetzt: Einzeichnung der Linien bei jeder Neuberechnung (D-021), Hochzählen der Kennzahlen (D-026), 250 ms Tipp-Pause (D-025). |

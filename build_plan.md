@@ -35,12 +35,12 @@
 | BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Umgesetzt, im Browser geprüft (Chrome headless), Commit 7925677 (Branch `redesign`) | BP-016 |
 | BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Umgesetzt, im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
 | BP-019 | Redesign: Ergebnis-Tint | Umgesetzt, im Browser geprüft (Chrome headless), Commit 2c2792d (Branch `redesign`); Sichtprüfung durch den Auftraggeber offen | BP-017 |
-| BP-020 | Redesign: Gestaffelter Eintritt | Geplant | BP-017 |
+| BP-020 | Redesign: Gestaffelter Eintritt | Umgesetzt, im Browser geprüft (Chrome headless), Commit 9ba8aee (Branch `redesign`) | BP-017 |
 | BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Geplant | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-020. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-020`).
+**Nächstes vorgesehenes Paket:** BP-021. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-021`).
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -434,7 +434,16 @@
 
 ### BP-020 Gestaffelter Eintritt
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit 9ba8aee auf Branch `redesign`.
+- **Umsetzung:** `index.html`: Attribut `data-reveal` an den Eingabefeldern (`.ag-field`), am Simulations-Button, an der Kennzahlen-Box und an beiden Diagramm-Karten; `motion.js`: `AG_MOTION.revealOnScroll(elemente)` (`IntersectionObserver`, Schwelle 15 %, 60 ms Versatz in Lesereihenfolge oben vor unten und links vor rechts, je Element nur einmal, danach `unobserve`); `motion.css`: `ag-rise-in` (600 ms, `opacity` 0 → 1 und `translateY(18px)` → 0), pausiert bis `ag-motion-ready` und `ag-revealed`; die Linien-Animationen der Diagramme warten zusätzlich, bis ihre Karte sichtbar wird.
+- **Prüfergebnis (Chrome headless, 1280 × 500 px, Deckkraft aus dem berechneten Stil):**
+  - Während des Loaders sind alle oberhalb des Falzes liegenden Elemente unsichtbar (Deckkraft 0), danach steigen sie gestaffelt auf (Verzögerung 0, 60, 120 … 480 ms; Felder, Button, Kennzahlen-Box); nach 3.6 s alle 1. **Erfüllt.**
+  - Die Diagramm-Karten unterhalb des Falzes bleiben bei 0, bis gescrollt wird; beim Scrollen steigen sie auf (nach 250 ms 0.76 bzw. 0.63, nach 1.9 s 1; Versatz 0 und 60 ms). Mobil (390 × 700): Eingaben sichtbar, Diagramm-Karten unterhalb des Falzes noch nicht. **Erfüllt.**
+  - Animierte Eigenschaften der Animation: nur `transform` und `opacity`; die Dokumenthöhe bleibt gleich (879 px vor und nach dem Aufsteigen). **Erfüllt.**
+  - Neuberechnung: 150 ms nach `berechneVermoegen()` laufen 0 `ag-rise-in`-Animationen. **Erfüllt.**
+  - Ohne `IntersectionObserver` (entfernt) und bei Reduced-Motion: keine Klasse `ag-reveal`, alle 11 Elemente mit Deckkraft 1, bei Reduced-Motion 0 Animationen. **Erfüllt.**
+  - Konsole in allen Fällen fehlerfrei. **Erfüllt.**
+- **Nicht prüfbar:** Andere Browser und echte Geräte (OP-12). Auch der Eingabebereich als Karte (`.ag-inputs`) und der Titel steigen nicht auf; der Titel hat seinen eigenen Effekt (D-031).
 - **Grundlage:** D-020; Muster des Vorbilds (dessen D-028)
 - **Ziel:** Eingabefelder, Diagramm-Karten und KPI-Box steigen gestaffelt auf.
 - **Scope:** `motion.js`: `revealOnScroll` mit `IntersectionObserver` (60 ms Versatz); `motion.css`: Keyframes mit `opacity` und `transform`; Start nach dem Loader.
