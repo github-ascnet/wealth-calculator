@@ -1,0 +1,255 @@
+/*
+ * motion.css – Motion-Grundlage, Intro-Loader, Hintergrund-Drift (BP-017; D-020, D-027)
+ *
+ * Grundregeln (D-020):
+ * - Der statische Zustand ist der Endzustand. Ohne motion.js, ohne JavaScript und bei
+ *   prefers-reduced-motion: reduce gibt es keinen Loader und keine Bewegung.
+ * - Dauer-Animationen nutzen ausschliesslich transform oder opacity.
+ * - Aktiv unter html.ag-motion (gesetzt von motion.js, nicht bei reduzierter Bewegung);
+ *   html.ag-motion-ready folgt, sobald der Loader ausgeblendet ist (Grundlage für BP-018 bis BP-020).
+ */
+
+:root {
+  --ag-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- Intro-Loader (D-027): Mini-Chart mit Titel, ca. 1 s ----
+ * Standardmässig nicht sichtbar. Nur bei no-preference erscheint er ab dem ersten Bild,
+ * noch vor motion.js. Die reine CSS-Animation ag-loader-safety blendet ihn nach ca. 1.05 s
+ * in jedem Fall aus (Sicherheitsnetz), falls motion.js fehlt oder nicht läuft.
+ * Ohne JavaScript blendet ihn der noscript-Block im Kopf von index.html ganz aus.
+ */
+
+.ag-loader {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ag-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16, 56, 72, 0.55), transparent 70%),
+      linear-gradient(180deg, var(--ag-bg-0) 0%, #061321 60%, var(--ag-bg-0) 100%);
+    animation: ag-loader-safety 200ms ease 1050ms forwards;
+  }
+
+  /* Von motion.js nach ca. 1 s gesetzt: schneller, weicher Abgang */
+  .ag-loader.ag-loader-hidden {
+    animation: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms ease, visibility 0s linear 200ms;
+  }
+
+  .ag-loader-card {
+    padding: 22px 28px 18px;
+    text-align: center;
+    background: var(--ag-glass);
+    border: 1px solid var(--ag-border);
+    border-radius: 14px;
+    box-shadow: var(--ag-edge), var(--ag-shadow);
+  }
+
+  .ag-loader-hidden .ag-loader-card {
+    transform: scale(0.96) translateY(6px);
+    transition: transform 200ms var(--ag-motion-ease);
+  }
+
+  .ag-loader-chart {
+    position: relative;
+    width: 176px;
+    height: 78px;
+    margin: 0 auto 12px;
+  }
+
+  .ag-loader-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Linie wird aufgedeckt: Fenster (aussen) und Inhalt (innen) laufen gegenläufig, der Inhalt steht still */
+  .ag-loader-reveal,
+  .ag-loader-reveal-inner {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ag-loader-reveal {
+    overflow: hidden;
+    animation: ag-loader-reveal 900ms var(--ag-motion-ease) backwards;
+  }
+
+  .ag-loader-reveal-inner {
+    animation: ag-loader-reveal-inner 900ms var(--ag-motion-ease) backwards;
+  }
+
+  .ag-loader-grid line {
+    stroke: var(--ag-muted);
+    stroke-opacity: 0.18;
+    stroke-width: 1;
+  }
+
+  .ag-loader-line,
+  .ag-loader-line-glow {
+    fill: none;
+    stroke: var(--ag-cyan);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Glow als breiter, transparenter Strich (kein Filter) */
+  .ag-loader-line-glow {
+    stroke-width: 8;
+    stroke-opacity: 0.18;
+  }
+
+  .ag-loader-area {
+    fill: url(#agLoaderFill);
+  }
+
+  .ag-loader-tip,
+  .ag-loader-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .ag-loader-tip {
+    fill: var(--ag-cyan);
+    animation: ag-loader-tip 300ms ease-out 800ms backwards;
+  }
+
+  .ag-loader-pulse {
+    fill: none;
+    stroke: var(--ag-cyan);
+    stroke-width: 1.5;
+    opacity: 0;
+    animation: ag-loader-pulse 900ms ease-out 800ms infinite;
+  }
+
+  .ag-loader-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ag-text);
+    animation: ag-loader-breathe 1600ms ease-in-out infinite;
+  }
+}
+
+@keyframes ag-loader-safety {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes ag-loader-reveal {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ag-loader-reveal-inner {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ag-loader-tip {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ag-loader-pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+@keyframes ag-loader-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---- Hintergrund-Drift der Aurora-Bänder, ab 701 px (D-020) ----
+ * Nur transform. Die Ebenen sind unter Motion etwas grösser als der Bildschirm,
+ * damit beim Verschieben kein Rand sichtbar wird.
+ */
+
+@keyframes ag-drift-a {
+  from {
+    transform: translate3d(-2%, -1.5%, 0);
+  }
+  to {
+    transform: translate3d(2.5%, 2%, 0);
+  }
+}
+
+@keyframes ag-drift-b {
+  from {
+    transform: translate3d(2%, 1.5%, 0);
+  }
+  to {
+    transform: translate3d(-2.5%, -2%, 0);
+  }
+}
+
+@media (min-width: 701px) {
+  html.ag-motion body::before,
+  html.ag-motion body::after {
+    inset: -5%;
+    will-change: transform;
+  }
+
+  html.ag-motion body::before {
+    animation: ag-drift-a 52s ease-in-out infinite alternate;
+  }
+
+  html.ag-motion body::after {
+    animation: ag-drift-b 64s ease-in-out infinite alternate;
+  }
+}
+
+/* ---- Reduzierte Bewegung: alles aus, der Endzustand gilt sofort ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ag-loader {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

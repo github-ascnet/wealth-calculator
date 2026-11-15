@@ -20,9 +20,43 @@
     <meta name="twitter:image" content="https://wealthcalc.ascnet.ch/og-image.png">
     <title>Asset Growth Calculator - Visualize Your Financial Future</title>
     <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="motion.css">
+    <noscript><style>.ag-loader { display: none !important; }</style></noscript>
 </head>
 
 <body class="ag-page">
+
+    <div id="agLoader" class="ag-loader" aria-hidden="true">
+        <div class="ag-loader-card">
+            <div class="ag-loader-chart">
+                <svg class="ag-loader-layer ag-loader-grid" viewBox="0 0 176 78" preserveAspectRatio="none">
+                    <line x1="0" y1="14" x2="176" y2="14"></line>
+                    <line x1="0" y1="38" x2="176" y2="38"></line>
+                    <line x1="0" y1="62" x2="176" y2="62"></line>
+                </svg>
+                <div class="ag-loader-reveal">
+                    <div class="ag-loader-reveal-inner">
+                        <svg class="ag-loader-layer" viewBox="0 0 176 78">
+                            <defs>
+                                <linearGradient id="agLoaderFill" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#58c4ff" stop-opacity="0.3"></stop>
+                                    <stop offset="100%" stop-color="#58c4ff" stop-opacity="0"></stop>
+                                </linearGradient>
+                            </defs>
+                            <path class="ag-loader-area" d="M4,66 C30,63 44,58 62,50 S96,44 112,30 S150,14 172,8 L172,78 L4,78 Z"></path>
+                            <path class="ag-loader-line-glow" d="M4,66 C30,63 44,58 62,50 S96,44 112,30 S150,14 172,8"></path>
+                            <path class="ag-loader-line" d="M4,66 C30,63 44,58 62,50 S96,44 112,30 S150,14 172,8"></path>
+                        </svg>
+                    </div>
+                </div>
+                <svg class="ag-loader-layer" viewBox="0 0 176 78">
+                    <circle class="ag-loader-pulse" cx="172" cy="8" r="5"></circle>
+                    <circle class="ag-loader-tip" cx="172" cy="8" r="3.2"></circle>
+                </svg>
+            </div>
+            <p class="ag-loader-title">Asset Growth Calculator</p>
+        </div>
+    </div>
 
     <header>
         <h1 class="ag-title" id="titel">Asset Growth Calculator</h1>
@@ -128,6 +162,7 @@
     </footer>
 
     <script src="charts.js"></script>
+    <script src="motion.js"></script>
     <script src="site.js"></script>
 
 </body>
