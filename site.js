@@ -248,6 +248,9 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           },
           ticks: {
             color: "#fff",
+            callback: function (value) {
+              return value / 1000; // Achse in Tausend USD (wie Legende und Data Labels)
+            },
           },
           grid: {
             color: "#ffffff54",
@@ -333,6 +336,9 @@ function renderCharts(labels, data, bezugData, dividendeData) {
           },
           ticks: {
             color: "#fff",
+            callback: function (value) {
+              return value / 1000; // Achse in Tausend USD (wie Legende und Data Labels)
+            },
           },
           grid: {
             color: "#ffffff54",
