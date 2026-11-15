@@ -1,27 +1,45 @@
 /*
- * site.css – Basis und Layout (BP-014, D-019, D-022)
+ * site.css – Basis, Layout und Aurora-Farbwelt (BP-014, BP-015; D-018, D-019, D-022, D-029)
  *
- * Ohne Bootstrap, ohne Webfonts. Die Farben sind vorläufig die bisherigen
- * (Dark Theme mit Amber) und liegen als Variablen vor; BP-015 ersetzt sie durch Aurora.
+ * Ohne Bootstrap, ohne Webfonts. Die Farben liegen als Variablen --ag-* vor (Palette: project_plan.md, 13.8).
+ * Die Diagramme (Chart.js) behalten bis BP-016 ihre bisherigen Linienfarben.
  */
 
 :root {
+  color-scheme: dark;
+
   --ag-font-text: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
   --ag-font-mono: Consolas, "SFMono-Regular", Menlo, "Liberation Mono", monospace;
 
-  --ag-bg-edge: #272525;
-  --ag-bg-mid: #454046;
-  --ag-text: #fff;
-  --ag-accent: #ffc107;
-  --ag-accent-hover: #e0a800;
-  --ag-accent-ring: rgba(255, 193, 7, 0.2);
-  --ag-on-accent: #272525;
-  --ag-panel-bg: rgba(39, 37, 37, 0.95);
-  --ag-input-bg: #2d2d2d;
-  --ag-input-bg-focus: #444;
-  --ag-input-border: #ced4da;
-  --ag-tooltip-bg: #000;
-  --ag-tooltip-text: #fff;
+  /* Aurora-Palette */
+  --ag-bg-0: #03060b;
+  --ag-bg-1: #071420;
+  --ag-cyan: #58c4ff;
+  --ag-teal: #2de2c4;
+  --ag-green: #6ee7a8;
+  --ag-rose: #ff6fa3;
+  --ag-violet: #8b7bff;
+  --ag-text: #eafcff;
+  --ag-muted: #93acbf;
+
+  /* Karten, Rahmen, Eingabefelder */
+  --ag-glass: linear-gradient(180deg, rgba(10, 24, 36, 0.84), rgba(4, 11, 19, 0.84));
+  --ag-border: rgba(45, 226, 196, 0.16);
+  --ag-border-strong: rgba(45, 226, 196, 0.42);
+  --ag-edge: inset 0 1px 0 rgba(170, 245, 255, 0.1);
+  --ag-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 42px rgba(45, 226, 196, 0.05);
+  --ag-input-bg: rgba(3, 10, 17, 0.78);
+  --ag-input-bg-focus: rgba(8, 22, 34, 0.95);
+  --ag-input-border: #6b8aa0;
+
+  /* Akzente und Zustände */
+  --ag-accent: var(--ag-teal);
+  --ag-accent-ring: rgba(45, 226, 196, 0.45);
+  --ag-on-accent: #03060b;
+  --ag-focus: var(--ag-cyan);
+  --ag-button-bg: linear-gradient(90deg, #58c4ff, #2de2c4);
+  --ag-button-bg-hover: linear-gradient(90deg, #7bd2ff, #5cf0d6);
+  --ag-tooltip-bg: #0a1a28;
 }
 
 /* ---- Basis ---- */
@@ -36,6 +54,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Nachtblau mit statischem Sternenfeld (Punktmuster unterschiedlicher Kachelgrösse) */
 body {
   max-width: 1140px;
   min-height: 100vh;
@@ -45,12 +64,39 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ag-text);
-  background: linear-gradient(
-    90deg,
-    var(--ag-bg-edge) 0%,
-    var(--ag-bg-mid) 50%,
-    var(--ag-bg-edge) 100%
-  );
+  background: radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 63% 41%, rgba(200, 240, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 37% 72%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 84% 12%, rgba(180, 255, 230, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 22% 56%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 76% 83%, rgba(190, 235, 255, 0.55), transparent),
+    radial-gradient(2px 2px at 48% 24%, rgba(230, 255, 250, 0.5), transparent),
+    radial-gradient(ellipse 120% 70% at 50% -10%, rgba(16, 56, 72, 0.55), transparent 60%),
+    linear-gradient(180deg, var(--ag-bg-0) 0%, #061321 55%, var(--ag-bg-0) 100%);
+  background-size: 230px 230px, 230px 230px, 310px 310px, 310px 310px, 470px 470px,
+    470px 470px, 640px 640px, auto, auto;
+  background-attachment: fixed;
+}
+
+/* Aurora-Bänder oben (::before) und unten (::after), statisch, hinter dem Inhalt */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  background: radial-gradient(ellipse 55% 20% at 28% 10%, rgba(45, 226, 196, 0.24), transparent 70%),
+    radial-gradient(ellipse 42% 16% at 76% 6%, rgba(110, 231, 168, 0.17), transparent 70%),
+    radial-gradient(ellipse 60% 18% at 50% 2%, rgba(88, 196, 255, 0.14), transparent 70%);
+}
+
+body::after {
+  background: radial-gradient(ellipse 50% 18% at 20% 100%, rgba(139, 123, 255, 0.12), transparent 70%),
+    radial-gradient(ellipse 45% 16% at 80% 96%, rgba(45, 226, 196, 0.12), transparent 70%);
 }
 
 .ag-title {
@@ -59,6 +105,7 @@ body {
   font-weight: 500;
   line-height: 1.2;
   text-align: center;
+  text-shadow: 0 0 28px rgba(45, 226, 196, 0.35);
 }
 
 @media (min-width: 1200px) {
@@ -67,7 +114,24 @@ body {
   }
 }
 
+/* ---- Karten (Eingabebereich, Diagramme, Kennzahlen) ---- */
+
+.ag-inputs,
+.ag-chart-box,
+.ag-kpi {
+  background: var(--ag-glass);
+  border: 1px solid var(--ag-border);
+  box-shadow: var(--ag-edge), var(--ag-shadow);
+}
+
 /* ---- Eingabebereich ---- */
+
+.ag-inputs {
+  max-width: 900px;
+  margin: 0 auto 1rem;
+  padding: 10px;
+  border-radius: 14px;
+}
 
 .ag-inputs-inner {
   display: flex;
@@ -99,6 +163,7 @@ body {
 
 .ag-label {
   font-size: 13px;
+  color: var(--ag-muted);
 }
 
 .ag-input {
@@ -148,7 +213,7 @@ body {
 }
 
 .ag-info:focus-visible {
-  outline: 2px solid var(--ag-text);
+  outline: 2px solid var(--ag-focus);
   outline-offset: 2px;
 }
 
@@ -174,16 +239,18 @@ body {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.4;
-  color: var(--ag-tooltip-text);
+  color: var(--ag-text);
   background: var(--ag-tooltip-bg);
+  border: 1px solid var(--ag-border-strong);
   border-radius: 0.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
 .ag-tooltip.is-visible {
-  opacity: 0.9;
+  opacity: 1;
   visibility: visible;
 }
 
@@ -199,21 +266,19 @@ body {
   font-weight: 700;
   line-height: 1.5;
   color: var(--ag-on-accent);
-  background: var(--ag-accent);
+  background: var(--ag-button-bg);
   border: none;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 14px rgba(45, 226, 196, 0.35);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
 }
 
 .ag-button:hover {
-  color: #fdfcfc;
-  background: var(--ag-accent-hover);
+  background: var(--ag-button-bg-hover);
 }
 
 .ag-button:focus-visible {
-  outline: 2px solid var(--ag-text);
+  outline: 2px solid var(--ag-focus);
   outline-offset: 2px;
 }
 
@@ -238,6 +303,8 @@ body {
   width: 100%;
   max-width: 900px;
   height: clamp(260px, 50vh, 480px);
+  padding: 12px 8px;
+  border-radius: 14px;
 }
 
 .ag-chart-box canvas {
@@ -252,9 +319,8 @@ body {
   font-family: var(--ag-font-mono);
   font-size: 10px;
   color: var(--ag-text);
-  background: var(--ag-panel-bg);
-  border: 2px solid var(--ag-accent);
-  border-radius: 8px;
+  border-color: var(--ag-border-strong);
+  border-radius: 12px;
 }
 
 /* ---- Fusszeile ---- */
@@ -262,6 +328,7 @@ body {
 .ag-footer {
   margin-top: 1.5rem;
   font-size: 0.875em;
+  color: var(--ag-muted);
   text-align: center;
 }
 
@@ -278,7 +345,6 @@ body {
 
   .ag-title {
     font-size: 14px;
-    color: var(--ag-accent);
   }
 
   .ag-inputs-inner {
