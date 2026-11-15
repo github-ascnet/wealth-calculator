@@ -79,7 +79,6 @@ function berechneVermoegen() {
   const bezugData = [];
   const dividendeData = [];
 
-  let vermoegenErstesJahr = startkapital;
   let vermoegenLetztesJahr = startkapital;
 
   let highWatermark = startkapital;
@@ -126,7 +125,6 @@ function berechneVermoegen() {
     let betrag = Math.max(hypothetischerBetrag - bezug, 0);
 
     // 7. Ergebnisse zwischenspeichern
-    if (jahr === 0) vermoegenErstesJahr = betrag;
     vermoegenLetztesJahr = betrag;
 
     chartLabels.push(aktuellesJahr + jahr);
@@ -136,7 +134,7 @@ function berechneVermoegen() {
   }
 
   const wachstum =
-    ((vermoegenLetztesJahr - vermoegenErstesJahr) / vermoegenErstesJahr) * 100;
+    ((vermoegenLetztesJahr - startkapital) / startkapital) * 100;
   document.getElementById(
     "wachstumProzent"
   ).textContent = `Total Growth: ${wachstum.toFixed(2)}% Max. Drawdown: ${(
