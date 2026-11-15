@@ -109,7 +109,7 @@
         <section class="ag-charts">
             <div class="ag-charts-inner">
                 <div id="vermoegenChartContainer" class="ag-chart-box">
-                    <canvas id="vermoegenChart" width="800" height="400"></canvas>
+                    <svg id="vermoegenChart" role="img" aria-label="Profit chart"></svg>
                 </div>
                 <div class="ag-kpi">
                     <div><span id="wachstumProzent"></span></div>
@@ -117,7 +117,7 @@
                     <div><span id="totalDividendsCashflow"></span></div>
                 </div>
                 <div id="bezugDataChartContainer" class="ag-chart-box">
-                    <canvas id="bezugDataChart" width="800" height="400"></canvas>
+                    <svg id="bezugDataChart" role="img" aria-label="Cashflow and dividends chart"></svg>
                 </div>
             </div>
         </section>
@@ -127,8 +127,7 @@
         <p>&copy; 2024 ASCNET Solutions GmbH. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="charts.js"></script>
     <script src="site.js"></script>
 
 </body>

@@ -2,7 +2,7 @@
  * site.css – Basis, Layout und Aurora-Farbwelt (BP-014, BP-015; D-018, D-019, D-022, D-029)
  *
  * Ohne Bootstrap, ohne Webfonts. Die Farben liegen als Variablen --ag-* vor (Palette: project_plan.md, 13.8).
- * Die Diagramme (Chart.js) behalten bis BP-016 ihre bisherigen Linienfarben.
+ * Die Diagramme (SVG, charts.js) stehen im Abschnitt "Diagramme und Kennzahlen" (BP-016).
  */
 
 :root {
@@ -302,13 +302,128 @@ body::after {
   position: relative;
   width: 100%;
   max-width: 900px;
-  height: clamp(260px, 50vh, 480px);
   padding: 12px 8px;
   border-radius: 14px;
 }
 
-.ag-chart-box canvas {
+/* SVG füllt die Breite des Containers; die Höhe ergibt sich aus der viewBox, die charts.js setzt */
+.ag-chart-box svg {
   display: block;
+  width: 100%;
+  height: auto;
+  touch-action: pan-y;
+}
+
+/* Datenreihen: Farbe über currentColor (Palette 13.8: Vermögen Cyan, Cashflow Teal, Dividenden Violett) */
+.ag-serie-vermoegen {
+  color: var(--ag-cyan);
+}
+
+.ag-serie-cashflow {
+  color: var(--ag-teal);
+}
+
+.ag-serie-dividende {
+  color: var(--ag-violet);
+}
+
+.ag-chart-line,
+.ag-chart-line-glow,
+.ag-chart-legend-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ag-chart-line-glow {
+  stroke-width: 9;
+  stroke-opacity: 0.16;
+}
+
+.ag-chart-dot,
+.ag-chart-hover-dot {
+  fill: currentColor;
+}
+
+.ag-chart-hover-dot {
+  stroke: var(--ag-bg-0);
+  stroke-width: 2;
+}
+
+.ag-chart-axis {
+  stroke: var(--ag-muted);
+  stroke-width: 1;
+}
+
+.ag-chart-grid {
+  stroke: var(--ag-muted);
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+}
+
+.ag-chart-hover-line {
+  stroke: var(--ag-muted);
+  stroke-opacity: 0.6;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.ag-chart-stars circle {
+  fill: var(--ag-text);
+}
+
+.ag-chart-tick {
+  fill: var(--ag-muted);
+  font-family: var(--ag-font-mono);
+}
+
+.ag-chart-label {
+  fill: var(--ag-text);
+  font-family: var(--ag-font-mono);
+}
+
+.ag-chart-title,
+.ag-chart-legend-text {
+  fill: var(--ag-text);
+  font-family: var(--ag-font-text);
+}
+
+/* Tooltip der Diagramme (Maus und Touch) */
+.ag-chart-tip {
+  position: absolute;
+  z-index: 2;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--ag-font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ag-text);
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--ag-tooltip-bg);
+  border: 1px solid var(--ag-border-strong);
+  border-radius: 0.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+}
+
+.ag-chart-tip.is-visible {
+  visibility: visible;
+}
+
+.ag-chart-tip-year {
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+
+.ag-chart-tip-swatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  background: currentColor;
+  border-radius: 50%;
 }
 
 .ag-kpi {
