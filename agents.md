@@ -13,7 +13,7 @@ Projektspezifische Arbeitsregeln für den Asset Growth Calculator. Fachliche und
 
 - Nur HTML, CSS und Vanilla JavaScript (D-001, D-003).
 - Keine Frameworks, kein Build-Prozess, kein Paketmanager, keine neuen Bibliotheken oder CDN-Abhängigkeiten ohne neue Entscheidung in `decisions.md`.
-- Bootstrap und Google Fonts sind seit BP-014 entfernt (D-019). Chart.js und das Datalabels-Plugin (D-005) bleiben über CDN bis BP-016 bestehen und entfallen dann (D-017). Keine neuen CDN-Einbindungen.
+- Bootstrap und Google Fonts sind seit BP-014 entfernt (D-019). Chart.js und das Datalabels-Plugin (D-005) sind seit BP-016 entfernt (D-017); die Diagramme zeichnet `charts.js` als Inline-SVG. Das Projekt hat keine externen Einbindungen mehr; keine neuen CDN-Einbindungen.
 - Redesign-Pakete (ab BP-014): Diagramme als Inline-SVG (D-017), Aurora-Theme ohne Schalter (D-018), Systemschriften (D-019), Effekte nach D-020 mit den Grundregeln des Vorbilds.
 - Keine Server-Logik, keine Persistenz, keine externen Aufrufe ausser den bestehenden CDN- und Font-Einbindungen.
 
@@ -26,7 +26,7 @@ Projektspezifische Arbeitsregeln für den Asset Growth Calculator. Fachliche und
 | `site.js` | Logik | Bestehende Funktionen beibehalten; keine Aufteilung in Module ohne Auftrag |
 | `og-image.png` | OG-Vorschaubild | Nicht verändern ohne Auftrag |
 
-Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Geplant (Redesign, D-028, mit Abnahme von BP-013 verbindlich): `charts.js` (BP-016), `motion.css` und `motion.js` (BP-017). Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
+Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Seit BP-016 vorhanden: `charts.js` (Diagramme, D-028); seit BP-017: `motion.css` und `motion.js` (Motion-Grundlage, Loader, Drift). Andere Dateien im Repository sind keine Projektgrundlage (OP-01).
 
 ### Referenzprojekt für das Redesign
 

@@ -17,6 +17,10 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
+| 2026-11-15 | IMPLEMENT | BP-018 umgesetzt: Einzeichnung der Linien bei jeder Neuberechnung (D-021), Hochzählen der Kennzahlen (D-026), 250 ms Tipp-Pause (D-025). |
+| 2026-11-15 | CHANGE | Auftrag: Diagramme auf Desktop nebeneinander, Kennzahlen-Box breiter (D-030); Umsetzung in `site.css` und `charts.js` (Schwelle schmales Diagramm 420 px). |
+| 2026-11-15 | IMPLEMENT | BP-017 umgesetzt: `motion.css`, `motion.js`, Intro-Loader (D-027) und Hintergrund-Drift ab 701 px (D-020). |
+| 2026-11-15 | IMPLEMENT | BP-016 umgesetzt: SVG-Diagramme in `charts.js`, Chart.js und Datalabels entfernt, IB-04e erledigt; Abweichungen von 13.6 in `build_plan.md` vermerkt. |
 | 2026-11-15 | IMPLEMENT | BP-015 umgesetzt: Aurora-Farbwelt der Seite, Kontraste dokumentiert. |
 | 2026-11-15 | CHANGE | OP-27 entschieden: Redesign auf Branch `redesign` (D-024). |
 | 2026-11-15 | IMPLEMENT | BP-014 umgesetzt: IB-02 und IB-04a bis IB-04d behoben, OP-06 und OP-10 erledigt. |
@@ -172,7 +176,9 @@ Zusätzlich wird der Seitentitel (`#titel`) ersetzt durch: `Asset growth at {ren
 
 ## 8. Darstellung
 
-### 8.1 Diagramme (Chart.js, Typ `line`)
+### 8.1 Diagramme (Chart.js, Typ `line`; seit BP-016 Inline-SVG)
+
+**Stand seit BP-016 (2026-11-15):** Die Diagramme sind Inline-SVG aus `charts.js` (D-017); Chart.js und Datalabels sind entfernt. Die Tabelle beschreibt den Bestand vor BP-016; Datenreihen, Legendentexte, Achsentitel und Data-Label-Regel gelten unverändert, die Linienfarben nach Kapitel 13.8 (Vermögen Cyan, Cashflow Teal, Dividenden Violett). Die Y-Achse beginnt bei 0.
 
 | Canvas | Datenreihe | Farbe | Y-Achsentitel |
 |---|---|---|---|
@@ -250,7 +256,7 @@ Die folgenden Befunde wurden bei der INIT-Analyse festgestellt. Das jeweilige �
 | IB-04b | Breakpoint uneinheitlich: CSS `786px`, JS `768px` **Behoben mit BP-014 (2026-11-15).** | `site.css`, `site.js` |
 | IB-04c | Doppelte Regel `.form-control:focus`; ungenutzte Klasse `.input_row` **Behoben mit BP-014 (2026-11-15).** | `site.css` |
 | IB-04d | Font **Jura** wird geladen, aber nicht verwendet **Behoben mit BP-014 (2026-11-15).** | `index.html` |
-| IB-04e | Chart.js und Datalabels-Plugin ohne Versionsangabe vom CDN; ein Major-Update kann die Darstellung ändern | `index.html` |
+| IB-04e | Chart.js und Datalabels-Plugin ohne Versionsangabe vom CDN; ein Major-Update kann die Darstellung ändern **Behoben mit BP-016 (2026-11-15), Bibliotheken entfernt.** | `index.html` |
 | IB-04f | Wird das Vermögen am Ende von Jahr 1 zu 0, ergibt „Total Growth“ eine Division durch null (`NaN`/`Infinity`). Behoben mit BP-011 (2026-11-15). | `site.js` |
 | IB-04g | Ungültige oder leere Eingaben fliessen ungeprüft in die Berechnung (`NaN` in Charts und KPIs) | `site.js` |
 
@@ -284,7 +290,7 @@ Diese Punkte sind nicht als Build-Pakete eingeplant, sondern als offene Punkte e
 | OP-22 | SDD-Dateien öffentlich erreichbar? | **Erledigt** (2026-11-15) | Der Auftraggeber hat die Cloudflare-Konfiguration geprüft: „Alles ok“. Kein Handlungsbedarf. |
 | OP-23 | Verhalten beim Tippen | **Entschieden** (2026-11-15) | Berechnung und Einzeichnung starten nach einer Tipp-Pause von ca. 250 ms; Button und Simulation sofort → D-025 |
 | OP-24 | Hochzählen der Kennzahlen | **Entschieden** (2026-11-15) | Beim ersten Laden von 0, danach vom vorherigen zum neuen Wert → D-026 |
-| OP-25 | Legende der Diagramme | Offen (Annahme im Plan) | Chart.js erlaubt heute per Klick auf einen Legendeneintrag das Ausblenden einer Datenreihe. Annahme im Plan: statische Legende wie im Vorbild, die Klick-Funktion entfällt. Bei Widerspruch ist BP-016 anzupassen. |
+| OP-25 | Legende der Diagramme | Offen (Annahme umgesetzt mit BP-016) | Chart.js erlaubte per Klick auf einen Legendeneintrag das Ausblenden einer Datenreihe. Umgesetzt ist die Annahme: statische Legende wie im Vorbild, die Klick-Funktion entfällt. Bei Widerspruch ist `charts.js` anzupassen. |
 | OP-26 | Loader beim Seitenaufruf | **Entschieden** (2026-11-15) | Kurzer Intro-Loader (ca. 1 s, animierter Mini-Chart), bei reduzierter Bewegung ohne → D-027 |
 | OP-27 | Entwicklungsbranch für das Redesign | **Entschieden** (2026-11-15) | Das Redesign wird auf dem Branch `redesign` entwickelt und nach BP-021 nach `main` zusammengeführt (Push nur auf ausdrücklichen Auftrag). |
 

@@ -31,16 +31,16 @@
 | BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-029) | Plan erstellt (2026-11-15), Abnahme durch Auftraggeber ausstehend | BP-008, BP-010, BP-011, BP-012 |
 | BP-014 | Redesign: Fundament ohne Bootstrap, Layout und „!“-Tooltips | Umgesetzt, im Browser geprüft (Chrome headless), Commit 3cd08f7 (Branch `redesign`) | BP-013 (Abnahme) |
 | BP-015 | Redesign: Aurora-Farbwelt der Seite | Umgesetzt, im Browser geprüft (Chrome headless), Commit 6839a86 (Branch `redesign`) | BP-014 |
-| BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Geplant | BP-015 |
-| BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Geplant | BP-016 |
-| BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Geplant | BP-017 |
+| BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Umgesetzt, im Browser geprüft (Chrome headless), Commit d13e5a6 (Branch `redesign`) | BP-015 |
+| BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Umgesetzt, im Browser geprüft (Chrome headless), Commit 7925677 (Branch `redesign`) | BP-016 |
+| BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Umgesetzt, im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
 | BP-019 | Redesign: Ergebnis-Tint | Geplant | BP-017 |
 | BP-020 | Redesign: Gestaffelter Eintritt | Geplant | BP-017 |
 | BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Geplant | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-016. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-016`).
+**Nächstes vorgesehenes Paket:** BP-019. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-019`).
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -292,7 +292,28 @@
 
 ### BP-016 SVG-Diagramme ohne Chart.js
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit d13e5a6 auf Branch `redesign`.
+- **Umsetzung:** Neu `charts.js` (`AG_CHARTS.render`, globale Funktion `renderCharts` mit unveränderter Signatur); `index.html`: `<canvas>` durch `<svg role="img" aria-label>` ersetzt, Chart.js und Datalabels entfernt, `charts.js` vor `site.js` eingebunden; `site.js`: Chart.js-Code (`existingChart`, `existingBezugChart`, bisherige `renderCharts`) entfernt, Berechnung unverändert; `site.css`: Diagrammstile (Klassen `ag-chart-*`, `ag-serie-*`), Container ohne feste Höhe (Höhe aus der viewBox).
+- **Abweichungen vom Plan (13.6), zu bestätigen:**
+  1. Koordinatenraum = gemessene Containergrösse im Massstab 1:1 statt fester Räume 1000 × 400 und „schmal“. So behält die Schrift bei jeder Breite ihre Nenngrösse (11 bis 12 px); unter 420 px Breite (zunächst 480 px, mit D-030 gesenkt) gilt ein höheres Seitenverhältnis (Höhe 0.85 × Breite), sonst 0.4 × Breite, mindestens 260 px.
+  2. Die Y-Achse beginnt bei 0 (Chart.js wählte den Anfang automatisch). Grund: Die Fläche unter der Vermögenslinie braucht eine ehrliche Basislinie.
+  3. Bei vielen Jahren (Eingabe bis 50) werden Jahresbeschriftungen, Data Labels (ab etwa 30 px Abstand) und Punkte (über 40 Jahre) ausgedünnt, damit nichts überlappt.
+  4. Tooltip zeigt Jahr und volle USD-Beträge mit `$` (wie die KPI-Box), nicht Tausender.
+- **Betroffene Dateien (tatsächlich):** `charts.js` (neu), `index.html`, `site.css`, `site.js`.
+- **Prüfergebnis (Chrome headless, 1280 px und 390 px, `file://`):**
+  - Keine Netzwerkanfrage mehr (weder `cdn.jsdelivr.net` noch `fonts.googleapis.com`); `typeof Chart` ist `undefined`. **Erfüllt.**
+  - Datenreihen, Legendentexte („Profit in 1000 (USD)“, „Cashflow in 1000 (USD)“, „Dividends in 1000 (USD)“), Achsentitel („Profit“, „Cashflow/Dividends“, ab 768 px), Y-Ticks in Tausend (z. B. 0, 500, 1000, 1500), Data Labels `floor(Wert / 1000)` ab 768 px (10 Labels bei 10 Jahren, 0 bei 390 px). **Erfüllt.**
+  - Linienfarben im Browser: Vermögen `rgb(88,196,255)`, Cashflow `rgb(45,226,196)`, Dividenden `rgb(139,123,255)`. Kontraste rechnerisch (ungünstigste Kartenstelle): Linien Cyan 7.9, Teal 9.4, Violett 4.7 : 1 (mindestens 3); Achsenlinie 6.5 : 1; Tick-Text 6.5 : 1; Labels, Legende und Titel 14.6 : 1; Tooltip-Text 16.7 : 1 (mindestens 4.5). Gitterlinien (Deckkraft 0.2) sind rein unterstützend und tragen keine Information. **Erfüllt.**
+  - Tooltip: Maus (Hover zeigt „2032 / Profit: $…“, Verlassen blendet aus), Touch (Tippen zeigt ihn, Tippen ausserhalb und Escape schliessen); bleibt über eine Neuberechnung bestehen. **Erfüllt.**
+  - `NaN`-Eingaben (leeres Startkapital, leere Jahre, leere Rendite): keine Konsolenfehler, leeres Diagramm, Aria-Text „… chart, no data“; nach Korrektur wieder Linie. **Erfüllt.**
+  - Schmale Darstellung 390 px: Achsen- und Labeltexte 11 bis 12 px effektiv (Massstab 1:1), keine horizontale Scrollleiste; Neuzeichnen bei Fenstergrössenänderung (1280 → 700 → 1280 px: Data Labels und Achsentitel erscheinen und verschwinden passend). **Erfüllt.**
+  - `role="img"` und `aria-label` (mit Zeitraum und Endwerten) vorhanden. **Erfüllt.** 0 laufende CSS-Animationen. **Erfüllt.**
+  - Simulation: Start/Stop-Button funktioniert, keine Fehler.
+- **Nicht prüfbar:** Andere Browser und echte Touch-Geräte (OP-12); Screenreader-Ausgabe; Wirkung des Tooltips beim Ziehen über die Fläche auf realen Geräten.
+- **Hinweis:** Die Legende ist statisch (OP-25 bleibt als Annahme umgesetzt; Bestätigung ausstehend).
+
+(Ursprünglicher Plan:)
+
 - **Grundlage:** D-017, D-015, D-028, D-029; [project_plan.md](project_plan.md), Kapitel 8.1, 13.6
 - **Ziel:** Beide Diagramme werden als Inline-SVG gezeichnet; Chart.js und Datalabels-Plugin entfallen.
 - **Scope:**
@@ -314,7 +335,22 @@
 
 ### BP-017 Motion-Grundlage, Intro-Loader, Hintergrund-Drift
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit 7925677 auf Branch `redesign`.
+- **Umsetzung:** Neu `motion.css` und `motion.js`; `index.html`: `motion.css` nach `site.css`, `<noscript>`-Style im Kopf, Loader-Markup (`#agLoader`, aria-hidden) als erstes Element im `<body>`, `motion.js` zwischen `charts.js` und `site.js`. `site.css` und `site.js` blieben unverändert (Drift und Loader liegen vollständig in `motion.css`; die Seite funktioniert ohne `motion.js` unverändert).
+  - `motion.js`: setzt `html.ag-motion` (nicht bei `prefers-reduced-motion: reduce`), blendet den Loader nach 1000 ms ab Navigationsbeginn aus (Klasse `ag-loader-hidden`, danach aus dem DOM entfernt), setzt dann `html.ag-motion-ready`; `AG_MOTION.enabled` und `AG_MOTION.whenReady(fn)` (sofort bei Reduced-Motion oder wenn schon bereit).
+  - Loader: Mini-Chart (Raster, aufgedeckte Linie mit Glow ohne Filter und Fläche, Spitze mit Puls) und Titel „Asset Growth Calculator“, nur `transform`/`opacity`. Er ist standardmässig `display: none` und erscheint nur bei `prefers-reduced-motion: no-preference`; die reine CSS-Animation `ag-loader-safety` blendet ihn nach ca. 1.05 s in jedem Fall aus (Sicherheitsnetz).
+  - Drift: `body::before`/`::after` (Aurora-Bänder) bewegen sich über `transform` (52 s und 64 s, alternierend), nur ab 701 px und nur unter `html.ag-motion`; die Ebenen sind dort 5 % grösser (`inset: -5%`), damit am Rand nichts sichtbar wird.
+  - Reduced-Motion: `animation: none` und `transition: none` für alles, Loader `display: none`.
+- **Prüfergebnis (Chrome headless über DevTools-Protokoll, Bildsampling, `file://`):**
+  - Loader sichtbar von 20 bis 1144 ms (Sicherheitsnetz allein, `motion.js` blockiert: bis 1228 ms); danach ist er aus dem DOM entfernt, der Inhalt ist vollständig sichtbar, Diagramme und KPI-Box sind da. **Erfüllt** (0.9 bis 1.3 s).
+  - Reduced-Motion (emuliert): Loader nie sichtbar, `html` ohne `ag-motion`, 0 laufende Animationen. **Erfüllt.**
+  - Ohne JavaScript (Skripte deaktiviert): Loader `display: none` (`<noscript>`-Style). **Erfüllt.**
+  - `motion.js` fehlt (blockiert): kein Fehler in der Konsole, Loader verschwindet über das Sicherheitsnetz, Seite im statischen Zustand. **Erfüllt.**
+  - Drift bei 1280 px: 2 Animationen (`ag-drift-a`, `ag-drift-b`), Keyframe-Eigenschaft ausschliesslich `transform`; bei 640 px und bei Reduced-Motion keine Animation. **Erfüllt.**
+  - Alle Dauer-Animationen (Drift, Titel-Atmen im Loader) nutzen nur `transform`/`opacity`. **Erfüllt.**
+  - Konsole in allen fünf Fällen ohne Fehler; keine horizontale Scrollleiste.
+- **Nicht prüfbar:** Flüssigkeit der Animationen auf schwachen Geräten (nur Messung per Bildsampling, keine Frame-Zeiten); andere Browser (OP-12). Auf langsamen Verbindungen blendet das Sicherheitsnetz den Loader u. U. vor `motion.js` aus; `ag-motion-ready` folgt dann sofort nach dem Laden des Skripts.
+- **Hinweis:** Die Plan-Aussage „Mini-Chart mit Titel“ ist mit eigenem Markup statt aus dem Vorbild kopiert umgesetzt (Palette Aurora, Cyan-Linie).
 - **Grundlage:** D-020, D-027; Muster des Vorbilds (dessen D-026, D-027, D-030, D-032, D-043)
 - **Ziel:** Gemeinsame Motion-Infrastruktur, kurzer Intro-Loader und driftender Hintergrund.
 - **Scope:**
@@ -334,7 +370,12 @@
 
 ### BP-018 Einzeichnung, Hochzählen, Tipp-Pause
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit a674de9 auf Branch `redesign`.
+- **Umsetzung:**
+  - `charts.js`: `zeichne(inst, config, animiere)`; Linien und Glow tragen `pathLength="1"`; neue Daten zeichnen mit Animation (`true`), das Neuzeichnen nach Grössenänderung ohne (Klasse `ag-static` am SVG).
+  - `motion.css`: `ag-draw` (`stroke-dashoffset` 1 → 0, `stroke-dasharray: 1 2`, 1400 ms, Easing `cubic-bezier(0.2, 0, 0, 1)`), Fläche blendet nach 900 ms ein (700 ms), Punkte und Data Labels nach 1000 ms (500 ms); die erste Einzeichnung pausiert bis `ag-motion-ready` (Loader weg). Jedes Neuzeichnen ersetzt den SVG-Inhalt und bricht damit eine laufende Einzeichnung ab. Alle Regeln nur unter `html.ag-motion`; Reduced-Motion schaltet alles ab.
+  - `motion.js`: `AG_MOTION.countUp(element, ziel, formatiere)`: erstes Laden von 0 (startet nach dem Loader), danach vom zuletzt angezeigten Wert (auch bei abgebrochener Zählung), 1200 ms, Easing ease-out kubisch, am Ende exakt `formatiere(ziel)`; nicht endliche Werte und Reduced-Motion setzen den Text sofort.
+  - `site.js`: `zeigeKennzahl(id, wert, formatiere)` für die fünf Kennzahlen (Formatfunktionen liefern die bisherigen Texte), `berechneVermoegenVerzoegert()` (250 ms Tipp-Pause), `verwerfeWartendeBerechnung()` beim Start der Simulation. `index.html`: `oninput` ruft `validateInput(this); berechneVermoegenVerzoegert()` auf (alle Eingabefelder inkl. dem auskommentierten Block).
 - **Grundlage:** D-021, D-025, D-026
 - **Ziel:** Diagramme zeichnen sich bei jeder Neuberechnung ein, Kennzahlen zählen hoch, Eingaben lösen nach einer Tipp-Pause aus.
 - **Scope:**
@@ -344,7 +385,19 @@
 - **Nicht im Scope:** Tint, Staffelung, Loader, Berechnung.
 - **Voraussetzungen:** BP-017
 - **Betroffene Dateien:** `charts.js`, `motion.js`, `motion.css`, `site.js`, `index.html`
-- **Akzeptanzkriterien:**
+- **Prüfergebnis (Chrome headless, 1280 px, Bildsampling und Animationsliste):**
+  - Einzeichnung: 300 ms nach dem Start Dashoffset 0.49 (halb gezeichnet), Fläche noch unsichtbar; nach 2.2 s Dashoffset 0, Fläche sichtbar, nur noch 2 laufende Animationen (Drift). Auslöser Eingabe nach Pause, Button und Wiederholung nutzen denselben Weg (`berechneVermoegen`). **Erfüllt.**
+  - Tipp-Pause: Zwei Eingaben im Abstand von 120 ms ergeben 0 Berechnungen bei 200 ms und genau 1 bei 320 ms nach der letzten Eingabe. Ein Klick auf den Start-Button rechnet sofort (1) und verwirft die wartende Eingabe-Berechnung (danach weiterhin 1). **Erfüllt.**
+  - Zwei Renders im Abstand von 250 ms: je Diagramm genau eine Linie und ein Glow, 6 `ag-draw`-Animationen (1 + 2 Linien je mit Glow), keine Überlagerung. **Erfüllt.**
+  - Grössenänderung 1280 → 1100 px: Diagramm zeichnet neu ohne Einzeichnung (0 `ag-draw`, Klasse `ag-static`). **Erfüllt.**
+  - Hochzählen: Erstes Laden: Anzeige leer (vor `site.js`), ab 77 ms „Total Growth: 0.00%“ hinter dem Loader, Zählung ab ca. 1035 ms bis 2217 ms (1.2 s). Spätere Neuberechnung zählt vom vorherigen Wert (Dividenden 6,716 → 8,586 in der Mitte → 8,930). **Erfüllt.**
+  - Endtexte: Mit Standardabweichung 0 (deterministisch) sind alle fünf Kennzahlentexte mit Motion nach dem Hochzählen zeichengleich zu denen bei Reduced-Motion (z. B. „Total Growth: 61.05%“, „Total Dividends: $6,716“); auch nach einem zweiten Szenario (148.83 % / $8,930). **Erfüllt.**
+  - Reduced-Motion: Kennzahlen sofort, 0 Animationen, kein Hochzählen, Konsole fehlerfrei. **Erfüllt.**
+  - Konsole in allen Fällen ohne Fehler. **Erfüllt.**
+  - Flüssigkeit (Bildabstände während einer Einzeichnung, 2 s): ohne Drosselung Median 17 ms, Maximum 17 ms; bei 4-facher CPU-Drosselung Median 17 ms, 95. Perzentil 17 ms, Maximum 33 ms, 0 Bilder über 50 ms. Keine Umstellung nach Risiko 3 nötig. **Erfüllt**, mit Einschränkung: Headless-Chrome ohne GPU (`--disable-gpu`), Messung der Bildabstände über `requestAnimationFrame`, keine Pixel-Flüssigkeit.
+- **Nicht prüfbar:** Echte Geräte und andere Browser (OP-12); Verhalten bei der Simulation über mehrere 5-Sekunden-Takte (nur Einzelschritte und Start/Stop geprüft).
+- **Hinweis:** Wirkung auf die Kennzahlen-Struktur (D-030): fünf Elemente, jedes zählt einzeln.
+- **Akzeptanzkriterien (Plan):**
   - Einzeichnung bei Eingabe nach Pause, Button und jeder Simulationswiederholung.
   - Tippen von „25“ löst genau eine Berechnung nach 250 ms Pause aus; ein schneller zweiter Render hinterlässt keine überlagerte Einzeichnung.
   - Reduced-Motion: Ergebnis sofort, kein Hochzählen, keine Einzeichnung.
@@ -400,3 +453,12 @@
   - Kein externer Request (kein CDN, keine Webfonts).
   - Berechnungsergebnisse und KPI-Formate gleichen dem Stand vor dem Redesign (Vergleich des Berechnungscodes in `site.js`).
   - Reduced-Motion und 390 px Breite geprüft; mindestens ein zweiter Browser neben Chrome geprüft oder als nicht prüfbar vermerkt (OP-12).
+
+## Beauftragte Änderung ausserhalb der Pakete: Desktop-Layout (D-030)
+
+- **Status:** Umgesetzt (2026-11-15), Commit 3d7281a auf Branch `redesign`, sichtbare Layout-Wirkung.
+- **Auftrag:** Kennzahlen-Box etwas breiter; die zwei Diagramme auf Desktops horizontal nebeneinander. Nachbesserungen am selben Tag: Eingabebereich breiter, Kennzahlen-Box unter den Eingaben in einer Zeile, Diagramme grösser; drei Eingabefelder je Zeile und kleinerer unterer Abstand des Eingabebereichs; Kennzahlen als fünf Einzelwerte mit Trennstrichen (Auftrag: „klar getrennt, aber auf einer Linie“).
+- **Umsetzung:** `site.css`: Media Query ab 1024 px (Grid mit zwei Spalten; Eingabebereich ohne Breitenlimit, Felder 90 % bis 1100 px in drei Spalten, unterer Abstand 6 px; Kennzahlen-Box als Flex-Zeile über beide Spalten, Schrift 13 px, `white-space: nowrap`); Seitenbreite 1140 → 1400 px; `charts.js`: Schwelle für das hohe Seitenverhältnis 480 → 420 px, Seitenverhältnis bei nebeneinander stehenden Diagrammen 0.62 statt 0.4, Mindesthöhe 280 px. `index.html` unverändert (die DOM-Reihenfolge bleibt, die Anordnung erfolgt über das Grid).
+- **Kennzahlen-Umbau:** `index.html`: Spans `wachstumProzent` (nur Total Growth), neu `maxDrawdownAnzeige`, `volatilitaet`, `totalDividendsCashflow` (jetzt Behälter, `display: contents`) mit neuen Spans `totalDividendsAnzeige` und `totalCashflowAnzeige`; `site.js`: fünf `textContent`-Zuweisungen statt drei (Berechnung unverändert); `site.css`: `.ag-kpi-item`, ab 1024 px Trennstrich links. Auswirkung auf BP-018 (Hochzählen): fünf Elemente mit je einem Zahlenwert; die Texte entsprechen dem neuen Format.
+- **Prüfergebnis (Chrome headless):** 1280 px: Kennzahlen einzeilig mit fünf getrennten Werten, 951 × 46 px; Diagramme je 613 × 395 px, nebeneinander auf gleicher Höhe, Kennzahlen-Box 849 px breit und einzeilig (46 px hoch) über den Diagrammen, Eingabebereich in voller Breite; 1024 px: Diagramme je 493 × 321 px, Box einzeilig; 1023 px und 390 px: eine Spalte wie bisher (Box dazwischen); keine horizontale Scrollleiste, Diagramme zeichnen sich bei Grössenänderung (1280 → 1000 → 1280 px) korrekt neu, Konsole ohne Fehler.
+- **Nicht geprüft:** Breiten über 1280 px, andere Browser (OP-12).

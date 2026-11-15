@@ -42,7 +42,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-005 Chart.js mit chartjs-plugin-datalabels über CDN
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-017**, wirksam mit Umsetzung des Redesigns (bis dahin gültig)
+- **Status:** Ist-abgeleitet; **ersetzt durch D-017**, abgelöst seit BP-016 (2026-11-15)
 - **Entscheidung:** Diagramme werden mit Chart.js (Typ `line`) und dem Plugin `chartjs-plugin-datalabels` gerendert, beide über `cdn.jsdelivr.net`. Instanzen werden bei jeder Berechnung zerstört und neu erstellt.
 - **Hinweis:** Versionen sind nicht gepinnt (OP-08).
 
@@ -73,13 +73,13 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-010 Dark Theme mit Amber-Akzent
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, für die Seite wirksam seit BP-015 (2026-11-15); die Diagrammfarben (Chart.js) gelten bis BP-016
+- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, für die Seite wirksam seit BP-015 (2026-11-15); die Diagrammfarben seit BP-016 (Chart.js entfernt)
 - **Entscheidung:** Dunkler Verlaufshintergrund (`#272525`/`#454046`), weisse Schrift, Akzentfarbe `#ffc107`, Cashflow-Linie `#32cd32`, Schrift **Space Mono**.
 - **Beleg:** Commit `7c4e5ac` (2025-09-07) „Changed Theme to dark and adjusted Charts accordingly“.
 
 ## D-011 KPI-Box zwischen den Diagrammen
 
-- **Status:** Ist-abgeleitet
+- **Status:** Ist-abgeleitet; auf Desktop ab 1024 px **ersetzt durch D-030** (Box über den nebeneinanderliegenden Diagrammen), darunter weiterhin zwischen den Diagrammen
 - **Entscheidung:** Kennzahlen (Total Growth, Max. Drawdown, Volatility, Total Dividends, Total Cashflow) werden in einer Box zwischen Vermögens- und Cashflow-Diagramm angezeigt; der frühere Fliesstext unter dem Chart entfällt.
 - **Beleg:** Commits `2e02d59` und `cf77d33` (2025-09-07/08).
 
@@ -132,14 +132,14 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-017 Diagramme als Inline-SVG ohne Bibliothek
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-13: „wie im Wealth-Lab-Strategy-Orchestrator“); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-13: „wie im Wealth-Lab-Strategy-Orchestrator“); wirksam seit BP-016 (2026-11-15)
 - **Entscheidung:** Beide Diagramme werden in JavaScript als handgeschriebenes Inline-SVG erzeugt, ohne Chart-Bibliothek. Chart.js und `chartjs-plugin-datalabels` entfallen.
 - **Ersetzt:** D-005.
 - **Konsequenz:** Beschriftungen, Achsen, Data Labels, Legende und Tooltips der Diagramme müssen selbst umgesetzt werden. D-015 (Tausend USD) und die Datenreihen aus [project_plan.md](project_plan.md), Kapitel 8.1, gelten weiter. Das Wegfallen der CDN-Abhängigkeit erledigt IB-04e / OP-08.
 
 ## D-018 Aurora-Theme, nicht umschaltbar
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-14); für die Seite wirksam seit BP-015 (2026-11-15), für die Diagramme mit BP-016
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-14); für die Seite wirksam seit BP-015, für die Diagramme seit BP-016 (2026-11-15)
 - **Entscheidung:** Das Design folgt dem Theme „Aurora“ des Vorbilds (dunkle Nachtblau-Töne, Cyan, Teal, Grün, Rosé; Glow ohne SVG-Filter). Es gibt keinen Theme-Schalter und kein classic-Theme.
 - **Ersetzt:** D-010 (Dark Theme mit Amber-Akzent).
 - **Konsequenz:** Konkrete Farbwerte, Zuordnung zu Datenreihen (Vermögen, Cashflow, Dividenden, Drawdown-Bezug) und Kontraste werden im PLAN von BP-013 festgelegt. Die Paletten- und Glow-Regeln des Vorbilds (dessen D-031) sind Orientierung, keine Kopiervorlage.
@@ -159,7 +159,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-021 Diagramm-Einzeichnung bei jeder Neuberechnung
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-17 Variante a); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-17 Variante a); wirksam seit BP-018 (2026-11-15)
 - **Entscheidung:** Die Linien beider Diagramme zeichnen sich bei **jeder** Neuberechnung neu ein, Flächen blenden danach ein. Das gilt für Eingaben, den Simulations-Button und die automatische Wiederholung alle 5 Sekunden. Das Vorbild animiert nur das erste Rendern (dessen D-026, Regel 4); diese Regel gilt hier **nicht**.
 - **Rahmen:** Statischer Zustand bleibt der Endzustand; bei Reduced-Motion erscheint das Ergebnis sofort ohne Einzeichnung.
 - **Risiko gelöst durch D-025:** Eingaben lösen Berechnung und Einzeichnung erst nach einer Tipp-Pause von ca. 250 ms aus; ein weiterer Render bricht eine laufende Einzeichnung ab und beginnt neu.
@@ -185,7 +185,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-025 Berechnung bei Eingaben nach Tipp-Pause
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-23); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-23); wirksam seit BP-018 (2026-11-15)
 - **Entscheidung:** Bei Eingaben in die Felder starten Berechnung und Einzeichnung nach einer Tipp-Pause von ca. 250 ms, nicht bei jedem Tastendruck. Jeder weitere Tastendruck setzt die Wartezeit zurück. Der Button „Start/Stop Simulation“ und die automatische Wiederholung rechnen weiterhin sofort. Die Prüfung der Eingabe (`validateInput`) läuft weiterhin sofort bei jeder Eingabe.
 - **Ersetzt teilweise:** D-009 („Jede Eingabe löst sofort eine Neuberechnung aus“).
 - **Begründung:** Mit Einzeichnung bei jeder Neuberechnung (D-021) würden sich beim Tippen mehrstelliger Werte Einzeichnungen überlagern.
@@ -193,7 +193,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-026 Hochzählen der Kennzahlen: vom vorherigen zum neuen Wert
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-24); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-24); wirksam seit BP-018 (2026-11-15)
 - **Entscheidung:** Die Kennzahlen der KPI-Box (Total Growth, Max. Drawdown, Volatility, Total Dividends, Total Cashflow) zählen beim ersten Laden von 0 hoch. Danach gleitet jede Zahl bei jeder Neuberechnung vom zuletzt angezeigten zum neuen Wert. Am Ende steht der unveränderte, bereits formatierte Text (Regel 5 des Vorbilds, dessen D-026). Format, Einheiten und Berechnung bleiben unverändert.
 - **Rahmen:** Bei Reduced-Motion wird der neue Wert sofort gesetzt.
 
@@ -215,3 +215,12 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 - **Status:** Bestätigt (PLAN BP-013, 2026-11-15; Abnahme durch Abruf von BP-014 am 2026-11-15)
 - **Entscheidung:** Vermögen Cyan `#58c4ff`, Cashflow Teal `#2de2c4`, Dividenden Violett `#8b7bff`; Tint Gewinn Teal/Grün, Tint Verlust Rosé `#ff6fa3`; Akzente und Fokus Teal; Hintergrund `#03060b` bis `#071420`; Text `#eafcff`, gedämpft `#93acbf`. Amber entfällt.
 - **Konkretisiert:** D-018. **Details:** [project_plan.md](project_plan.md), Kapitel 13.8.
+
+## D-030 Desktop-Layout: Diagramme nebeneinander, breitere Kennzahlen-Box
+
+- **Status:** Bestätigt (Aufträge 2026-11-15: „KPI Panel etwas breiter, die zwei Charts horizontal nebeneinander auf Desktops“; danach „Eingabebereich breiter, KPI-Box unter den Eingaben in einer Zeile, Charts zu klein“)
+- **Entscheidung:** Ab 1024 Fensterbreite stehen Vermögens- und Cashflow-Diagramm nebeneinander (zwei gleich breite Spalten, volle Seitenbreite), der Eingabebereich hat die Breite der Diagramme (Felder darin 90 % der Breite, höchstens 1100 px, drei Felder je Zeile, unterer Abstand 6 px statt 20 px), darunter folgt die Kennzahlen-Box in einer Zeile (Schrift 13 px, Gruppen umbrechen erst bei Platzmangel), darunter die Diagramme. Die Seite ist bis 1400 px breit (vorher 1140 px), die Diagramme sind im Seitenverhältnis 0.62 höher als einzeln stehende (0.4). Unter 1024 px bleibt es bei einer Spalte in der Reihenfolge Diagramm, Kennzahlen-Box, Diagramm (D-011).
+- **Kennzahlen als Einzelwerte (Auftrag 2026-11-15):** Die Box zeigt fünf getrennte Werte („Total Growth“, „Max. Drawdown“, „Volatility“, „Total Dividends“, „Total Cashflow“), ab 1024 px auf einer Linie mit Trennstrichen, darunter zeilenweise umbrechend. Jeder Wert hat sein eigenes Element. Die Wortlaute und Zahlenformate der Einzelwerte sind unverändert; entfallen ist nur die Zusammenfassung zweier Werte in einem Text („… Max. Drawdown …“ hinter Total Growth, Komma zwischen Dividends und Cashflow). Damit weicht die Darstellung vom Textformat in [project_plan.md](project_plan.md), 7.2 ab.
+- **Ersetzt:** D-011 für Breiten ab 1024 px; ergänzt das Layout aus [project_plan.md](project_plan.md), Kapitel 13.6 (OP-06).
+- **Annahme:** Die Position der Box über den Diagrammen (statt darunter) ist eine Annahme des Umsetzers; eine Umstellung ist eine Zeile CSS (`grid-row` der Box).
+- **Folge:** Die Diagramme sind in dieser Anordnung bei 1024 bis 1280 px Fensterbreite etwa 493 bis 613 px breit und 321 bis 395 px hoch. `charts.js` verwendet das hohe Seitenverhältnis nun erst unter 420 px (vorher 480 px).
