@@ -30,7 +30,7 @@
 | BP-012 | Diagramm-Achsen in Tausend USD (D-015) | Umgesetzt (nicht im Browser validiert, Commit 3903393) | BP-007 |
 | BP-013 | Redesign Motion Graphics – Konzept und Paketierung (D-016 bis D-029) | Plan erstellt (2026-11-15), Abnahme durch Auftraggeber ausstehend | BP-008, BP-010, BP-011, BP-012 |
 | BP-014 | Redesign: Fundament ohne Bootstrap, Layout und „!“-Tooltips | Umgesetzt, im Browser geprüft (Chrome headless), Commit 3cd08f7 (Branch `redesign`) | BP-013 (Abnahme) |
-| BP-015 | Redesign: Aurora-Farbwelt der Seite | Geplant | BP-014 |
+| BP-015 | Redesign: Aurora-Farbwelt der Seite | Umgesetzt, im Browser geprüft (Chrome headless), Commit 6839a86 (Branch `redesign`) | BP-014 |
 | BP-016 | Redesign: SVG-Diagramme ohne Chart.js | Geplant | BP-015 |
 | BP-017 | Redesign: Motion-Grundlage, Intro-Loader, Hintergrund-Drift | Geplant | BP-016 |
 | BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Geplant | BP-017 |
@@ -40,7 +40,7 @@
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** BP-015. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-015`).
+**Nächstes vorgesehenes Paket:** BP-016. Das Redesign wird auf dem Branch `redesign` entwickelt (OP-27, D-024); `main` bleibt unverändert, bis BP-021 abgeschlossen ist. Die Korrekturpakete BP-008, BP-010, BP-011, BP-012 sind umgesetzt (Commits siehe je Paket); ihre Browser-Validierung steht aus. Die Umsetzung startet jeweils auf Abruf des Auftraggebers (z. B. `IMPLEMENT BP-016`).
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -266,7 +266,17 @@
 
 ### BP-015 Aurora-Farbwelt der Seite
 
-- **Status:** Geplant
+- **Status:** Umgesetzt (2026-11-15), Commit 6839a86 auf Branch `redesign`.
+- **Umsetzung:** Nur `site.css`: Variablen `--ag-*` nach Kapitel 13.8; Hintergrund mit statischem Sternenfeld und Aurora-Bändern (`body::before` oben, `body::after` unten, fest und hinter dem Inhalt); Glaskarten für Eingabebereich, Diagramme und KPI-Box; Fokus, „!“-Symbole und Tooltip in Teal/Cyan; Button mit Verlauf Cyan → Teal; `color-scheme: dark`. Die Transition des Buttons aus BP-014 entfiel (Kriterium „keine Animation“). Der Eingabebereich ist wie die Diagramme auf 900 px begrenzt, damit alle Karten gleich breit sind.
+- **Prüfergebnis:**
+  - Kein Amber-Wert mehr in `site.css` (Suche nach `#ffc107`, `rgba(255,193,7,…)`, `#e0a800`). **Erfüllt.**
+  - Palette entspricht 13.8 (Variablen und berechnete Farben im Browser: Button-Verlauf `rgb(88,196,255)` → `rgb(45,226,196)`, Karte `rgba(10,24,36,0.84)`, Text `rgb(234,252,255)`, Labels `rgb(147,172,191)`). **Erfüllt.**
+  - Kontraste rechnerisch (WCAG, mit Alpha-Komposition, ungünstigste Hintergrundstelle unter den Bändern): Text auf Karte 14.6 bis 16.4 : 1; Labels 6.5 bis 7.4 : 1; Eingabetext 18.1 : 1; „!“-Symbol Teal 9.4 : 1; Button-Text auf Cyan/Teal 10.4 bis 14.4 : 1 (auch Hover); Tooltip-Text 16.7 : 1; Fusszeile 6.1 bis 6.5 : 1; Titel 4.8 bis 5.0 : 1 (jeweils mindestens 4.5). Nicht-Text: Eingaberand 4.2 : 1, Fokus Cyan 7.9 : 1, „!“-Rand 9.4 : 1 (mindestens 3). **Erfüllt.** Der Titel auf mobilen Geräten verwendet die Textfarbe statt Teal, weil Teal bei 14 px den Mindestkontrast unter den Bändern nicht sicher erreicht.
+  - Fokus bleibt deutlich sichtbar (Teal-Rand plus Ring bei Eingabefeldern, Cyan-Umrandung bei Symbol und Button). **Erfüllt.**
+  - Keine Animation: keine `animation`, `transition` oder `@keyframes` in `site.css`; im Browser 0 laufende CSS-Animationen. **Erfüllt.**
+  - Unverändert gegenüber BP-014: zwei Spalten/eine Spalte, keine horizontale Scrollleiste bei 390 px, Tooltips (Hover, Fokus, Escape, Tippen), 44-px-Tippflächen, Konsole ohne Fehler, nur `cdn.jsdelivr.net` mit Chart.js und Datalabels, Berechnung (21.00 % im Testfall), Simulations-Button.
+- **Übergangszustand (erwartet):** Die Diagrammlinien sind bis BP-016 noch Gelb und Grün (Chart.js im Bestand) und passen farblich nicht zur Palette.
+- **Nicht prüfbar:** Andere Browser, echte Geräte (OP-12); `backdrop`-ähnliche Effekte nicht verwendet.
 - **Grundlage:** D-018, D-029; [project_plan.md](project_plan.md), Kapitel 13.8
 - **Ziel:** Die Seite erscheint im Aurora-Design (ohne Diagramme).
 - **Scope:** `site.css`: Variablen `--ag-*` nach 13.8, Hintergrund mit statischem Sternenfeld und Aurora-Bändern, Glaskarten, Fokus, Button, KPI-Box, Tooltip, Titel. Amber vollständig entfernen.

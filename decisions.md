@@ -73,7 +73,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-010 Dark Theme mit Amber-Akzent
 
-- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, wirksam mit Umsetzung des Redesigns (bis dahin gültig)
+- **Status:** Ist-abgeleitet; **ersetzt durch D-018**, für die Seite wirksam seit BP-015 (2026-11-15); die Diagrammfarben (Chart.js) gelten bis BP-016
 - **Entscheidung:** Dunkler Verlaufshintergrund (`#272525`/`#454046`), weisse Schrift, Akzentfarbe `#ffc107`, Cashflow-Linie `#32cd32`, Schrift **Space Mono**.
 - **Beleg:** Commit `7c4e5ac` (2025-09-07) „Changed Theme to dark and adjusted Charts accordingly“.
 
@@ -139,7 +139,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
 
 ## D-018 Aurora-Theme, nicht umschaltbar
 
-- **Status:** Bestätigt (Auftrag 2026-11-15, OP-14); wirksam mit Umsetzung des Redesigns
+- **Status:** Bestätigt (Auftrag 2026-11-15, OP-14); für die Seite wirksam seit BP-015 (2026-11-15), für die Diagramme mit BP-016
 - **Entscheidung:** Das Design folgt dem Theme „Aurora“ des Vorbilds (dunkle Nachtblau-Töne, Cyan, Teal, Grün, Rosé; Glow ohne SVG-Filter). Es gibt keinen Theme-Schalter und kein classic-Theme.
 - **Ersetzt:** D-010 (Dark Theme mit Amber-Akzent).
 - **Konsequenz:** Konkrete Farbwerte, Zuordnung zu Datenreihen (Vermögen, Cashflow, Dividenden, Drawdown-Bezug) und Kontraste werden im PLAN von BP-013 festgelegt. Die Paletten- und Glow-Regeln des Vorbilds (dessen D-031) sind Orientierung, keine Kopiervorlage.

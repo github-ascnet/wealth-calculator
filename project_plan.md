@@ -17,6 +17,7 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
+| 2026-11-15 | IMPLEMENT | BP-015 umgesetzt: Aurora-Farbwelt der Seite, Kontraste dokumentiert. |
 | 2026-11-15 | CHANGE | OP-27 entschieden: Redesign auf Branch `redesign` (D-024). |
 | 2026-11-15 | IMPLEMENT | BP-014 umgesetzt: IB-02 und IB-04a bis IB-04d behoben, OP-06 und OP-10 erledigt. |
 | 2026-11-15 | PLAN | BP-013: Entscheidungen zu OP-21, OP-23, OP-24, OP-26 eingearbeitet; OP-11 und OP-22 erledigt; Plan des Redesigns in Kapitel 13.6 bis 13.9, Arbeitspakete BP-014 bis BP-021; neu OP-25 und OP-27. |
