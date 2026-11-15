@@ -25,7 +25,6 @@
 
   // Zustand je Diagramm (Schlüssel: ID des SVG)
   const instanzen = {};
-  let letzteDaten = null;
 
   function el(name, attribute, eltern) {
     const e = document.createElementNS(SVG_NS, name);
@@ -518,8 +517,6 @@
   // ---- Schnittstelle ----
 
   function rendere(labels, data, bezugData, dividendeData) {
-    letzteDaten = { labels: labels, data: data, bezugData: bezugData, dividendeData: dividendeData };
-
     const svg1 = document.getElementById("vermoegenChart");
     const svg2 = document.getElementById("bezugDataChart");
     const inst1 = instanz(svg1);
@@ -547,7 +544,7 @@
     }
   }
 
-  window.AG_CHARTS = { render: rendere, letzteDaten: function () { return letzteDaten; } };
+  window.AG_CHARTS = { render: rendere };
 })();
 
 // Bestehende Schnittstelle zu site.js: Name und Signatur bleiben unverändert
