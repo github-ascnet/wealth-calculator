@@ -104,7 +104,7 @@ Verbindliche Architektur-, Design- und Implementierungsentscheidungen.
   - Ohne Build-Prozess (D-001) wird der Repository-Inhalt statisch ausgeliefert; alles im ausgelieferten Verzeichnis ist öffentlich (OP-22).
   - Neue Dateien und Verzeichnisse des Redesigns müssen mit relativen Pfaden funktionieren und ohne Build auskommen.
   - Der Wegfall der CDN-Abhängigkeiten durch das Redesign (D-017, D-019) ändert am Deployment nichts.
-  - Das Redesign (BP-014 bis BP-021) wird auf dem Branch `redesign` entwickelt (Auftrag 2026-11-15, OP-27), damit Zwischenstände mit gemischtem Design nicht live gehen. Zusammenführung nach `main` erst nach BP-021 und nur auf ausdrücklichen Auftrag.
+  - Das Redesign (BP-014 bis BP-021) wird auf dem Branch `redesign` entwickelt (Auftrag 2026-11-15, OP-27), damit Zwischenstände mit gemischtem Design nicht live gehen. Zusammenführung nach `main` erst nach BP-021 und nur auf ausdrücklichen Auftrag (erfolgt am 2026-11-16, Stand 6ae15d8).
 - **Offen:** Production-Branch, Build-Einstellungen, Preview-Deployments, Ausgabeverzeichnis (OP-11, OP-22).
 
 ## D-014 „Total Growth“ ab Startkapital

@@ -36,11 +36,11 @@
 | BP-018 | Redesign: Einzeichnung, Hochzählen, Tipp-Pause | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit a674de9 (Branch `redesign`) | BP-017 |
 | BP-019 | Redesign: Ergebnis-Tint | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 2c2792d (Branch `redesign`); Sichtprüfung durch den Auftraggeber offen | BP-017 |
 | BP-020 | Redesign: Gestaffelter Eintritt | Validiert (BP-021, Chrome und Edge), Umsetzung im Browser geprüft (Chrome headless), Commit 9ba8aee (Branch `redesign`) | BP-017 |
-| BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Umgesetzt (Validierung und Aufräumen; Zusammenführung nach `main` wartet auf Auftrag), Commit 270c09a (Branch `redesign`) | BP-018, BP-019, BP-020 |
+| BP-021 | Redesign: Abschluss, Validierung, Aufräumen | Validiert und abgeschlossen; Redesign nach `main` zusammengeführt und gepusht (2026-11-16, Stand 6ae15d8), Commit 270c09a | BP-018, BP-019, BP-020 |
 
 **Beschlossene Reihenfolge (OP-18, 2026-11-15):** BP-008 → BP-010 → BP-011 → BP-012 → BP-013 (Redesign). Die Korrekturen kommen vor dem Redesign.
 
-**Nächstes vorgesehenes Paket:** keines. Alle Pakete des Redesigns (BP-014 bis BP-021) sind umgesetzt. Offen: Zusammenführung von `redesign` nach `main` (OP-27, D-024; Push nur auf ausdrücklichen Auftrag, löst ein Produktiv-Deployment aus), Sichtprüfung des Tints (BP-019), Entscheid zu OP-25, OP-07, OP-09 und OP-12.
+**Nächstes vorgesehenes Paket:** keines. Alle Pakete des Redesigns (BP-014 bis BP-021) sind umgesetzt und seit dem 2026-11-16 auf `main` (Fast-Forward-Merge von `redesign`, Push auf `origin/main`, Stand 6ae15d8; löst das Produktiv-Deployment über Cloudflare Pages aus, D-024). Offen: Sichtprüfung des Tints (BP-019), Favicon (404), Entscheid zu OP-25, OP-07, OP-09 und OP-12.
 
 **Hinweis zu BP-012:** Die Achsenänderung wirkt in Chart.js (D-005). Mit dem Redesign entfällt Chart.js (D-017); die Einheit Tausend USD (D-015) gilt dann für die neuen SVG-Diagramme weiter. Die Entscheidung, BP-012 trotzdem vorab umzusetzen, liegt beim Auftraggeber.
 
@@ -458,7 +458,7 @@
 
 ### BP-021 Abschluss, Validierung, Aufräumen
 
-- **Status:** Umgesetzt (2026-11-15, Commit 270c09a auf Branch `redesign`) für Validierung, Aufräumen und SDD-Abschluss. Die Zusammenführung nach `main` ist **nicht** erfolgt und wartet auf den ausdrücklichen Auftrag (OP-27).
+- **Status:** Umgesetzt (2026-11-15, Commit 270c09a auf Branch `redesign`) für Validierung, Aufräumen und SDD-Abschluss. Die Zusammenführung nach `main` erfolgte am 2026-11-16 auf ausdrücklichen Auftrag des Auftraggebers (Fast-Forward-Merge von `redesign`, `git push origin main`, Stand 6ae15d8; Inhalt vorher geprüft: genau die 10 Projektdateien, keine Hilfsdateien). Eine Prüfung des Produktiv-Deployments und der Live-Seite durch den Umsetzer steht aus.
 - **Aufräumen:** Ungenutzte CSS-Variablen `--ag-bg-1`, `--ag-green`, `--ag-rose` (Palette steht in 13.8) und der nicht verwendete Zugriff `AG_CHARTS.letzteDaten` entfernt. Suche nach Resten von Chart.js, Bootstrap, Canvas und Google Fonts in `index.html`, `site.js`, `site.css`, `charts.js`, `motion.js`, `motion.css`: keine. Suche nach nicht verwendeten Klassen, IDs und Keyframes im CSS: keine. Der auskommentierte Block `jaehrlicherInvest` in `index.html` ist unverändert (Auftrag 2026-11-15: zurückstellen).
 - **SDD-Abschluss:** D-004, D-005, D-010 als ersetzt und bestätigt gekennzeichnet; D-016 auf „umgesetzt“; D-028 und D-029 waren seit dem Abruf von BP-014 bestätigt; `agents.md` (Dateitabelle, Technik, Farben), `project_plan.md` (Kapitel 3, 5, 8, OP-12, OP-27, Befunde IB-02 und IB-04) nachgeführt; IB-02 und IB-04a bis IB-04f sind geschlossen, IB-04g bleibt offen (OP-09).
 - **Prüfergebnis (VALIDATE):**

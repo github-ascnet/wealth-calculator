@@ -17,7 +17,8 @@
 | 2026-11-15 | CHANGE | Entscheidungen des Auftraggebers zu OP-01 bis OP-05 eingearbeitet (Kapitel 7.1, 7.2, 8.1, 12); neues Ziel „Design/Layout auf aktuellen Motion-Graphics-Standard“ aufgenommen (Kapitel 13). Umsetzung auf Abruf zurückgestellt. |
 | 2026-11-15 | CHANGE | D-015 (Tausend USD) bestätigt. Redesign-Entscheidungen OP-13 bis OP-16 und OP-18 eingearbeitet (Kapitel 12, 13.5); OP-08 und OP-10 erledigt bzw. abgelöst; neue offene Punkte OP-17 (Antwort mehrdeutig), OP-19, OP-20. |
 | 2026-11-15 | CHANGE | OP-17 (Variante a: Einzeichnung bei jeder Neuberechnung), OP-19 (Tooltip-Symbol) und OP-20 entschieden. Neue Anforderung: Ergebnis-Tint des Hintergrunds (D-023); Detailregeln als OP-21 offen. |
-| 2026-11-15 | VALIDATE | BP-021: Redesign gegen die Spezifikation geprüft (Chrome und Edge), aufgeräumt, SDD abgeschlossen. Befund: favicon.ico fehlt (404). Übernahme nach `main` wartet auf Auftrag. |
+| 2026-11-16 | CHANGE | Redesign auf ausdrücklichen Auftrag nach `main` zusammengeführt und gepusht (Fast-Forward, Stand 6ae15d8); OP-27 umgesetzt; Produktiv-Deployment über Cloudflare Pages ausgelöst (Prüfung der Live-Seite offen). |
+| 2026-11-15 | VALIDATE | BP-021: Redesign gegen die Spezifikation geprüft (Chrome und Edge), aufgeräumt, SDD abgeschlossen. Befund: favicon.ico fehlt (404). Übernahme nach `main` wartete auf Auftrag (erfolgt am 2026-11-16, siehe oben). |
 | 2026-11-15 | IMPLEMENT | BP-020 umgesetzt: gestaffelter Eintritt von Eingabefeldern, Button, Kennzahlen-Box und Diagramm-Karten beim Sichtbarwerden (D-020). |
 | 2026-11-15 | IMPLEMENT | BP-019 umgesetzt: Ergebnis-Tint des Hintergrunds nach Total Growth (D-023); Sichtprüfung durch den Auftraggeber offen. |
 | 2026-11-15 | CHANGE | Auftrag: Titel fest „Growth-Calculator“ mit Motion-Effekt (D-031), dynamischer Titel entfällt. |
@@ -305,7 +306,7 @@ Diese Punkte sind nicht als Build-Pakete eingeplant, sondern als offene Punkte e
 | OP-24 | Hochzählen der Kennzahlen | **Entschieden** (2026-11-15) | Beim ersten Laden von 0, danach vom vorherigen zum neuen Wert → D-026 |
 | OP-25 | Legende der Diagramme | Offen (Annahme umgesetzt mit BP-016) | Chart.js erlaubte per Klick auf einen Legendeneintrag das Ausblenden einer Datenreihe. Umgesetzt ist die Annahme: statische Legende wie im Vorbild, die Klick-Funktion entfällt. Bei Widerspruch ist `charts.js` anzupassen. |
 | OP-26 | Loader beim Seitenaufruf | **Entschieden** (2026-11-15) | Kurzer Intro-Loader (ca. 1 s, animierter Mini-Chart), bei reduzierter Bewegung ohne → D-027 |
-| OP-27 | Entwicklungsbranch für das Redesign | **Entschieden** (2026-11-15) | Das Redesign wird auf dem Branch `redesign` entwickelt und nach BP-021 nach `main` zusammengeführt (Push nur auf ausdrücklichen Auftrag). BP-021 ist abgeschlossen; die Zusammenführung wartet auf den Auftrag. |
+| OP-27 | Entwicklungsbranch für das Redesign | **Entschieden** (2026-11-15) | Das Redesign wird auf dem Branch `redesign` entwickelt und nach BP-021 nach `main` zusammengeführt (Push nur auf ausdrücklichen Auftrag). BP-021 ist abgeschlossen; die Zusammenführung nach `main` erfolgte am 2026-11-16 auf ausdrücklichen Auftrag (Stand 6ae15d8). Der Branch `redesign` besteht weiter (gleicher Stand wie `main`). |
 
 ## 13. Zielbild Redesign (Motion Graphics)
 

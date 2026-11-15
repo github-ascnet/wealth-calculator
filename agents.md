@@ -73,7 +73,7 @@ Neue Dateien nur, wenn ein freigegebenes Build-Paket sie verlangt. Die im Redesi
 
 ## 8. Git
 
-- Branch `main` (Produktion), Remote `origin` (GitHub `github-ascnet/wealth-calculator`). Das Redesign (BP-014 bis BP-021) wird auf dem Branch `redesign` entwickelt; `main` wird erst nach BP-021 und nur auf ausdrücklichen Auftrag aktualisiert (OP-27, D-024). Ein Push von `redesign` erzeugt bei Cloudflare Pages möglicherweise ein Preview-Deployment (ungeprüft).
+- Branch `main` (Produktion), Remote `origin` (GitHub `github-ascnet/wealth-calculator`). Das Redesign (BP-014 bis BP-021) wurde auf dem Branch `redesign` entwickelt und am 2026-11-16 auf ausdrücklichen Auftrag nach `main` zusammengeführt (OP-27, D-024). Künftige grössere Änderungen mit sichtbarer Wirkung gehen wieder über einen Branch; `main` wird nur auf ausdrücklichen Auftrag aktualisiert. Ein Push von `redesign` erzeugt bei Cloudflare Pages möglicherweise ein Preview-Deployment (ungeprüft).
 - Commit-Messages auf Englisch, kurz, im Stil des Bestands („Added …“, „Changed …“, „Fixed …“, „Moved …“); optional mit BP-ID.
 - Commit und Push nur auf ausdrücklichen Auftrag.
 - **Ein Push auf `main` löst über Cloudflare Pages ein Produktiv-Deployment aus** (D-024). Vor dem Push prüfen, dass nur beabsichtigte Dateien enthalten sind; was im Repository liegt, kann öffentlich ausgeliefert werden (OP-22). Kein Force-Push.
